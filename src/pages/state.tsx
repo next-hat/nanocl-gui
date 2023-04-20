@@ -5,7 +5,7 @@ import { debounce } from "lodash"
 import { Editor } from "@monaco-editor/react"
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid"
 
-import { ApiContext, createNanoclDecoder } from "@/utils/api"
+import { ApiContext, lastVersion, createNanoclDecoder } from "@/utils/api"
 
 import PageTitle from "@/components/PageTitle"
 import PageOverlay from "@/components/PageOverlay"
@@ -14,7 +14,7 @@ import ModalConfirm from "@/components/ModalConfirm"
 import MetaHeader from "@/components/MetaHeader"
 
 const defaultState = `Type: Deployment
-ApiVersion: v0.5
+ApiVersion: ${lastVersion}
 
 Namespace: global
 
