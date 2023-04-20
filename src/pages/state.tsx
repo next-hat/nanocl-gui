@@ -5,13 +5,13 @@ import { debounce } from "lodash"
 import { Editor } from "@monaco-editor/react"
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid"
 
-import { ApiContext, lastVersion, createNanoclDecoder } from "@/utils/api"
-
 import MetaHeader from "@/components/MetaHeader"
 import ModalConfirm from "@/components/ModalConfirm"
 import PageOverlay from "@/components/PageOverlay"
 import PageTitle from "@/components/PageTitle"
 import Console from "@/components/Console"
+
+import { ApiContext, lastVersion, createNanoclDecoder } from "@/utils/api"
 
 const defaultState = `Type: Deployment
 ApiVersion: ${lastVersion}
