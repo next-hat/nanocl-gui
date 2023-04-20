@@ -58,7 +58,13 @@ export default function Settings() {
         <PageTitle title="Settings" />
         <form className="mt-4 flex flex-col" onSubmit={onSubmit}>
           <label className="text-[var(--ifm-color-emphasis-500)]] text-xl font-bold">
-            Api Url:
+            {">"} Required Api Version
+          </label>
+          <p className="mb-4 mt-2 rounded border border-white bg-transparent p-2">
+            {lastVersion}
+          </p>
+          <label className="text-[var(--ifm-color-emphasis-500)]] text-xl font-bold">
+            {">"} Api Url
           </label>
           <input
             ref={inputRef}
@@ -73,7 +79,10 @@ export default function Settings() {
               {error}
             </p>
           )}
-          <Button className="bg-green-500 hover:bg-green-700" type="submit">
+          <Button
+            className="h-[42px] bg-green-500 hover:bg-green-700"
+            type="submit"
+          >
             Submit
           </Button>
         </form>

@@ -12,6 +12,7 @@ export type UseAxiosOpts = {
 export type Api = {
   instance: AxiosInstance
   url?: string
+  isLoaded: boolean
 }
 
 export function initApi(apiUrl?: string): Api {
@@ -22,6 +23,7 @@ export function initApi(apiUrl?: string): Api {
       headers: {},
     }),
     url: apiUrl ? apiUrl + `/${lastVersion}` : undefined,
+    isLoaded: false,
   }
 }
 
@@ -34,29 +36,43 @@ export function useApi(
   const [api, setApi] = React.useState<Api>(initApi())
   React.useEffect(() => {
     const API_URL = window.localStorage.getItem("API_URL")
-    if (!API_URL) {
+    const newApi = initApi(API_URL || undefined)
+    if (!newApi.url) {
+      if (!api.isLoaded) {
+        setTimeout(() => {
+          newApi.isLoaded = true
+          setApi(newApi)
+        }, 1000)
+      }
       if (options.ignorePaths.includes(router.pathname)) {
         return
       }
       router.push("/settings")
       return
     }
-    const newApi = initApi(API_URL)
-    if (api.url === newApi.url) return
+    if (api.url === newApi.url && api.isLoaded) return
+    newApi.isLoaded = false
     newApi.instance
       .head("/_ping")
       .then((res) => {
         if (res.status !== 202) {
           throw instanceError(res)
         }
-        console.log("Setting new API", newApi)
-        setApi(newApi)
+        setTimeout(() => {
+          newApi.isLoaded = true
+          setApi(newApi)
+        }, 1000)
       })
       .catch((err) => {
         const e = instanceError(err)
+        const newApi = initApi()
+        setTimeout(() => {
+          newApi.isLoaded = true
+          setApi(newApi)
+        }, 1000)
         router.push(`/settings?Err=${e.message}}`)
       })
-  }, [api.url, options.ignorePaths, router, setApi])
+  }, [api.isLoaded, api.url, options.ignorePaths, router, setApi])
 
   return api as Api
 }
