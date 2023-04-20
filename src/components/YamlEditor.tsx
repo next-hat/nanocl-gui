@@ -12,7 +12,7 @@ const YamlEditor = (props: YamlEditorProps) => {
     <Editor
       onChange={props.onChange}
       theme="vs-dark"
-      height="80vh"
+      height="76vh"
       options={{
         // model: null,
         tabSize: 2,

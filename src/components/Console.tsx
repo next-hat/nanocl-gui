@@ -2,10 +2,7 @@ import React from "react"
 
 import Convert from "ansi-to-html"
 
-const convert = new Convert({
-  newline: false,
-  escapeXML: false,
-})
+const convert = new Convert()
 
 export type ConsoleProps = {
   data: string
@@ -15,11 +12,11 @@ export type ConsoleProps = {
 const Console = (props: ConsoleProps) => {
   return (
     <div
-      className={`flex h-full min-h-[76vh] w-full max-w-full rotate-180 transform flex-col justify-end overflow-scroll bg-[var(--ifm-background-secondary-color)] p-4 ${
+      className={`max-h-[76vh] min-h-[76vh] w-full rotate-180 transform flex-col justify-end overflow-scroll bg-[var(--ifm-background-secondary-color)] p-4 ${
         props.className || ""
       }`}
     >
-      <div className="h-full w-full rotate-180 transform">
+      <div className="h-full rotate-180 transform">
         <code
           className="h-full whitespace-pre-line text-xs"
           dangerouslySetInnerHTML={{

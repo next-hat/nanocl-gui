@@ -6,6 +6,7 @@ export type PageTitleAction = {
   onClick: () => void
   className?: string
   icon?: React.ReactNode
+  isDisabled?: boolean
 }
 
 export type PageTitleProps = {
@@ -20,16 +21,18 @@ const PageTitle = (props: PageTitleProps) => {
         <h1 className="h-fit text-[3rem]">{props.title}</h1>
       </div>
       <div className="flex flex-row items-center">
-        {props.actions?.map((action, i) => (
-          <Button
-            key={i}
-            title={action.title}
-            className={`min-w-fit ${action.className}`}
-            onClick={action.onClick}
-          >
-            {action.icon || action.title}
-          </Button>
-        ))}
+        {props.actions
+          ?.filter((action) => !action.isDisabled)
+          ?.map((action, i) => (
+            <Button
+              key={i}
+              title={action.title}
+              className={`min-w-fit ${action.className}`}
+              onClick={action.onClick}
+            >
+              {action.icon || action.title}
+            </Button>
+          ))}
       </div>
     </div>
   )

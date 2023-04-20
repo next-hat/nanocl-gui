@@ -52,7 +52,7 @@ export default function Metrics() {
   const [value, setValue] = React.useState<string>(defaultState)
   const [output, setOutput] = React.useState<string>("")
 
-  const e = router.query.Action as string
+  const selectedAction = router.query.Action as string
 
   const actions: Record<string, any> = {
     Apply: {
@@ -181,7 +181,7 @@ export default function Metrics() {
     router.push("/state")
   }
 
-  const action = actions[e]
+  const action = actions[selectedAction]
 
   return (
     <>

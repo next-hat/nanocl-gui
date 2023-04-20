@@ -43,6 +43,7 @@ export function useApi(
     }
     const newApi = initApi(API_URL)
     if (api.url !== newApi.url) {
+      console.log("Setting new API", newApi)
       setApi(newApi)
     }
   }, [api.url, options.ignorePaths, router, setApi])
