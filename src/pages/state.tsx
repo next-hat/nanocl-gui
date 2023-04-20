@@ -224,7 +224,7 @@ export default function Metrics() {
             onChange={(s) => setValue(s || "")}
           />
           <div className="min-w-[10px]" />
-          <Console data={output} />
+          <Console id="StateConsole" data={output} />
         </div>
       </PageOverlay>
     </>

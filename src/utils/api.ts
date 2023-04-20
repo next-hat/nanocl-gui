@@ -42,10 +42,20 @@ export function useApi(
       return
     }
     const newApi = initApi(API_URL)
-    if (api.url !== newApi.url) {
-      console.log("Setting new API", newApi)
-      setApi(newApi)
-    }
+    if (api.url === newApi.url) return
+    newApi.instance
+      .head("/_ping")
+      .then((res) => {
+        if (res.status !== 202) {
+          throw instanceError(res)
+        }
+        console.log("Setting new API", newApi)
+        setApi(newApi)
+      })
+      .catch((err) => {
+        const e = instanceError(err)
+        router.push(`/settings?Err=${e.message}}`)
+      })
   }, [api.url, options.ignorePaths, router, setApi])
 
   return api as Api

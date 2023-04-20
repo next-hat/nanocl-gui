@@ -21,8 +21,8 @@ const Menu = () => {
   const router = useRouter()
   const api = React.useContext(ApiContext)
   return (
-    <div className="relative w-[242px]">
-      <div className="fixed h-full w-[242px] flex-1">
+    <div className="relative min-w-[242px] flex-1">
+      <div className="fixed right-0 h-full min-w-[242px] flex-1">
         <ul>
           {items.map((item) => {
             const style: Record<string, string> =

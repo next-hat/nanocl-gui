@@ -68,7 +68,7 @@ export default function Cargo() {
       <MetaHeader title={`Logs ${router.query.name || ""}`} />
       <PageOverlay>
         <PageTitle title={`Logs ${router.query.name || ""}`} />
-        <Console data={data} />
+        <Console id="StateLogs" data={data} enableStream />
       </PageOverlay>
     </>
   )

@@ -13,7 +13,7 @@ export default function Settings() {
   const api = React.useContext(ApiContext)
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [value, setValue] = React.useState<string>("")
-  const [error, setError] = React.useState<string | null>(null)
+  const error = router.query.Error as string
 
   React.useEffect(() => {
     if (inputRef.current) {
@@ -32,7 +32,7 @@ export default function Settings() {
     // prevent page reload
     e.preventDefault()
     // clear error
-    setError(null)
+    router.push("/settings")
     // Try to to ping api
     const url = `${value}/${lastVersion}/_ping`
     api.instance
@@ -47,7 +47,7 @@ export default function Settings() {
       })
       .catch((err) => {
         const e = instanceError(err)
-        setError(e.message)
+        router.push(`/settings?Error=${e.message}`)
       })
   }
 
@@ -57,8 +57,8 @@ export default function Settings() {
       <PageOverlay>
         <PageTitle title="Settings" />
         <form className="mt-4 flex flex-col" onSubmit={onSubmit}>
-          <label className="text-[var(--ifm-color-emphasis-500)]]">
-            Api url
+          <label className="text-[var(--ifm-color-emphasis-500)]] text-xl font-bold">
+            Api Url:
           </label>
           <input
             ref={inputRef}
