@@ -1,13 +1,13 @@
 import React from "react"
 import Head from "next/head"
+import Link from "next/link"
 import { useRouter } from "next/router"
+import moment from "moment"
 
 import { ApiContext } from "@/utils/api"
 
 import PageTitle from "@/components/PageTitle"
 import PageOverlay from "@/components/PageOverlay"
-import moment from "moment"
-import Link from "next/link"
 
 export default function Namespace() {
   const router = useRouter()
@@ -15,7 +15,7 @@ export default function Namespace() {
   const [data, setData] = React.useState<any>(null)
 
   React.useEffect(() => {
-    if (!router.isReady) return
+    if (!api.url || !router.isReady) return
     api.instance
       .get(`/namespaces/${router.query.name}/inspect`)
       .then((res) => {
@@ -25,7 +25,7 @@ export default function Namespace() {
         // Todo: Handle error
         console.error(err)
       })
-  }, [api.instance, router.isReady, router.query.name, setData])
+  }, [api.url, api.instance, router.isReady, router.query.name, setData])
 
   return (
     <>

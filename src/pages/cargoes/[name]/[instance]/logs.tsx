@@ -16,7 +16,7 @@ export default function Cargo() {
   const [data, setData] = React.useState<string>("")
 
   React.useEffect(() => {
-    if (!router.isReady) return () => {}
+    if (!api.url || !router.isReady) return
 
     fetch(
       `${api.url}/cargoes/${router.query.name}/logs?Namespace=${router.query.Namespace}`,

@@ -81,7 +81,7 @@ export default function Cargo() {
   }
 
   React.useEffect(() => {
-    if (!router.isReady) return
+    if (!api.url || !router.isReady) return
 
     api.instance
       .get(
@@ -93,7 +93,13 @@ export default function Cargo() {
       .catch((err) => {
         console.error(err)
       })
-  }, [api.instance, router.isReady, router.query.name, router.query.Namespace])
+  }, [
+    api.url,
+    api.instance,
+    router.isReady,
+    router.query.name,
+    router.query.Namespace,
+  ])
 
   function onCloseConfirm() {
     setConfirmAction(null)

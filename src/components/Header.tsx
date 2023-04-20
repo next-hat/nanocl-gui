@@ -5,7 +5,7 @@ import React from "react"
 const Header = () => {
   return (
     <header className="relative h-[60px] flex-auto">
-      <div className="fixed flex h-[60px] w-full items-center bg-[var(--ifm-navbar-background-color)] pb-[8px] pl-[16px] pr-[16px] pt-[8px]">
+      <div className="fixed z-50 flex h-[60px] w-full items-center bg-[var(--ifm-navbar-background-color)] pb-[8px] pl-[16px] pr-[16px] pt-[8px]">
         <Image
           className="mr-2"
           src="/logo.webp"
@@ -14,7 +14,7 @@ const Header = () => {
           height={32}
         />
         <h1 className="text-[95%] font-bold">
-          <Link href="/">Nanocl Dashboard</Link>
+          <Link href="/">Nanocl Console</Link>
         </h1>
       </div>
     </header>

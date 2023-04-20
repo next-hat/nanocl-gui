@@ -14,7 +14,9 @@ const PageOverlay = (props: TPageOverlayProps) => {
       <div className="relative h-[calc(100%-64px)] w-full">
         <div className="relative h-full w-full flex-row">
           <Menu />
-          <div className="ml-[242px] p-2">{props.children}</div>
+          <div className="relative mx-[auto] max-w-[1320px] p-[16px] pb-[32px]">
+            {props.children}
+          </div>
         </div>
       </div>
     </div>

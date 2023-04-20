@@ -31,7 +31,7 @@ export default function Metrics() {
   })
 
   React.useEffect(() => {
-    if (!router.isReady) return
+    if (!api.url || !router.isReady) return
 
     if (!router.query.Namespace) {
       router.replace("/cargoes?Namespace=global")
@@ -44,7 +44,7 @@ export default function Metrics() {
         setNameSpace(router.query.Namespace as string)
         setData(res.data)
       })
-  }, [api.instance, router, setData, setNameSpace])
+  }, [api.url, api.instance, router, setData, setNameSpace])
 
   return (
     <>
