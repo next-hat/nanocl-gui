@@ -1,12 +1,12 @@
 import React from "react"
 
+import MetaHeader from "@/components/MetaHeader"
+import PageOverlay from "@/components/PageOverlay"
+import PageTitle from "@/components/PageTitle"
+import ProgressBar from "@/components/ProgressBar"
+
 import { ApiContext } from "@/utils/api"
 import type * as Types from "@/utils/types"
-
-import PageTitle from "@/components/PageTitle"
-import PageOverlay from "@/components/PageOverlay"
-import ProgressBar from "@/components/ProgressBar"
-import MetaHeader from "@/components/MetaHeader"
 
 const Home = () => {
   const api = React.useContext(ApiContext)

@@ -54,32 +54,30 @@ export default function Settings() {
   return (
     <>
       <MetaHeader title="Settings" />
-      <main id="nano-main">
-        <PageOverlay>
-          <PageTitle title="Settings" />
-          <form className="mt-4 flex flex-col" onSubmit={onSubmit}>
-            <label className="text-[var(--ifm-color-emphasis-500)]]">
-              Api url
-            </label>
-            <input
-              ref={inputRef}
-              type="text"
-              value={value}
-              onChange={onChange}
-              placeholder="http://api.nanocl.internal"
-              className="mb-4 mt-2 rounded border border-white bg-transparent p-2 focus:border-[var(--ifm-color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--ifm-color-primary)]"
-            />
-            {error && (
-              <p className="mb-4 max-w-full break-all text-center text-sm font-bold text-red-500">
-                {error}
-              </p>
-            )}
-            <Button className="bg-green-500 hover:bg-green-700" type="submit">
-              Submit
-            </Button>
-          </form>
-        </PageOverlay>
-      </main>
+      <PageOverlay>
+        <PageTitle title="Settings" />
+        <form className="mt-4 flex flex-col" onSubmit={onSubmit}>
+          <label className="text-[var(--ifm-color-emphasis-500)]]">
+            Api url
+          </label>
+          <input
+            ref={inputRef}
+            type="text"
+            value={value}
+            onChange={onChange}
+            placeholder="http://api.nanocl.internal"
+            className="mb-4 mt-2 rounded border border-white bg-transparent p-2 focus:border-[var(--ifm-color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--ifm-color-primary)]"
+          />
+          {error && (
+            <p className="mb-4 max-w-full break-all text-center text-sm font-bold text-red-500">
+              {error}
+            </p>
+          )}
+          <Button className="bg-green-500 hover:bg-green-700" type="submit">
+            Submit
+          </Button>
+        </form>
+      </PageOverlay>
     </>
   )
 }
