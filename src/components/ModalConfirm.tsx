@@ -8,7 +8,6 @@ type ModalConfirmProps = {
   title: string
   onClose: () => void
   onConfirm: () => Promise<any>
-  onCancel: () => void
 }
 
 const ModalConfirm = (props: ModalConfirmProps) => {
@@ -21,7 +20,6 @@ const ModalConfirm = (props: ModalConfirmProps) => {
       .onConfirm()
       .then(() => {
         setIsLoading(false)
-        props.onClose()
       })
       .catch((err) => {
         setError(err.message)
@@ -49,7 +47,7 @@ const ModalConfirm = (props: ModalConfirmProps) => {
             </Button>
             <Button
               className="h-[42px] w-full rounded bg-gray-500 hover:bg-gray-700"
-              onClick={props.onCancel}
+              onClick={props.onClose}
             >
               No
             </Button>

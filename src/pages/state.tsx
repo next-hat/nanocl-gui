@@ -190,7 +190,6 @@ export default function Metrics() {
         <ModalConfirm
           title={action.title}
           onClose={onCloseModal}
-          onCancel={onCloseModal}
           onConfirm={action.onConfirm}
         />
       ) : null}

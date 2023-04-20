@@ -75,7 +75,6 @@ export default function Namespaces() {
           title={`Are you sure to delete ${router.query.Delete} ?`}
           onClose={closeModal}
           onConfirm={onDelete}
-          onCancel={closeModal}
         />
       ) : null}
       {isCreateOpen ? (

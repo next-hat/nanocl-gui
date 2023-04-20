@@ -82,7 +82,6 @@ export default function Resource() {
         <ModalConfirm
           title={action.title}
           onClose={closeModal}
-          onCancel={closeModal}
           onConfirm={action.onConfirm}
         />
       ) : null}
