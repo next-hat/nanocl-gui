@@ -15,18 +15,13 @@ export type Api = {
 }
 
 export function initApi(apiUrl?: string): Api {
-  const url =
-    apiUrl || typeof window !== "undefined"
-      ? window.localStorage.getItem("API_URL") || undefined
-      : undefined
-
   return {
     instance: axios.create({
-      baseURL: url ? url + `/${lastVersion}` : undefined,
+      baseURL: apiUrl ? apiUrl + `/${lastVersion}` : undefined,
       timeout: 100000,
       headers: {},
     }),
-    url: url ? url + `/${lastVersion}` : undefined,
+    url: apiUrl ? apiUrl + `/${lastVersion}` : undefined,
   }
 }
 
@@ -37,7 +32,6 @@ export function useApi(
 ): Api {
   const router = useRouter()
   const [api, setApi] = React.useState<Api>(initApi())
-
   React.useEffect(() => {
     const API_URL = window.localStorage.getItem("API_URL")
     if (!API_URL) {

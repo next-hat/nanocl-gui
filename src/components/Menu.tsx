@@ -1,7 +1,6 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
 import React from "react"
-
 import { ApiContext } from "@/utils/api"
 
 const items = [
@@ -21,7 +20,6 @@ const selectedStyle = {
 const Menu = () => {
   const router = useRouter()
   const api = React.useContext(ApiContext)
-
   return (
     <div className="relative w-[242px]">
       <div className="fixed h-full w-[242px] flex-1">
@@ -45,11 +43,11 @@ const Menu = () => {
             return (
               <li
                 style={style}
-                className="m-2 flex rounded p-2 transition hover:border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.1)]"
+                className="m-2 flex rounded pb-[6px] pl-[12px] pr-[12px] pt-[6px] text-[95%] font-medium transition hover:border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.1)]"
                 key={item.Name}
               >
                 {isDisabled ? (
-                  <p>{item.Name}</p>
+                  <p className="h-full w-full">{item.Name}</p>
                 ) : (
                   <Link className="h-full w-full" href={item.Href}>
                     {item.Name}

@@ -12,16 +12,17 @@ export default function Settings() {
   const router = useRouter()
   const api = React.useContext(ApiContext)
   const inputRef = React.useRef<HTMLInputElement>(null)
-  const [value, setValue] = React.useState<string>(
-    api?.url?.replace(`/${lastVersion}`, "") || "",
-  )
+  const [value, setValue] = React.useState<string>("")
   const [error, setError] = React.useState<string | null>(null)
 
   React.useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus()
     }
-  }, [])
+    if (api.url) {
+      setValue(api.url.replace(`/${lastVersion}`, ""))
+    }
+  }, [api.url])
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
     setValue(e.target.value)
