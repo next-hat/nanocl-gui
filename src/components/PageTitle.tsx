@@ -6,7 +6,7 @@ export type PageTitleProps = {
 
 const PageTitle = (props: PageTitleProps) => {
   return (
-    <div className="mb-4 mt-4 flex h-[60px] flex-row items-center border-b p-2 text-xl">
+    <div className="mb-4 mt-4 flex h-fit flex-row items-center border-b p-2 pb-8 text-xl font-bold">
       {props.children}
     </div>
   )

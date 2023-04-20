@@ -25,6 +25,7 @@ export default function Resources() {
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = React.useState(false)
 
   React.useEffect(() => {
+    if (!api.url) return
     api.instance
       .get("/resources")
       .then((res) => {
@@ -33,7 +34,7 @@ export default function Resources() {
       .catch((err) => {
         console.error(err)
       })
-  }, [api.instance, router])
+  }, [api.url, api.instance, router])
 
   function onCloseDeleteConfirm() {
     setIsDeleteConfirmOpen(false)

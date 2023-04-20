@@ -60,7 +60,9 @@ export default function Settings() {
       </Head>
       <main id="nano-main">
         <PageOverlay>
-          <PageTitle>Settings</PageTitle>
+          <PageTitle>
+            <h1 className="text-[3rem]">Settings</h1>
+          </PageTitle>
           <form className="mt-4 flex flex-col" onSubmit={onSubmit}>
             <label className="text-[var(--ifm-color-emphasis-500)]]">
               Api url

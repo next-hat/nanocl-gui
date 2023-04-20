@@ -1,7 +1,7 @@
-import React, { useContext } from "react"
+import React from "react"
 import Head from "next/head"
-import { ApiContext } from "@/utils/api"
 
+import { ApiContext } from "@/utils/api"
 import type * as Types from "@/utils/types"
 
 import PageTitle from "@/components/PageTitle"
@@ -9,22 +9,20 @@ import PageOverlay from "@/components/PageOverlay"
 import ProgressBar from "@/components/ProgressBar"
 
 const Home = () => {
-  const api = useContext(ApiContext)
+  const api = React.useContext(ApiContext)
   const [nodeData, setNodeData] = React.useState<Types.Node[]>([])
 
   React.useEffect(() => {
-    let res = Promise.all([
+    if (!api.url) return
+    Promise.all([
       api.instance.get("/nodes"),
       api.instance.get("/metrics?Kind=MEMORY"),
       api.instance.get("/metrics?Kind=CPU"),
     ])
-
-    res
       .then((results) => {
         const curr_nodes = results[0].data
         const mem_nodes = results[1].data
         const cpu_nodes = results[2].data
-        // const disk_nodes = results[3].data
         const nodes: Record<string, Types.Node> = {}
 
         for (let node of curr_nodes) {
@@ -62,16 +60,6 @@ const Home = () => {
             Cpu: cpu,
           }
         }
-
-        // for (let disk_node of disk_nodes) {
-        //   const node_name = disk_node.NodeName
-        //   nodes[node_name] = {
-        //     ...(nodes[node_name] || {}),
-        //     NodeName: node_name,
-        //     Disk: disk_node.Data,
-        //   }
-        // }
-
         const n = Object.values(nodes)
         setNodeData(n)
       })
@@ -79,7 +67,7 @@ const Home = () => {
         // TODO: Handle error
         console.log(err)
       })
-  }, [api.instance, setNodeData])
+  }, [api.url, api.instance, setNodeData])
 
   return (
     <>

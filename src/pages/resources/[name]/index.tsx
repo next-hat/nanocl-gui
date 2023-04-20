@@ -2,6 +2,7 @@ import React from "react"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import YAML from "yaml"
+import { PencilIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/solid"
 
 import { ApiContext } from "@/utils/api"
 
@@ -10,7 +11,6 @@ import PageOverlay from "@/components/PageOverlay"
 import ModalConfirm from "@/components/ModalConfirm"
 import Button from "@/components/Button"
 import YamlEditor from "@/components/YamlEditor"
-import { PencilIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/solid"
 
 export default function Resource() {
   const router = useRouter()
@@ -24,23 +24,18 @@ export default function Resource() {
   const isEdited = content !== oldContent
 
   React.useEffect(() => {
-    if (!router.isReady) return
+    if (!api.url || !router.isReady) return
     api.instance
       .get(`/resources/${router.query.name}`)
       .then((res) => {
         let data = res.data
-
         const cpy = { ...data }
-
         if (isEdit) {
-          console.log("EDIT")
           delete cpy.Name
           delete cpy.UpdatedAt
           delete cpy.CreatedAt
           delete cpy.Kind
           delete cpy.ConfigKey
-          cpy.Name = undefined
-          setOldContent
         }
         const yaml = YAML.stringify(cpy)
         setData(data)
@@ -52,6 +47,7 @@ export default function Resource() {
         console.error(err)
       })
   }, [
+    api.url,
     api.instance,
     router.isReady,
     router.query.name,
