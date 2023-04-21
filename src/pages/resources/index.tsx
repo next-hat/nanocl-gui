@@ -88,18 +88,16 @@ export default function Resources() {
           Columns={[
             { Name: "Name", Key: "Name" },
             { Name: "Kind", Key: "Kind" },
-            { Name: "Config Version", Key: "Version" },
+            { Name: "Version", Key: "Version" },
             {
               Name: "Created at",
               Key: "CreatedAt",
-              Render: (data) =>
-                moment(data.CreatedAt).format("YYYY-MM-DD HH:mm:ss"),
+              Render: (data) => moment(data.CreatedAt).fromNow(),
             },
             {
               Name: "Updated at",
               Key: "UpdatedAt",
-              Render: (data) =>
-                moment(data.UpdatedAt).format("YYYY-MM-DD HH:mm:ss"),
+              Render: (data) => moment(data.UpdatedAt).fromNow(),
             },
             {
               Name: "",

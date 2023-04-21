@@ -18,7 +18,7 @@ const renderHeader = (columns: TableColumn[]) => {
       <tr>
         {columns.map((column) => (
           <th
-            className="border-grey-200 border-b p-2 text-left"
+            className="border-grey-200 border-b p-2 text-left text-xl font-bold"
             key={column.Key}
           >
             {column.Name}
@@ -38,7 +38,7 @@ const renderBody = (props: TableProps) => {
           key={typeof props.ID === "string" ? row[props.ID] : props.ID(row)}
         >
           {props.Columns.map((column) => (
-            <td className="justify-center p-2 text-xs" key={column.Key}>
+            <td className="justify-center p-2 text-base" key={column.Key}>
               {column.Render ? column.Render(row, i) : row[column.Key]}
             </td>
           ))}

@@ -58,7 +58,7 @@ export default function Settings() {
         <PageTitle title="Settings" />
         <form className="mt-4 flex flex-col" onSubmit={onSubmit}>
           <label className="text-[var(--ifm-color-emphasis-500)]] text-xl font-bold">
-            {">"} Required Api Version
+            {">"} Api Version
           </label>
           <p className="mb-4 mt-2 rounded border border-white bg-transparent p-2">
             {lastVersion}

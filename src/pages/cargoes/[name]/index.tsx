@@ -177,10 +177,7 @@ export default function Cargo() {
             {
               Name: "Created at",
               Key: "Created",
-              Render: (data) =>
-                moment(data.Container.Created, "X").format(
-                  "DD/MM/YYYY HH:mm:ss",
-                ),
+              Render: (data) => moment(data.Container.Created, "X").fromNow(),
             },
             {
               Name: "Ip Address",

@@ -20,7 +20,7 @@ const selectedStyle = {
 
 export type MenuProps = {
   className?: string
-  isClosed?: boolean
+  style?: Record<string, string>
 }
 
 const Menu = (props: MenuProps) => {
@@ -29,10 +29,10 @@ const Menu = (props: MenuProps) => {
   return (
     <div className="relative w-0 lg:w-[242px]">
       <div
-        style={{
-          right: props.isClosed ? "-242px" : undefined,
-        }}
-        className="fixed right-[-242px] z-40 h-full w-[242px] bg-[var(--ifm-background-color)] shadow-lg transition-all duration-300 ease-in-out lg:right-0"
+        style={props.style}
+        className={`fixed right-0 z-40 h-full w-[242px] bg-[var(--ifm-background-color)] shadow-lg transition-all duration-300 ease-in-out ${
+          props.className || ""
+        }`}
       >
         <ul>
           {items.map((item) => {

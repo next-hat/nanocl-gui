@@ -65,11 +65,11 @@ export default function Metrics() {
         />
         <div className="mb-[25px] ml-2 max-w-[400px]">
           <div className="relative w-full">
-            <ul className="absolute top-[46px] max-h-[200px] w-full overflow-auto rounded bg-[var(--ifm-background-secondary-color)]">
+            <ul className="absolute top-[46px] max-h-[200px] w-full overflow-auto rounded bg-[var(--ifm-background-secondary-color)] shadow-lg">
               {namespaces.map((ns) => (
                 <li
                   key={ns.Name}
-                  className="cursor-pointer border-b border-[var(--ifm-color-emphasis-300)] p-2 text-xl last:border-b-0 hover:bg-[rgba(255,255,255,0.1)]"
+                  className="cursor-pointer border-b border-[var(--ifm-color-emphasis-300)] p-2 text-base last:border-b-0 hover:bg-[rgba(255,255,255,0.1)]"
                   onClick={() => {
                     setNamespaces([])
                     router.push(`/cargoes?Namespace=${ns.Name}`)
@@ -115,14 +115,12 @@ export default function Metrics() {
             {
               Name: "Created at",
               Key: "CreatedAt",
-              Render: (row: any) =>
-                moment(row.CreatedAt).format("YYYY-MM-DD HH:mm:ss"),
+              Render: (row: any) => moment(row.CreatedAt).fromNow(),
             },
             {
               Name: "Updated at",
               Key: "UpdatedAt",
-              Render: (row: any) =>
-                moment(row.UpdatedAt).format("YYYY-MM-DD HH:mm:ss"),
+              Render: (row: any) => moment(row.UpdatedAt).fromNow(),
             },
             {
               Name: "",

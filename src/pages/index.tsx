@@ -80,18 +80,18 @@ const Home = () => {
               className="flex w-full flex-col justify-center"
               key={node.NodeName}
             >
-              <h2 className="mb-1 text-lg capitalize">
+              <h2 className="mb-1 text-xl font-bold capitalize">
                 {node.NodeName}:{" "}
-                <code className="text-base">{node.IpAddress}</code>
+                <code className="text-base font-normal">{node.IpAddress}</code>
               </h2>
-              <h3 className="text-md pb-2 pt-2">Memory</h3>
+              <h3 className="pb-2 pt-2 text-xl font-bold">Memory</h3>
               <ProgressBar Progress={(node.Ram.Used / node.Ram.Total) * 100}>
                 <p className="text-xs text-white">
                   {(node.Ram.Used * (9.31 * 1e-10)).toFixed(0)} /{" "}
                   {(node.Ram.Total * (9.31 * 1e-10)).toFixed(0)} G
                 </p>
               </ProgressBar>
-              <h3 className="text-md pb-2 pt-2">Cpu</h3>
+              <h3 className="pb-2 pt-2 text-xl font-bold">Cpu</h3>
               <ProgressBar Progress={node.Cpu.Usage}>
                 <p className="text-xs text-white">
                   {node.Cpu.Usage.toFixed(0)}%
