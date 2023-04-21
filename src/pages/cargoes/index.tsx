@@ -125,10 +125,10 @@ export default function Metrics() {
                 moment(row.UpdatedAt).format("YYYY-MM-DD HH:mm:ss"),
             },
             {
-              Name: "Actions",
+              Name: "",
               Key: "Actions",
               Render: (row: any) => (
-                <div className="flex">
+                <div className="flex justify-end">
                   <Button
                     title="Inspect"
                     className="min-w-fit bg-blue-500 hover:bg-blue-700"

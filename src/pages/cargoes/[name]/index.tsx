@@ -201,10 +201,10 @@ export default function Cargo() {
               Render: (data) => data.Container.Status,
             },
             {
-              Name: "Actions",
+              Name: "",
               Key: "Actions",
               Render: (_row: any, i) => (
-                <div className="flex">
+                <div className="flex justify-end">
                   <Button
                     title="Logs"
                     className="min-w-fit bg-blue-500 hover:bg-blue-700"

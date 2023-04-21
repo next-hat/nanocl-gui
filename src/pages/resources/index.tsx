@@ -102,10 +102,10 @@ export default function Resources() {
                 moment(data.UpdatedAt).format("YYYY-MM-DD HH:mm:ss"),
             },
             {
-              Name: "Actions",
+              Name: "",
               Key: "Actions",
               Render: (row: any) => (
-                <div className="flex">
+                <div className="flex justify-end">
                   <Button
                     title="Delete"
                     className="mr-2 min-w-fit bg-red-500 hover:bg-red-700"
