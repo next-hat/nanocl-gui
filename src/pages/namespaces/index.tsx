@@ -1,13 +1,10 @@
 import React from "react"
-import Head from "next/head"
 import { useRouter } from "next/router"
 import {
-  MagnifyingGlassIcon,
-  MinusIcon,
   PlusIcon,
+  MinusIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid"
-import { ApiContext, instanceError } from "@/utils/api"
-import type * as Types from "@/utils/types"
 
 import MetaHeader from "@/components/MetaHeader"
 import ModalConfirm from "@/components/ModalConfirm"
@@ -16,6 +13,9 @@ import PageTitle from "@/components/PageTitle"
 import PageOverlay from "@/components/PageOverlay"
 import Table from "@/components/Table"
 import Button from "@/components/Button"
+
+import { ApiContext, instanceError } from "@/utils/api"
+import type * as Types from "@/utils/types"
 
 export default function Namespaces() {
   const router = useRouter()

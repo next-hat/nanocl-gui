@@ -10,6 +10,7 @@ import ModalConfirm from "@/components/ModalConfirm"
 import PageOverlay from "@/components/PageOverlay"
 import PageTitle from "@/components/PageTitle"
 import YamlEditor from "@/components/YamlEditor"
+import { getQs } from "@/utils/qs"
 
 export default function Resource() {
   const router = useRouter()
@@ -59,7 +60,7 @@ export default function Resource() {
         const parsed = YAML.parse(content)
         await api.instance
           .patch(`/resources/${router.query.name}`, parsed)
-          .then((res) => {
+          .then(() => {
             router.push(`/resources/${router.query.name}`)
           })
           .catch((err) => {
@@ -77,7 +78,7 @@ export default function Resource() {
 
   return (
     <>
-      <MetaHeader title={`Resource ${router.query.name}`} />
+      <MetaHeader title={`Resource ${getQs(router.query.name) || ""}`} />
       {action ? (
         <ModalConfirm
           title={action.title}
@@ -87,7 +88,7 @@ export default function Resource() {
       ) : null}
       <PageOverlay>
         <PageTitle
-          title="Resource"
+          title={`Resource ${getQs(router.query.name) || ""}`}
           actions={[
             {
               title: "Edit",

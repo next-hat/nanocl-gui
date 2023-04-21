@@ -1,6 +1,4 @@
 import React from "react"
-import { useRouter } from "next/router"
-import type { NextRouter } from "next/router"
 
 export type TableColumn = {
   Name: string
@@ -31,7 +29,7 @@ const renderHeader = (columns: TableColumn[]) => {
   )
 }
 
-const renderBody = (props: TableProps, router: NextRouter) => {
+const renderBody = (props: TableProps) => {
   return (
     <tbody>
       {props.Data.map((row, i) => (
@@ -51,11 +49,10 @@ const renderBody = (props: TableProps, router: NextRouter) => {
 }
 
 const Table = (props: TableProps) => {
-  const router = useRouter()
   return (
     <table className="w-full table-auto">
       {renderHeader(props.Columns)}
-      {renderBody(props, router)}
+      {renderBody(props)}
     </table>
   )
 }

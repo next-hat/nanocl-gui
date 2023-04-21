@@ -21,7 +21,7 @@ const Console = (props: ConsoleProps) => {
   }
   return (
     <div
-      className={`max-h-[76vh] min-h-[76vh] w-full rotate-180 transform flex-col justify-end overflow-scroll bg-[var(--ifm-background-secondary-color)] p-4 ${
+      className={`max-h-[70vh] min-h-[70vh] w-full rotate-180 transform flex-col justify-end overflow-scroll bg-[var(--ifm-background-secondary-color)] p-4 ${
         props.className || ""
       }`}
     >

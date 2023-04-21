@@ -23,7 +23,7 @@ const ProgressBar = (props: ProgressBarProps) => {
       </div>
       <div
         ref={ref}
-        className={`flex h-4 rounded-full bg-blue-600 ${props.className}`}
+        className={`flex h-4 rounded-full bg-blue-600 ${props.className || ""}`}
       ></div>
     </div>
   )

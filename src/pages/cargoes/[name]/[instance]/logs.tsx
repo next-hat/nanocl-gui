@@ -1,5 +1,4 @@
 import React from "react"
-import Head from "next/head"
 import { useRouter } from "next/router"
 
 import { ApiContext } from "@/utils/api"
@@ -10,6 +9,7 @@ import PageTitle from "@/components/PageTitle"
 import PageOverlay from "@/components/PageOverlay"
 import Console from "@/components/Console"
 import MetaHeader from "@/components/MetaHeader"
+import { getQs } from "@/utils/qs"
 
 export default function Cargo() {
   const router = useRouter()
@@ -23,6 +23,7 @@ export default function Cargo() {
       `${api.url}/cargoes/${router.query.name}/logs?Namespace=${router.query.Namespace}`,
     )
       .then(async (res) => {
+        if (res.status !== 200) return
         let b = ""
         let decoder = new TextDecoder("utf-8")
         const fn = () => {
@@ -65,9 +66,9 @@ export default function Cargo() {
 
   return (
     <>
-      <MetaHeader title={`Logs ${router.query.name || ""}`} />
+      <MetaHeader title={`Logs ${getQs(router.query.name) || ""}`} />
       <PageOverlay>
-        <PageTitle title={`Logs ${router.query.name || ""}`} />
+        <PageTitle title={`Logs ${getQs(router.query.name) || ""}`} />
         <Console id="StateLogs" data={data} enableStream />
       </PageOverlay>
     </>

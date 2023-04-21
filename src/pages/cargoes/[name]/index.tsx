@@ -1,5 +1,4 @@
 import React from "react"
-import Head from "next/head"
 import { useRouter } from "next/router"
 import moment from "moment"
 
@@ -119,6 +118,7 @@ export default function Cargo() {
 
   return (
     <>
+      <MetaHeader title={`Cargo ${data?.Name || ""}`} />
       {confirmAction ? (
         <ModalConfirm
           title={confirmActions[confirmAction].title}
@@ -126,7 +126,6 @@ export default function Cargo() {
           onConfirm={confirmActions[confirmAction].onConfirm}
         />
       ) : null}
-      <MetaHeader title={`Cargo ${data?.Name || ""}`} />
       <PageOverlay>
         <PageTitle
           title={`Cargo ${data?.Name || ""}`}
@@ -204,7 +203,7 @@ export default function Cargo() {
             {
               Name: "Actions",
               Key: "Actions",
-              Render: (row: any, i) => (
+              Render: (_row: any, i) => (
                 <div className="flex">
                   <Button
                     title="Logs"

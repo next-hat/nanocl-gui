@@ -14,7 +14,9 @@ const Button = (props: ButtonProps) => {
       type={props.type}
       title={props.title}
       onClick={props.onClick}
-      className={`min-h-[28px] min-w-[100px] rounded px-4 py-1 text-xs font-bold text-white ${props.className}`}
+      className={`min-h-[28px] min-w-[100px] rounded px-4 py-1 text-xs font-bold text-white shadow-lg ${
+        props.className || ""
+      }`}
     >
       {props.children}
     </button>

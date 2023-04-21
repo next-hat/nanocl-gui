@@ -64,11 +64,19 @@ export default function Metrics() {
         setTimeout(async () => {
           if (state.Cargoes.length) {
             for (let cargo of state.Cargoes) {
+              try {
+                await api.instance.get(
+                  `/cargoes/images/${cargo.Container.Image}`,
+                )
+                continue
+              } catch (e) {}
+
+              const bodyString = JSON.stringify({
+                Name: cargo?.Container?.Image,
+              })
               const res = await fetch(`${api.url}/cargoes/images`, {
                 method: "POST",
-                body: JSON.stringify({
-                  Name: cargo.Container.Image,
-                }),
+                body: bodyString,
                 headers: new Headers({
                   "Content-Type": "application/json",
                 }),
@@ -215,10 +223,10 @@ export default function Metrics() {
             },
           ]}
         ></PageTitle>
-        <div className="flex h-full flex-row">
+        <div className="flex flex-row">
           <Editor
             theme="vs-dark"
-            height="76vh"
+            height="70vh"
             defaultLanguage="yaml"
             value={value}
             onChange={(s) => setValue(s || "")}

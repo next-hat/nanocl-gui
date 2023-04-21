@@ -1,0 +1,30 @@
+ApiVersion: v0.5
+Type: Deployment
+
+Namespace: system
+
+Cargoes:
+  - Name: napp
+    Container:
+      Image: nanocl-app:latest
+
+Resources:
+  - Name: nanocl.internal
+    Kind: ProxyRule
+    Version: v0.1
+    Config:
+      Watch:
+        - napp.system
+      Rule:
+        Http:
+          Domain: nanocl.internal
+          Network: Public
+          Locations:
+            - Path: /
+              Target:
+                Cargo:
+                  Key: napp.system
+                  Port: 80
+           - Path: /api
+              Target:
+                Unix: /run/nanocl/nanocl.sock

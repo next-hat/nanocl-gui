@@ -70,7 +70,7 @@ export function useApi(
           newApi.isLoaded = true
           setApi(newApi)
         }, 1000)
-        router.push(`/settings?Err=${e.message}}`)
+        router.push(`/settings?Error=${e.message}`)
       })
   }, [api.isLoaded, api.url, options.ignorePaths, router, setApi])
 

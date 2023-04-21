@@ -8,6 +8,7 @@ import { ApiContext } from "@/utils/api"
 import MetaHeader from "@/components/MetaHeader"
 import PageOverlay from "@/components/PageOverlay"
 import PageTitle from "@/components/PageTitle"
+import { getQs } from "@/utils/qs"
 
 export default function Namespace() {
   const router = useRouter()
@@ -29,9 +30,9 @@ export default function Namespace() {
 
   return (
     <>
-      <MetaHeader title={`Namespace ${router.query.name}`} />
+      <MetaHeader title={`Namespace ${getQs(router.query.name) || ""}`} />
       <PageOverlay>
-        <PageTitle title={`Namespace ${router.query.name}`} />
+        <PageTitle title={`Namespace ${getQs(router.query.name) || ""}`} />
         <div className="ml-2 flex flex-col">
           <div className="flex flex-col">
             <div className="mb-2">

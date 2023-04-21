@@ -11,9 +11,12 @@
 # next.js
 /.next/
 /out/
+/src-next/.next/
+/src-tauri/target
 
 # production
 /build
+/dist
 
 # misc
 .DS_Store

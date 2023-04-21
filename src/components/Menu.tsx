@@ -1,6 +1,7 @@
+import React from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import React from "react"
+
 import { ApiContext } from "@/utils/api"
 
 const items = [
@@ -17,12 +18,22 @@ const selectedStyle = {
   backgroundColor: "rgba(255,255,255,0.1)",
 }
 
-const Menu = () => {
+export type MenuProps = {
+  className?: string
+  isClosed?: boolean
+}
+
+const Menu = (props: MenuProps) => {
   const router = useRouter()
   const api = React.useContext(ApiContext)
   return (
-    <div className="relative min-w-[242px] flex-1">
-      <div className="fixed right-0 h-full min-w-[242px] flex-1">
+    <div className="relative w-0 lg:w-[242px]">
+      <div
+        style={{
+          right: props.isClosed ? "-242px" : undefined,
+        }}
+        className="fixed right-[-242px] z-40 h-full w-[242px] bg-[var(--ifm-background-color)] shadow-lg transition-all duration-300 ease-in-out lg:right-0"
+      >
         <ul>
           {items.map((item) => {
             const style: Record<string, string> =
