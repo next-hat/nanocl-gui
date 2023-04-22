@@ -6,7 +6,7 @@ Namespace: system
 Cargoes:
   - Name: napp
     Container:
-      Image: nanocl-app:latest
+      Image: nanocl-app:v1.1
 
 Resources:
   - Name: nanocl.internal
@@ -25,6 +25,7 @@ Resources:
                 Cargo:
                   Key: napp.system
                   Port: 80
-           - Path: /api
+
+            - Path: /api/
               Target:
                 Unix: /run/nanocl/nanocl.sock

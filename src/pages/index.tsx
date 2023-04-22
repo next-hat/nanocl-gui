@@ -8,9 +8,22 @@ import ProgressBar from "@/components/ProgressBar"
 import { ApiContext } from "@/utils/api"
 import type * as Types from "@/utils/types"
 
+const httpMetricTitles = [
+  {
+    title: "Total",
+    className:
+      "bg-[var(--ifm-background-secondary-color)] hover:bg-[rgba(255,255,255,0.1)]",
+  },
+  { title: "Success", className: "bg-green-500 hover:bg-green-700" },
+  { title: "Redirection", className: "bg-yellow-500 hover:bg-yellow-700" },
+  { title: "Client Error", className: "bg-red-500 hover:bg-red-700" },
+  { title: "Server Error", className: "bg-purple-500 hover:bg-purple-700" },
+]
+
 const Home = () => {
   const api = React.useContext(ApiContext)
   const [nodeData, setNodeData] = React.useState<Types.Node[]>([])
+  const [httpData, setHttpData] = React.useState<any>([])
 
   React.useEffect(() => {
     if (!api.url) return
@@ -18,6 +31,11 @@ const Home = () => {
       api.instance.get("/nodes"),
       api.instance.get("/metrics?Kind=MEMORY"),
       api.instance.get("/metrics?Kind=CPU"),
+      api.instance.get("/http_metrics/count"),
+      api.instance.get("/http_metrics/count?Status=200,299"),
+      api.instance.get("/http_metrics/count?Status=300,399"),
+      api.instance.get("/http_metrics/count?Status=400,499"),
+      api.instance.get("/http_metrics/count?Status=500,599"),
     ])
       .then((results) => {
         const curr_nodes = results[0].data
@@ -62,19 +80,40 @@ const Home = () => {
         }
         const n = Object.values(nodes)
         setNodeData(n)
+        setHttpData(
+          results.slice(3).map((r, i) => ({
+            ...httpMetricTitles[i],
+            count: r.data.Count,
+          })),
+        )
       })
       .catch((err) => {
         // TODO: Handle error
         console.log(err)
       })
-  }, [api.url, api.instance, setNodeData])
+  }, [api.url, api.instance, setNodeData, setHttpData])
+
+  console.log(httpData)
 
   return (
     <>
       <MetaHeader title="Home" />
       <PageOverlay>
         <PageTitle title="Home" />
-        <div className="flex flex-row pl-2 pr-2">
+        <h1 className="mb-4 px-2 text-3xl font-bold">HTTP Metrics</h1>
+        <div className="mb-4 flex flex-row">
+          {httpData.map((metric: any) => (
+            <div
+              className={`m-2 flex w-full flex-col justify-center rounded p-2 shadow-lg ${metric.className}`}
+              key={metric.title}
+              title={metric.title}
+            >
+              <code className="text-center font-bold">{metric.count}</code>
+            </div>
+          ))}
+        </div>
+        <h1 className="mb-4 px-2 text-3xl font-bold">Nodes</h1>
+        <div className="flex flex-col pl-2 pr-2">
           {nodeData.map((node) => (
             <div
               className="flex w-full flex-col justify-center"

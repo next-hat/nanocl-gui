@@ -2,13 +2,15 @@ import React from "react"
 import Image from "next/image"
 import Link from "next/link"
 
-import { ApiContext, lastVersion } from "@/utils/api"
+import { ApiContext } from "@/utils/api"
 import { Bars4Icon } from "@heroicons/react/24/solid"
 import Menu from "./Menu"
 
 const Header = () => {
   const api = React.useContext(ApiContext)
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
+
+  const url = api.url ? new URL(api.url).hostname : null
 
   function changeMenuVisibility() {
     setIsMenuOpen(!isMenuOpen)
@@ -31,16 +33,7 @@ const Header = () => {
           <h1 className="text-[95%] font-bold">
             <Link href="/">
               {">_"} console
-              {`${
-                api.url
-                  ? `@${
-                      api.url
-                        .replace("http://", "")
-                        .replace("https://", "")
-                        .replace(`/${lastVersion}`, "") || ""
-                    }`
-                  : ""
-              }`}
+              {`${url ? `@${url}` : ""}`}
             </Link>
           </h1>
         </div>

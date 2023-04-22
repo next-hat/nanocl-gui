@@ -37,16 +37,14 @@ export function useApi(
   React.useEffect(() => {
     const API_URL = window.localStorage.getItem("API_URL")
     const newApi = initApi(API_URL || undefined)
-    if (!newApi.url) {
-      if (!api.isLoaded) {
-        setTimeout(() => {
-          newApi.isLoaded = true
-          setApi(newApi)
-        }, 1000)
-      }
-      if (options.ignorePaths.includes(router.pathname)) {
-        return
-      }
+    if (options.ignorePaths.includes(router.pathname)) {
+      setTimeout(() => {
+        newApi.isLoaded = true
+        setApi(newApi)
+      }, 500)
+      return
+    }
+    if (!newApi.url && !api.isLoaded) {
       router.push("/settings")
       return
     }
@@ -61,7 +59,7 @@ export function useApi(
         setTimeout(() => {
           newApi.isLoaded = true
           setApi(newApi)
-        }, 1000)
+        }, 500)
       })
       .catch((err) => {
         const e = instanceError(err)
@@ -69,8 +67,8 @@ export function useApi(
         setTimeout(() => {
           newApi.isLoaded = true
           setApi(newApi)
-        }, 1000)
-        router.push(`/settings?Error=${e.message}`)
+          router.push(`/settings?Error=${e.message}`)
+        }, 500)
       })
   }, [api.isLoaded, api.url, options.ignorePaths, router, setApi])
 
