@@ -14,7 +14,7 @@ import { getQs } from "@/utils/qs"
 
 
 function queryParams(nsp: string, options: LogOptions): string {
-  let result =  `Namespace=${nsp}&Follow=${options.follow}&Timestamps=${options.timestamps}`
+  let result =  `Namespace=${nsp}&Follow=${options.follow}&Timestamps=${options.timestamps}&Tail=${options.tail}`
   if(options.until) result += `&Until=${options.until}`
   if(options.since) result += `&Since=${options.since}`
   return result
@@ -24,9 +24,10 @@ export default function Cargo() {
   const router = useRouter()
   const api = React.useContext(ApiContext)
   const [data, setData] = React.useState<string>("")
+  const [controller, setController] = React.useState(() => new AbortController());
   const [options, setOptions] = React.useState<LogOptions>({
     follow: true,
-    tail: 100,
+    tail: "100",
     since: undefined,
     until: undefined,
     timestamps: false,
@@ -34,12 +35,16 @@ export default function Cargo() {
 
   React.useEffect(() => {
     if (!api.url || !router.isReady) return
-    setData("");
 
+    controller.abort("disconnected from log stream (this is no error. ignore)")
+    const fetchController = new AbortController()
+    setController(fetchController)
     fetch(
       `${api.url}/cargoes/${router.query.name}/logs?${queryParams(router.query.Namespace as string, options)}`,
+      { signal: fetchController.signal }
     )
       .then(async (res) => {
+        setData("");
         if (res.status !== 200) return
         let b = ""
         let decoder = new TextDecoder("utf-8")
