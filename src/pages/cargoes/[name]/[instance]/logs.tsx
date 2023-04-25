@@ -8,19 +8,36 @@ import debounce from "lodash/debounce"
 import PageTitle from "@/components/PageTitle"
 import PageOverlay from "@/components/PageOverlay"
 import Console from "@/components/Console"
+import {LogOptions, LogOptionsDisplay} from "@/components/LogOptions"
 import MetaHeader from "@/components/MetaHeader"
 import { getQs } from "@/utils/qs"
+
+
+function queryParams(nsp: string, options: LogOptions): string {
+  let result =  `Namespace=${nsp}&Follow=${options.follow}&Timestamps=${options.timestamps}`
+  if(options.until) result += `&Until=${options.until}`
+  if(options.since) result += `&Since=${options.since}`
+  return result
+}
 
 export default function Cargo() {
   const router = useRouter()
   const api = React.useContext(ApiContext)
   const [data, setData] = React.useState<string>("")
+  const [options, setOptions] = React.useState<LogOptions>({
+    follow: true,
+    tail: 100,
+    since: undefined,
+    until: undefined,
+    timestamps: false,
+  })
 
   React.useEffect(() => {
     if (!api.url || !router.isReady) return
+    setData("");
 
     fetch(
-      `${api.url}/cargoes/${router.query.name}/logs?Namespace=${router.query.Namespace}`,
+      `${api.url}/cargoes/${router.query.name}/logs?${queryParams(router.query.Namespace as string, options)}`,
     )
       .then(async (res) => {
         if (res.status !== 200) return
@@ -62,6 +79,8 @@ export default function Cargo() {
     router.query.name,
     router.query.Namespace,
     setData,
+    setOptions,
+    options,
   ])
 
   return (
@@ -69,6 +88,7 @@ export default function Cargo() {
       <MetaHeader title={`Logs ${getQs(router.query.name) || ""}`} />
       <PageOverlay>
         <PageTitle title={`Logs ${getQs(router.query.name) || ""}`} />
+        <LogOptionsDisplay options={options} setOptions={setOptions} />
         <Console id="StateLogs" data={data} enableStream />
       </PageOverlay>
     </>
