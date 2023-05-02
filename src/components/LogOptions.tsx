@@ -69,10 +69,12 @@ export function LogOptionsDisplay() {
 
   const baseUrl = "/cargoes/[name]/[instance]/logs"
   return (
-    <>
-      <label>
-        Tail:
+    <div className="mt-4 flex flex-row justify-evenly">
+      <div className="mt-4 flex flex-col">
+        <label className="text-[var(--ifm-color-emphasis-500)]]">Tail</label>
         <input
+          className="mb-4 mt-2 rounded border border-white bg-transparent p-2 focus:border-[var(--ifm-color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--ifm-color-primary)]"
+          placeholder="all"
           type="text"
           value={opt.tail}
           onBlur={() => apply(opt, baseUrl, router)}
@@ -80,11 +82,11 @@ export function LogOptionsDisplay() {
             setOpt(Object.assign({}, opt, { tail: e.target.value }))
           }
         />
-      </label>
-      <br />
-      <label>
-        Follow:
+      </div>
+      <div className="mt-4 flex flex-col">
+        <label className="text-[var(--ifm-color-emphasis-500)]]">Follow:</label>
         <input
+          className="mb-4 mt-2 rounded border border-white bg-transparent p-2 focus:border-[var(--ifm-color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--ifm-color-primary)]"
           type="checkbox"
           checked={opt.follow}
           onChange={(e) =>
@@ -95,11 +97,11 @@ export function LogOptionsDisplay() {
             )
           }
         />
-      </label>
-      <br />
-      <label>
-        Timestamps:
+      </div>
+      <div className="mt-4 flex flex-col">
+        <label>Timestamps</label>
         <input
+          className="mb-4 mt-2 rounded border border-white bg-transparent p-2 focus:border-[var(--ifm-color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--ifm-color-primary)]"
           type="checkbox"
           checked={opt.timestamps}
           onChange={(e) =>
@@ -110,68 +112,73 @@ export function LogOptionsDisplay() {
             )
           }
         />
-      </label>
-      <br />
-      <label>
-        Since:
-        <input
-          type="date"
-          value={opt.since || 0}
-          onChange={(e) =>
-            apply(
-              Object.assign({}, opt, {
-                since: Math.floor(new Date(e.target.value).getTime() / 1000),
-              }),
-              baseUrl,
-              router,
-            )
-          }
-        />
-        <button
-          onClick={() =>
-            apply(
-              Object.assign({}, opt, {
-                since: undefined,
-              }),
-              baseUrl,
-              router,
-            )
-          }
-        >
-          x
-        </button>
-      </label>
-      <br />
-      <label>
-        Unitl:
-        <input
-          type="date"
-          value={opt.until || 0}
-          onChange={(e) =>
-            apply(
-              Object.assign({}, opt, {
-                until: Math.floor(new Date(e.target.value).getTime() / 1000),
-              }),
-              baseUrl,
-              router,
-            )
-          }
-        />
-      </label>
-      <button
-        onClick={() =>
-          apply(
-            Object.assign({}, opt, {
-              until: undefined,
-            }),
-            baseUrl,
-            router,
-          )
-        }
-      >
-        x
-      </button>
-      <br />
-    </>
+      </div>
+      <div className="mt-4 flex flex-col">
+        <label>Since</label>
+        <div>
+          <input
+            className="mb-4 mt-2 rounded border border-white bg-transparent p-2 focus:border-[var(--ifm-color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--ifm-color-primary)]"
+            type="date"
+            value={opt.since || 0}
+            onChange={(e) =>
+              apply(
+                Object.assign({}, opt, {
+                  since: Math.floor(new Date(e.target.value).getTime() / 1000),
+                }),
+                baseUrl,
+                router,
+              )
+            }
+          />
+          <button
+            onClick={() =>
+              apply(
+                Object.assign({}, opt, {
+                  since: undefined,
+                }),
+                baseUrl,
+                router,
+              )
+            }
+            className="m-2 mt-2 h-[42px] bg-red-500 p-2 hover:bg-red-700"
+          >
+            reset
+          </button>
+        </div>
+      </div>
+      <div className="mt-4 flex flex-col">
+        <label>Until</label>
+        <div>
+          <input
+            type="date"
+            className="mb-4 mt-2 rounded border border-white bg-transparent p-2 focus:border-[var(--ifm-color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--ifm-color-primary)]"
+            value={opt.until || 0}
+            onChange={(e) =>
+              apply(
+                Object.assign({}, opt, {
+                  until: Math.floor(new Date(e.target.value).getTime() / 1000),
+                }),
+                baseUrl,
+                router,
+              )
+            }
+          />
+          <button
+            onClick={() =>
+              apply(
+                Object.assign({}, opt, {
+                  until: undefined,
+                }),
+                baseUrl,
+                router,
+              )
+            }
+            className="m-2 mt-2 h-[42px] bg-red-500 p-2 hover:bg-red-700"
+          >
+            reset
+          </button>
+        </div>
+      </div>
+    </div>
   )
 }
