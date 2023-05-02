@@ -2,8 +2,8 @@ import React from "react"
 import { NextRouter, useRouter } from "next/router"
 
 export type LogOptions = {
-  since: Date | undefined
-  until: Date | undefined
+  since: number | undefined
+  until: number | undefined
   timestamps: boolean
   follow: boolean
   tail: string
@@ -14,23 +14,32 @@ export function useLogOptions(): [LogOptions, (opt: LogOptions) => void] {
   const queryTail = (router.query.Tail as string) || ""
   const queryFollow = router.query.Follow == "true"
   const queryTimestamps = router.query.Timestamps == "true"
+  const querySince = Number.parseInt(router.query.Since as string) || undefined
+  const queryUntil = Number.parseInt(router.query.Until as string) || undefined
 
   const [tmpOptions, setOptions] = React.useState<LogOptions>({
     tail: queryTail,
     follow: queryFollow,
     timestamps: queryTimestamps,
-    since: undefined,
-    until: undefined,
+    since: querySince,
+    until: queryUntil,
   })
   React.useEffect(() => {
     setOptions({
       tail: queryTail,
       follow: queryFollow,
       timestamps: queryTimestamps,
-      since: undefined,
-      until: undefined,
+      since: querySince,
+      until: queryUntil,
     })
-  }, [queryTail, queryFollow, queryTimestamps, setOptions])
+  }, [
+    queryTail,
+    queryFollow,
+    queryTimestamps,
+    querySince,
+    queryUntil,
+    setOptions,
+  ])
 
   return [tmpOptions, setOptions]
 }
@@ -102,6 +111,66 @@ export function LogOptionsDisplay() {
           }
         />
       </label>
+      <br />
+      <label>
+        Since:
+        <input
+          type="date"
+          value={opt.since || 0}
+          onChange={(e) =>
+            apply(
+              Object.assign({}, opt, {
+                since: Math.floor(new Date(e.target.value).getTime() / 1000),
+              }),
+              baseUrl,
+              router,
+            )
+          }
+        />
+        <button
+          onClick={() =>
+            apply(
+              Object.assign({}, opt, {
+                since: undefined,
+              }),
+              baseUrl,
+              router,
+            )
+          }
+        >
+          x
+        </button>
+      </label>
+      <br />
+      <label>
+        Unitl:
+        <input
+          type="date"
+          value={opt.until || 0}
+          onChange={(e) =>
+            apply(
+              Object.assign({}, opt, {
+                until: Math.floor(new Date(e.target.value).getTime() / 1000),
+              }),
+              baseUrl,
+              router,
+            )
+          }
+        />
+      </label>
+      <button
+        onClick={() =>
+          apply(
+            Object.assign({}, opt, {
+              until: undefined,
+            }),
+            baseUrl,
+            router,
+          )
+        }
+      >
+        x
+      </button>
       <br />
     </>
   )
