@@ -1,53 +1,108 @@
 import React from "react"
-import {Cog6ToothIcon} from "@heroicons/react/24/solid"
+import { NextRouter, useRouter } from "next/router"
 
 export type LogOptions = {
-  since: Date | undefined,
-  until: Date | undefined,
-  timestamps: boolean,
-  follow: boolean,
-  tail: string,
+  since: Date | undefined
+  until: Date | undefined
+  timestamps: boolean
+  follow: boolean
+  tail: string
 }
 
-type LogOptionsDisplayProps = {options: LogOptions, setOptions: (options: LogOptions) => void} 
+export function useLogOptions(): [LogOptions, (opt: LogOptions) => void] {
+  const router = useRouter()
+  const queryTail = (router.query.Tail as string) || ""
+  const queryFollow = router.query.Follow == "true"
+  const queryTimestamps = router.query.Timestamps == "true"
 
-function setTimestamps(e: React.ChangeEvent<HTMLInputElement>, props: LogOptionsDisplayProps) {
-  props.setOptions(Object.assign({}, props.options, {timestamps: e.target.checked}))
-}
-
-function setFollow(e: React.ChangeEvent<HTMLInputElement>, props: LogOptionsDisplayProps) {
-  props.setOptions(Object.assign({}, props.options, {follow: e.target.checked}))
-}
-
-function propegateTail(e: React.ChangeEvent<HTMLInputElement>, props: LogOptionsDisplayProps) {
-  props.setOptions(Object.assign({}, props.options, {tail: e.target.value}))
-}
-
-export function LogOptionsDisplay(props: LogOptionsDisplayProps) {
-  const [isHidden, setHidden] = React.useState(true)
-  const [tail, setTail] = React.useState("0")
-
+  const [tmpOptions, setOptions] = React.useState<LogOptions>({
+    tail: queryTail,
+    follow: queryFollow,
+    timestamps: queryTimestamps,
+    since: undefined,
+    until: undefined,
+  })
   React.useEffect(() => {
-    setTail(props.options.tail) 
-  }, [props.options.tail])
+    setOptions({
+      tail: queryTail,
+      follow: queryFollow,
+      timestamps: queryTimestamps,
+      since: undefined,
+      until: undefined,
+    })
+  }, [queryTail, queryFollow, queryTimestamps, setOptions])
 
+  return [tmpOptions, setOptions]
+}
+
+function apply(opts: LogOptions, baseUrl: string, router: NextRouter) {
+  const query: any = {
+    name: router.query.name,
+    instance: router.query.instance,
+    Namespace: router.query.Namespace,
+    Tail: opts.tail,
+  }
+
+  if (opts.follow) query.Follow = true
+  if (opts.timestamps) query.Timestamps = true
+  if (opts.since) query.Since = opts.since
+  if (opts.until) query.Until = opts.until
+
+  router.replace({
+    pathname: baseUrl,
+    query,
+  })
+}
+
+export function LogOptionsDisplay() {
+  const router = useRouter()
+  const [opt, setOpt] = useLogOptions()
+
+  const baseUrl = "/cargoes/[name]/[instance]/logs"
   return (
     <>
-      {!isHidden ? (
-        <>
-          <label>
-            Timestamps: <input type="checkbox" checked={props.options.timestamps} onChange={(e) => setTimestamps(e, props)} />
-          </label><br/>
-          <label>
-            Follow: <input type="checkbox" checked={props.options.follow}  onChange={(e) => setFollow(e, props)}/>
-          </label><br/>
-          <label>
-            Tail: 
-            <input type="text" value={tail} onBlur={(e) => propegateTail(e, props)} onChange={(e) => setTail(e.target.value)} />
-          </label><br/>
-        </>
-      ) : null}
-      <Cog6ToothIcon className="h-4 w-4" onClick={() => setHidden(!isHidden)} />
+      <label>
+        Tail:
+        <input
+          type="text"
+          value={opt.tail}
+          onBlur={() => apply(opt, baseUrl, router)}
+          onChange={(e) =>
+            setOpt(Object.assign({}, opt, { tail: e.target.value }))
+          }
+        />
+      </label>
+      <br />
+      <label>
+        Follow:
+        <input
+          type="checkbox"
+          checked={opt.follow}
+          onChange={(e) =>
+            apply(
+              Object.assign({}, opt, { follow: e.target.checked }),
+              baseUrl,
+              router,
+            )
+          }
+        />
+      </label>
+      <br />
+      <label>
+        Timestamps:
+        <input
+          type="checkbox"
+          checked={opt.timestamps}
+          onChange={(e) =>
+            apply(
+              Object.assign({}, opt, { timestamps: e.target.checked }),
+              baseUrl,
+              router,
+            )
+          }
+        />
+      </label>
+      <br />
     </>
   )
 }
