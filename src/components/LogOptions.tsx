@@ -11,7 +11,7 @@ export type LogOptions = {
 
 export function useLogOptions(): [LogOptions, (opt: LogOptions) => void] {
   const router = useRouter()
-  const queryTail = (router.query.Tail as string) || ""
+  const queryTail = (router.query.Tail as string) || "all"
   const queryFollow = router.query.Follow == "true"
   const queryTimestamps = router.query.Timestamps == "true"
   const querySince = Number.parseInt(router.query.Since as string) || undefined
@@ -44,7 +44,23 @@ export function useLogOptions(): [LogOptions, (opt: LogOptions) => void] {
   return [tmpOptions, setOptions]
 }
 
-function apply(opts: LogOptions, baseUrl: string, router: NextRouter) {
+function apply(
+  opts: LogOptions,
+  baseUrl: string,
+  router: NextRouter,
+  setTailErrorMsg: (msg: string) => void,
+) {
+  if (
+    opts.tail != "all" &&
+    // @ts-ignore
+    (isNaN(opts.tail) || opts.tail.split(".").length != 1)
+  ) {
+    setTailErrorMsg('Needs to be an integer or "all"')
+    return
+  } else {
+    setTailErrorMsg("")
+  }
+
   const query: any = {
     name: router.query.name,
     instance: router.query.instance,
@@ -66,18 +82,28 @@ function apply(opts: LogOptions, baseUrl: string, router: NextRouter) {
 export function LogOptionsDisplay() {
   const router = useRouter()
   const [opt, setOpt] = useLogOptions()
+  const [tailErrorMsg, setTailErrorMsg] = React.useState<string>("")
 
   const baseUrl = "/cargoes/[name]/[instance]/logs"
+
+  let tailErrorDisplay = tailErrorMsg ? (
+    <div className="relative my-1.5 rounded border border-red-400 bg-red-100 p-2 text-red-700">
+      {tailErrorMsg}
+    </div>
+  ) : (
+    <></>
+  )
   return (
     <div className="mt-4 flex flex-row justify-evenly">
       <div className="mt-4 flex flex-col">
         <label className="text-[var(--ifm-color-emphasis-500)]]">Tail</label>
+        {tailErrorDisplay}
         <input
           className="mb-4 mt-2 rounded border border-white bg-transparent p-2 focus:border-[var(--ifm-color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--ifm-color-primary)]"
           placeholder="all"
           type="text"
           value={opt.tail}
-          onBlur={() => apply(opt, baseUrl, router)}
+          onBlur={() => apply(opt, baseUrl, router, setTailErrorMsg)}
           onChange={(e) =>
             setOpt(Object.assign({}, opt, { tail: e.target.value }))
           }
@@ -94,6 +120,7 @@ export function LogOptionsDisplay() {
               Object.assign({}, opt, { follow: e.target.checked }),
               baseUrl,
               router,
+              setTailErrorMsg,
             )
           }
         />
@@ -109,6 +136,7 @@ export function LogOptionsDisplay() {
               Object.assign({}, opt, { timestamps: e.target.checked }),
               baseUrl,
               router,
+              setTailErrorMsg,
             )
           }
         />
@@ -127,6 +155,7 @@ export function LogOptionsDisplay() {
                 }),
                 baseUrl,
                 router,
+                setTailErrorMsg,
               )
             }
           />
@@ -138,6 +167,7 @@ export function LogOptionsDisplay() {
                 }),
                 baseUrl,
                 router,
+                setTailErrorMsg,
               )
             }
             className="m-2 mt-2 h-[42px] rounded bg-blue-500 p-2 hover:bg-blue-700"
@@ -160,6 +190,7 @@ export function LogOptionsDisplay() {
                 }),
                 baseUrl,
                 router,
+                setTailErrorMsg,
               )
             }
           />
@@ -171,6 +202,7 @@ export function LogOptionsDisplay() {
                 }),
                 baseUrl,
                 router,
+                setTailErrorMsg,
               )
             }
             className="m-2 mt-2 h-[42px] rounded bg-blue-500 p-2 hover:bg-blue-700"
