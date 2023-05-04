@@ -140,7 +140,7 @@ export function LogOptionsDisplay() {
                 router,
               )
             }
-            className="m-2 mt-2 h-[42px] bg-red-500 p-2 hover:bg-red-700"
+            className="m-2 mt-2 h-[42px] rounded bg-blue-500 p-2 hover:bg-blue-700"
           >
             reset
           </button>
@@ -173,7 +173,7 @@ export function LogOptionsDisplay() {
                 router,
               )
             }
-            className="m-2 mt-2 h-[42px] bg-red-500 p-2 hover:bg-red-700"
+            className="m-2 mt-2 h-[42px] rounded bg-blue-500 p-2 hover:bg-blue-700"
           >
             reset
           </button>
