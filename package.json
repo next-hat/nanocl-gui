@@ -8,7 +8,8 @@
     "build": "next build ",
     "start": "next start ",
     "lint": "next lint",
-    "tauri:dev": "tauri dev"
+    "tauri:dev": "tauri dev",
+    "prettier": "prettier"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.17",
