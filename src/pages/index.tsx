@@ -119,10 +119,12 @@ const Home = () => {
               className="flex w-full flex-col justify-center"
               key={node.NodeName}
             >
-              <h2 className="mb-1 text-xl font-bold capitalize">
-                {node.NodeName}:{" "}
-                <code className="text-base font-normal">{node.IpAddress}</code>
-              </h2>
+              <h2 className="mb-2 text-xl font-bold capitalize">Hostname</h2>
+              <code className="mb-2 text-base font-normal">
+                {node.NodeName}
+              </code>
+              <h2 className="mb-2 text-xl font-bold capitalize">Address</h2>
+              <code className="text-base font-normal">{node.IpAddress}</code>
               <h3 className="pb-2 pt-2 text-xl font-bold">Memory</h3>
               <ProgressBar Progress={(node.Ram.Used / node.Ram.Total) * 100}>
                 <p className="text-xs text-white">

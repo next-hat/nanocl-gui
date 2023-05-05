@@ -23,7 +23,7 @@ COPY --chown=node . .
 
 RUN npm run build
 
-FROM nginx:1.23.2-alpine
+FROM nginx:1.24.0-alpine
 
 WORKDIR /etc/nginx/conf.d
 
