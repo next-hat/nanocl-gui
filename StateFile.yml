@@ -1,0 +1,43 @@
+ApiVersion: v0.8
+Kind: Deployment
+
+Namespace: global
+
+Resources:
+  - Name: console.nanocl.internal
+    Kind: ProxyRule
+    Version: v0.5
+    Config:
+      Watch:
+        - console.global.c
+      Rules:
+        - Domain: console.nanocl.internal
+          Network: Public
+          Locations:
+            - Path: /
+              Version: 1.1
+              Headers:
+                - Upgrade $http_upgrade
+                - Connection "Upgrade"
+              Target:
+                Key: console.global.c
+                Port: 3000
+
+Cargoes:
+  - Name: console
+    Container:
+      Image: node:18.16.0-slim
+      Tty: true
+      WorkingDir: /project
+      Env:
+        - HOST=0.0.0.0
+      HostConfig:
+        Binds:
+          - ./:/project
+          - ../nanocl-gui-toolkit:/nanocl-gui-toolkit
+      Cmd:
+        - sh
+        - -c
+        - |
+          npm install
+          npm run dev

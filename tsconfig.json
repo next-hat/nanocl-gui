@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES6",
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -15,7 +16,10 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/lib/*": ["./node_modules/nanocl-gui-toolkit/src/lib/*"],
+      "@/*": ["./*"],
+      "react-native": ["./node_modules/react-native"],
+      "nanocl-gui-toolkit/*": ["./node_modules/nanocl-gui-toolkit/src/*"]
     },
     "plugins": [
       {
@@ -24,6 +28,12 @@
     ],
     "strictNullChecks": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "dist/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }
