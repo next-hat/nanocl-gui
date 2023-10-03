@@ -1,5 +1,3 @@
-"use client"
-
 import React from "react"
 import { ApiContext, createNanoclDecoder } from "@/utils/api"
 import { Liquid } from "liquidjs"
