@@ -70,7 +70,7 @@ export default function SettingsPage() {
               id="apiUrl"
               placeholder="Api url"
               disabled
-              defaultValue="v0.6"
+              defaultValue="v0.9"
               className="mt-2 w-[250px] lg:w-[450px]"
             />
           </div>

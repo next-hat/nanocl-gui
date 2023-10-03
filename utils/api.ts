@@ -2,7 +2,7 @@ import React from "react"
 import { usePathname, useRouter } from "next/navigation"
 import axios, { type AxiosInstance } from "axios"
 
-export const lastVersion = "v0.6"
+export const lastVersion = "v0.9"
 
 export type UseAxiosOpts = {
   ignorePaths: string[]
