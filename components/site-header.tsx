@@ -16,19 +16,19 @@ import { ThemeToggle } from "@/components/theme-toggle"
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 w-full bg-background-secondary shadow-lg">
+    <header className="bg-background-primary sticky top-0 z-40 w-full shadow-lg">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <MainNav items={siteConfig.mainNav} />
         <div className="flex items-center space-x-4">
-          <Button variant="ghost" className="h-8 w-8 p-0 hover:bg-black">
+          <Button variant="ghost" className="h-8 w-8 p-0">
             <Link href="/state">
-              <Icons.rocket color="white" />
+              <Icons.rocket color="hsl(var(--muted-foreground))" />
             </Link>
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0 hover:bg-black">
-                <Icons.cog color="white" />
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <Icons.cog color="hsl(var(--muted-foreground))" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="relative w-56">

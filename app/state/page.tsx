@@ -10,14 +10,14 @@ import { Icons } from "@/components/icons"
 import { YamlEditor } from "@/components/yaml-editor"
 
 const defaultState =
-  `Type: Deployment
+  `Kind: Deployment
 ApiVersion: ${lastVersion}
 
 Namespace: global
 
 Args:
 - Name: domain
-  Type: String
+  Kind: String
 
   # See all options:
 # https://docs.next-hat.com/references/nanocl/cargo
@@ -33,7 +33,7 @@ Resources:
   "${{ Args.domain }}" +
   `
   Kind: ProxyRule
-  Version: v0.1
+  Version: v0.7
   Config:
     Watch:
     - nginx.global

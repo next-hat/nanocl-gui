@@ -108,7 +108,7 @@ export default function IndexPage() {
         {nodeData.map((node) => (
           <Card
             key={node.NodeName}
-            className="flex flex-col justify-center bg-background p-2"
+            className="flex flex-col justify-center rounded-[4px] border-0 bg-background p-2 shadow-lg"
           >
             <div className="flex w-full flex-col justify-center">
               <h2 className="mb-2 text-xl font-bold capitalize">Hostname</h2>
