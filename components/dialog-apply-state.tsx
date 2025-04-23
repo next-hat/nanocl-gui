@@ -2,7 +2,7 @@ import React from "react"
 import { ApiContext, createNanoclDecoder } from "@/utils/api"
 import { Liquid } from "liquidjs"
 import debounce from "lodash/debounce"
-import { Button } from "nanocl-gui-toolkit/components/ui/button"
+import { Button } from "./ui/button"
 import {
   Dialog,
   DialogContent,
@@ -10,9 +10,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "nanocl-gui-toolkit/components/ui/dialog"
-import { Input } from "nanocl-gui-toolkit/components/ui/input"
-import { Label } from "nanocl-gui-toolkit/components/ui/label"
+} from "./ui/dialog"
+import { Input } from "./ui/input"
+import { Label } from "./ui/label"
 import YAML from "yaml"
 
 import Console from "./console"

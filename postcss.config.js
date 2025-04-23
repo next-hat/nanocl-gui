@@ -1,3 +1,6 @@
-const postCssConf = require("nanocl-gui-toolkit/postcss.config");
-
-module.exports = postCssConf
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}

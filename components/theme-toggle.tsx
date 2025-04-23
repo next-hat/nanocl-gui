@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "nanocl-gui-toolkit/components/ui/button"
+import { Button } from "./ui/button"
 import { useTheme } from "next-themes"
 
 import { Icons } from "@/components/icons"

@@ -8,8 +8,8 @@ import { MoreHorizontal } from "lucide-react"
 import {
   DataTable,
   type ColumnDef,
-} from "nanocl-gui-toolkit/components/data-table"
-import { Button } from "nanocl-gui-toolkit/components/ui/button"
+} from "@/components/data-table"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,9 +17,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "nanocl-gui-toolkit/components/ui/dropdown-menu"
-import { Input } from "nanocl-gui-toolkit/components/ui/input"
-import { useDebounce } from "nanocl-gui-toolkit/hooks/debounce"
+} from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
+import { useDebounce } from "@/hooks/debounce"
 
 import type { components } from "@/types/api-schema"
 import { Icons } from "@/components/icons"
@@ -74,9 +74,9 @@ export function TableNamespaces({ onDelete }: TableNamespacesProps) {
           <DropdownMenu>
             <div className="flex w-full justify-end">
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
+                <Button variant="ghost" className="size-8 p-0">
                   <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
+                  <MoreHorizontal className="size-4" />
                 </Button>
               </DropdownMenuTrigger>
             </div>

@@ -7,9 +7,9 @@ import { MoreHorizontal } from "lucide-react"
 import {
   DataTable,
   type ColumnDef,
-} from "nanocl-gui-toolkit/components/data-table"
-import { ModalConfirm } from "nanocl-gui-toolkit/components/modal-confirm"
-import { Button } from "nanocl-gui-toolkit/components/ui/button"
+} from "@/components/data-table"
+import { ModalConfirm } from "@/components/modal-confirm"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +17,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "nanocl-gui-toolkit/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu"
 
 import type { components } from "@/types/api-schema"
 import { Icons } from "@/components/icons"
@@ -60,10 +60,10 @@ export default function ResourcesPage() {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="selected:outline-none h-8 w-8 border-0 p-0"
+                  className="selected:outline-none size-8 border-0 p-0"
                 >
                   <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
+                  <MoreHorizontal className="size-4" />
                 </Button>
               </DropdownMenuTrigger>
             </div>
@@ -71,7 +71,7 @@ export default function ResourcesPage() {
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="cursor-pointer">
-                <Link href={`/resources/${resource.Name}`} legacyBehavior>
+                <Link href={`/resources/${resource.Spec.Key}`} legacyBehavior>
                   <a className="row flex w-full items-center">
                     <Icons.eye className="pr-2" />
                     Inspect
@@ -100,7 +100,7 @@ export default function ResourcesPage() {
 
   async function onDeleteResource() {
     if (!resourceToDelete) return
-    await api.instance.delete(`/resources/${resourceToDelete.Name}`)
+    await api.instance.delete(`/resources/${resourceToDelete.Spec.ResourceKey}`)
     const res = await api.instance.get<Resource[]>("/resources")
     setResources(res.data)
   }

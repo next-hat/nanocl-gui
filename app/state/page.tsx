@@ -2,8 +2,8 @@
 
 import React from "react"
 import { ApiContext, createNanoclDecoder, lastVersion } from "@/utils/api"
-import { useCtrlS } from "nanocl-gui-toolkit/hooks/ctrl-s"
-import { Button } from "nanocl-gui-toolkit/src/components/ui/button"
+import { useCtrlS } from "@/hooks/ctrl-s"
+import { Button } from "@/components/ui/button"
 
 import { DialogApplyState } from "@/components/dialog-apply-state"
 import { Icons } from "@/components/icons"
@@ -74,8 +74,8 @@ export default function StatePage() {
             State
           </h1>
           <div className="flex">
-            <Button title="save" onClick={onOpenChange} className="h-6 w-6 p-0">
-              <Icons.save className="h-4 w-4" />
+            <Button title="save" onClick={onOpenChange} className="size-6 p-0">
+              <Icons.save className="size-4" />
             </Button>
           </div>
         </div>

@@ -5,7 +5,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { ApiContext } from "@/utils/api"
 import debounce from "lodash/debounce"
 import moment from "moment"
-import { Input } from "nanocl-gui-toolkit/src/components/ui/input"
+import { Input } from "@/components/ui/input"
 
 import Console from "@/components/console"
 

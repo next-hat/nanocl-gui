@@ -5,10 +5,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "nanocl-gui-toolkit/components/ui/dialog"
-import { Input } from "nanocl-gui-toolkit/components/ui/input"
-import { Label } from "nanocl-gui-toolkit/components/ui/label"
-import { Button } from "nanocl-gui-toolkit/src/components/ui/button"
+} from "./ui/dialog"
+import { Input } from "./ui/input"
+import { Label } from "./ui/label"
+import { Button } from "./ui/button"
 
 import type { components } from "@/types/api-schema"
 

@@ -2,7 +2,7 @@
 
 import React from "react"
 import { ApiContext } from "@/utils/api"
-import { ModalConfirm } from "nanocl-gui-toolkit/components/modal-confirm"
+import { ModalConfirm } from "@/components/modal-confirm"
 
 import type { components } from "@/types/api-schema"
 
@@ -26,7 +26,7 @@ export default function CargoesPage() {
 
   async function onDeleteCargo() {
     if (!cargoToDelete) return
-    await api.instance.delete(`/cargoes/${cargoToDelete.Name}?Force=true`)
+    await api.instance.delete(`/cargoes/${cargoToDelete.Spec.CargoKey}?Force=true`)
   }
 
   return (

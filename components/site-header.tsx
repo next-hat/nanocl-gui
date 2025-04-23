@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Button } from "nanocl-gui-toolkit/components/ui/button"
+import { Button } from "./ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "nanocl-gui-toolkit/components/ui/dropdown-menu"
+} from "./ui/dropdown-menu"
 
 import { siteConfig } from "@/config/site"
 import { Icons } from "@/components/icons"
@@ -20,14 +20,14 @@ export function SiteHeader() {
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <MainNav items={siteConfig.mainNav} />
         <div className="flex items-center space-x-4">
-          <Button variant="ghost" className="h-8 w-8 p-0">
+          <Button variant="ghost" className="size-8 p-0">
             <Link href="/state">
               <Icons.rocket color="hsl(var(--muted-foreground))" />
             </Link>
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
+              <Button variant="ghost" className="size-8 p-0">
                 <Icons.cog color="hsl(var(--muted-foreground))" />
               </Button>
             </DropdownMenuTrigger>

@@ -9,8 +9,8 @@ import moment from "moment"
 import {
   DataTable,
   type ColumnDef,
-} from "nanocl-gui-toolkit/components/data-table"
-import { Button } from "nanocl-gui-toolkit/components/ui/button"
+} from "@/components/data-table"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,9 +18,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "nanocl-gui-toolkit/components/ui/dropdown-menu"
-import { Input } from "nanocl-gui-toolkit/components/ui/input"
-import { useDebounce } from "nanocl-gui-toolkit/hooks/debounce"
+} from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
+import { useDebounce } from "@/hooks/debounce"
 
 import type { components } from "@/types/api-schema"
 import { Icons } from "@/components/icons"
@@ -82,7 +82,7 @@ export function TableCargoes({ onDelete }: TableCargoesProps) {
     },
     {
       header: "Image",
-      cell: ({ row }) => row.original.Config.Container.Image || "n/a",
+      cell: ({ row }) => row.original.Spec.Container.Image || "n/a",
     },
     {
       header: "Intances",
@@ -91,7 +91,7 @@ export function TableCargoes({ onDelete }: TableCargoesProps) {
     },
     {
       header: "Version",
-      cell: ({ row }) => row.original.Config.Version,
+      cell: ({ row }) => row.original.Spec.Version,
     },
     {
       header: "Created at",
@@ -99,7 +99,7 @@ export function TableCargoes({ onDelete }: TableCargoesProps) {
     },
     {
       header: "Updated at",
-      cell: ({ row }) => moment.utc(row.original.UpdatedAt).tz(tz).fromNow(),
+      cell: ({ row }) => moment.utc(row.original.Status.UpdatedAt).tz(tz).fromNow(),
     },
     {
       id: "actions",
@@ -111,10 +111,10 @@ export function TableCargoes({ onDelete }: TableCargoesProps) {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="selected:outline-none h-8 w-8 border-0 p-0"
+                  className="selected:outline-none size-8 border-0 p-0"
                 >
                   <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
+                  <MoreHorizontal className="size-4" />
                 </Button>
               </DropdownMenuTrigger>
             </div>
@@ -123,7 +123,7 @@ export function TableCargoes({ onDelete }: TableCargoesProps) {
               <DropdownMenuSeparator />
               <DropdownMenuItem className="cursor-pointer">
                 <Link
-                  href={`/cargoes/${resource.Name}?namespace=${selectedNamespace}`}
+                  href={`/cargoes/${resource.Spec.CargoKey}?namespace=${selectedNamespace}`}
                   legacyBehavior
                 >
                   <a className="row flex w-full items-center">
@@ -181,14 +181,14 @@ export function TableCargoes({ onDelete }: TableCargoesProps) {
                 size="sm"
                 className="ml-auto hidden h-8 lg:flex"
               >
-                <Folder className="mr-2 h-4 w-4" />
+                <Folder className="mr-2 size-4" />
                 <span>Namespace {selectedNamespace}</span>
               </Button>
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[250px]">
             <div className="row flex items-center">
-              <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+              <Search className="mr-2 size-4 shrink-0 opacity-50" />
               <Input
                 title="Search namespace"
                 placeholder="Search namespace"

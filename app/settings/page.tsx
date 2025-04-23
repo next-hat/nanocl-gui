@@ -3,9 +3,9 @@
 import React from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { ApiContext, instanceError, lastVersion } from "@/utils/api"
-import { Button } from "nanocl-gui-toolkit/components/ui/button"
-import { Input } from "nanocl-gui-toolkit/components/ui/input"
-import { Label } from "nanocl-gui-toolkit/components/ui/label"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 import { Icons } from "@/components/icons"
 
@@ -53,9 +53,9 @@ export default function SettingsPage() {
             title="save"
             disabled={`${value}/${lastVersion}` === api.url}
             onClick={onSubmit}
-            className="h-6 w-6 p-0"
+            className="size-6 p-0"
           >
-            <Icons.save className="h-4 w-4" />
+            <Icons.save className="size-4" />
           </Button>
         </div>
       </div>
@@ -70,7 +70,7 @@ export default function SettingsPage() {
               id="apiUrl"
               placeholder="Api url"
               disabled
-              defaultValue="v0.9"
+              defaultValue="v0.16.3"
               className="mt-2 w-[250px] lg:w-[450px]"
             />
           </div>

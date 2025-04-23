@@ -1,32 +1,36 @@
-ApiVersion: v0.8
-Kind: Deployment
+ApiVersion: v0.13
 
 Namespace: global
-
 Resources:
   - Name: console.nanocl.internal
-    Kind: ProxyRule
-    Version: v0.7
-    Config:
-      Watch:
-        - console.global.c
+    Kind: ncproxy.io/rule/v0.13
+    Data:
       Rules:
-        - Domain: console.nanocl.internal
+      - Network: All
+        Locations:
+        - Path: /
+          Version: 1.1
+          Headers:
+          - Upgrade $http_upgrade
+          - Connection "Upgrade"
+          Target:
+            Key: console.global.c
+            Port: 3000
+  - Name: nanocl.internal
+    Kind: ncproxy.io/rule/v0.13
+    Data:
+      Rules:
+        - Domain: nanocl.internal
+          Port: 8585
           Network: All
           Locations:
             - Path: /
-              Version: 1.1
-              Headers:
-                - Upgrade $http_upgrade
-                - Connection "Upgrade"
               Target:
-                Key: console.global.c
-                Port: 3000
-
+                UnixPath: /run/nanocl/nanocl.sock
 Cargoes:
   - Name: console
     Container:
-      Image: node:18.16.0-slim
+      Image: node:23.11-slim
       Tty: true
       WorkingDir: /project
       Env:
@@ -34,7 +38,6 @@ Cargoes:
       HostConfig:
         Binds:
           - ./:/project
-          - ../nanocl-gui-toolkit:/nanocl-gui-toolkit
       Cmd:
         - sh
         - -c

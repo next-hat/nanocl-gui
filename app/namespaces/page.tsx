@@ -2,8 +2,8 @@
 
 import React from "react"
 import { ApiContext } from "@/utils/api"
-import { ModalConfirm } from "nanocl-gui-toolkit/components/modal-confirm"
-import { Button } from "nanocl-gui-toolkit/components/ui/button"
+import { ModalConfirm } from "@/components/modal-confirm"
+import { Button } from "@/components/ui/button"
 
 import type { components } from "@/types/api-schema"
 import { DialogNewNamespace } from "@/components/dialog-new-namespace"
@@ -68,8 +68,8 @@ export default function NamespacesPage() {
           <h1 className="text-2xl font-extrabold leading-tight tracking-tighter">
             Namespaces
           </h1>
-          <Button title="New" onClick={onOpenChange} className="h-6 w-6 p-0">
-            <Icons.plus className="h-4 w-4" />
+          <Button title="New" onClick={onOpenChange} className="size-6 p-0">
+            <Icons.plus className="size-4" />
           </Button>
         </div>
         <React.Suspense fallback={<div>Loading...</div>}>

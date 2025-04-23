@@ -1,6 +1,6 @@
 import React from "react"
 import Convert from "ansi-to-html"
-import { cn } from "nanocl-gui-toolkit/src/lib/utils"
+import { cn } from "@/lib/utils"
 
 export type ConsoleProps = {
   id: string

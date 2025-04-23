@@ -3,3707 +3,6346 @@
  * Do not make direct changes to the file.
  */
 
-/** OneOf type helpers */
-type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never }
-type XOR<T, U> = T | U extends object
-  ? (Without<T, U> & U) | (Without<U, T> & T)
-  : T | U
-type OneOf<T extends any[]> = T extends [infer Only]
-  ? Only
-  : T extends [infer A, infer B, ...infer Rest]
-  ? OneOf<[XOR<A, B>, ...Rest]>
-  : never
-
 export interface paths {
-  "/_ping": {
-    /**
-     * Get version information
-     * @description Get version information
-     */
-    head: operations["get_ping"]
-  }
-  "/cargoes": {
-    /**
-     * List cargoes
-     * @description List cargoes
-     */
-    get: operations["list_cargo"]
-    /**
-     * Create a new cargo
-     * @description Create a new cargo
-     */
-    post: operations["create_cargo"]
-  }
-  "/cargoes/images": {
-    /**
-     * List container images
-     * @description List container images
-     */
-    get: operations["list_cargo_image"]
-    /**
-     * Download a container image
-     * @description Download a container image
-     */
-    post: operations["create_cargo_image"]
-  }
-  "/cargoes/images/import": {
-    /**
-     * Import a container image from a tarball
-     * @description Import a container image from a tarball
-     */
-    post: operations["import_cargo_image"]
-  }
-  "/cargoes/images/{IdOrName}": {
-    /**
-     * Get detailed information about a container image
-     * @description Get detailed information about a container image
-     */
-    get: operations["inspect_cargo_image"]
-    /**
-     * Delete a container image
-     * @description Delete a container image
-     */
-    delete: operations["delete_cargo_image"]
-  }
-  "/cargoes/{Name}": {
-    /**
-     * Create a new cargo config from scratch and add history entry
-     * @description Create a new cargo config from scratch and add history entry
-     */
-    put: operations["put_cargo"]
-    /**
-     * Delete a cargo
-     * @description Delete a cargo
-     */
-    delete: operations["delete_cargo"]
-    /**
-     * Patch a cargo config meaning merging current config with the new one and add history entry
-     * @description Patch a cargo config meaning merging current config with the new one and add history entry
-     */
-    patch: operations["patch_cargo"]
-  }
-  "/cargoes/{Name}/exec": {
-    /**
-     * Execute a command in a cargo
-     * @description Execute a command in a cargo
-     */
-    post: operations["exec_command"]
-  }
-  "/cargoes/{Name}/histories": {
-    /**
-     * List cargo histories
-     * @description List cargo histories
-     */
-    get: operations["list_cargo_history"]
-  }
-  "/cargoes/{Name}/histories/{Id}/reset": {
-    /**
-     * Reset a cargo to a specific history
-     * @description Reset a cargo to a specific history
-     */
-    patch: operations["reset_cargo"]
-  }
-  "/cargoes/{Name}/inspect": {
-    /**
-     * Inspect a cargo
-     * @description Inspect a cargo
-     */
-    get: operations["inspect_cargo"]
-  }
-  "/cargoes/{Name}/instances": {
-    /**
-     * List cargo instances
-     * @description List cargo instances
-     */
-    get: operations["list_cargo_instance"]
-  }
-  "/cargoes/{Name}/kill": {
-    /**
-     * Send a signal to a cargo this will kill the cargo if the signal is SIGKILL
-     * @description Send a signal to a cargo this will kill the cargo if the signal is SIGKILL
-     */
-    post: operations["kill_cargo"]
-  }
-  "/cargoes/{Name}/logs": {
-    /**
-     * Get logs of a cargo instance
-     * @description Get logs of a cargo instance
-     */
-    get: operations["logs_cargo"]
-  }
-  "/cargoes/{Name}/start": {
-    /**
-     * Start a cargo
-     * @description Start a cargo
-     */
-    post: operations["start_cargo"]
-  }
-  "/cargoes/{Name}/stop": {
-    /**
-     * Stop a cargo
-     * @description Stop a cargo
-     */
-    post: operations["stop_cargo"]
-  }
-  "/events": {
-    /**
-     * Listen on events using Server-Sent Events / EventSource
-     * @description Listen on events using Server-Sent Events / EventSource
-     */
-    get: operations["watch_event"]
-  }
-  "/http_metrics": {
-    /**
-     * Get http metrics of all peer nodes
-     * @description Get http metrics of all peer nodes
-     */
-    get: operations["list_http_metric"]
-  }
-  "/http_metrics/count": {
-    /**
-     * Count http metrics of all peer nodes
-     * @description Count http metrics of all peer nodes
-     */
-    get: operations["count_http_metric"]
-  }
-  "/info": {
-    /**
-     * Get host/node system information
-     * @description Get host/node system information
-     */
-    get: operations["get_info"]
-  }
-  "/metrics": {
-    /**
-     * Get specific metric of all peer nodes
-     * @description Get specific metric of all peer nodes
-     */
-    get: operations["list_metric"]
-  }
-  "/namespaces": {
-    /**
-     * List namespaces
-     * @description List namespaces
-     */
-    get: operations["list_namespace"]
-    /**
-     * Create a namespace
-     * @description Create a namespace
-     */
-    post: operations["create_namespace"]
-  }
-  "/namespaces/{Name}": {
-    /**
-     * Delete a namespace
-     * @description Delete a namespace
-     */
-    delete: operations["delete_namespace"]
-  }
-  "/namespaces/{Name}/inspect": {
-    /**
-     * Get detailed information about a namespace
-     * @description Get detailed information about a namespace
-     */
-    get: operations["inspect_namespace"]
-  }
-  "/nodes": {
-    /**
-     * List nodes
-     * @description List nodes
-     */
-    get: operations["list_node"]
-  }
-  "/nodes/ws": {
-    /**
-     * Websocket endpoint for communication between nodes used internally
-     * @description Websocket endpoint for communication between nodes used internally
-     */
-    get: operations["node_ws"]
-  }
-  "/processes": {
-    /**
-     * List instances (cargo/vm) including non running ones
-     * @description List instances (cargo/vm) including non running ones
-     */
-    get: operations["get_processes"]
-  }
-  "/resources": {
-    /**
-     * List resources
-     * @description List resources
-     */
-    get: operations["list_resource"]
-    /**
-     * Create a resource
-     * @description Create a resource
-     */
-    post: operations["create_resource"]
-  }
-  "/resources/{Name}": {
-    /**
-     * Get detailed information about a resource
-     * @description Get detailed information about a resource
-     */
-    get: operations["inspect_resource"]
-    /**
-     * Delete a resource
-     * @description Delete a resource
-     */
-    delete: operations["delete_resource"]
-    /**
-     * Patch a resource (update its version and/or config) and create a new history
-     * @description Patch a resource (update its version and/or config) and create a new history
-     */
-    patch: operations["patch_resource"]
-  }
-  "/resources/{Name}/histories": {
-    /**
-     * List resource history
-     * @description List resource history
-     */
-    get: operations["list_resource_history"]
-  }
-  "/resources/{Name}/histories/{Id}/reset": {
-    /**
-     * Reset a resource to a specific history
-     * @description Reset a resource to a specific history
-     */
-    patch: operations["reset_resource"]
-  }
-  "/version": {
-    /**
-     * Get version information
-     * @description Get version information
-     */
-    get: operations["get_version"]
-  }
-  "/vms": {
-    /**
-     * List virtual machines
-     * @description List virtual machines
-     */
-    get: operations["list_vm"]
-    /**
-     * Create a virtual machine
-     * @description Create a virtual machine
-     */
-    post: operations["create_vm"]
-  }
-  "/vms/images": {
-    /**
-     * List virtual machine images
-     * @description List virtual machine images
-     */
-    get: operations["list_vm_images"]
-  }
-  "/vms/images/{Name}": {
-    /**
-     * Delete a virtual machine image
-     * @description Delete a virtual machine image
-     */
-    delete: operations["delete_vm_image"]
-  }
-  "/vms/images/{Name}/clone/{CloneName}": {
-    /**
-     * Clone a virtual machine image
-     * @description Clone a virtual machine image
-     */
-    post: operations["clone_vm_image"]
-  }
-  "/vms/images/{Name}/import": {
-    /**
-     * Import a virtual machine image from a file
-     * @description Import a virtual machine image from a file
-     */
-    post: operations["import_vm_image"]
-  }
-  "/vms/images/{Name}/resize": {
-    /**
-     * Resize a virtual machine image
-     * @description Resize a virtual machine image
-     */
-    post: operations["resize_vm_image"]
-  }
-  "/vms/images/{Name}/snapshot/{SnapshotName}": {
-    /**
-     * Create a snapshot of a virtual machine image
-     * @description Create a snapshot of a virtual machine image
-     */
-    post: operations["snapshot_vm_image"]
-  }
-  "/vms/{Name}": {
-    /**
-     * Delete a virtual machine
-     * @description Delete a virtual machine
-     */
-    delete: operations["delete_vm"]
-    /**
-     * Patch a virtual machine config meaning merging current config with the new one and add history entry
-     * @description Patch a virtual machine config meaning merging current config with the new one and add history entry
-     */
-    patch: operations["patch_vm"]
-  }
-  "/vms/{Name}/attach": {
-    /**
-     * Attach to a virtual machine via websocket
-     * @description Attach to a virtual machine via websocket
-     */
-    get: operations["vm_attach"]
-  }
-  "/vms/{Name}/histories": {
-    /**
-     * List virtual machine histories
-     * @description List virtual machine histories
-     */
-    get: operations["list_vm_history"]
-  }
-  "/vms/{Name}/inspect": {
-    /**
-     * Inspect a virtual machine
-     * @description Inspect a virtual machine
-     */
-    get: operations["inspect_vm"]
-  }
-  "/vms/{Name}/start": {
-    /**
-     * Start a virtual machine
-     * @description Start a virtual machine
-     */
-    post: operations["start_vm"]
-  }
-  "/vms/{Name}/stop": {
-    /**
-     * Stop a virtual machine
-     * @description Stop a virtual machine
-     */
-    post: operations["stop_vm"]
-  }
+    "/_ping": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        /** Ping the server to check if it is up */
+        head: operations["get_ping"];
+        patch?: never;
+        trace?: never;
+    };
+    "/cargoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List cargoes with optional filter */
+        get: operations["list_cargo"];
+        put?: never;
+        /** Create a new cargo by it specification */
+        post: operations["create_cargo"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/cargoes/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Count cargoes with optional filter */
+        get: operations["count_cargo"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/cargoes/{cargo_name}/exec": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["create_exec_command"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/cargoes/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update a cargo by it's new specification and create a history record */
+        put: operations["put_cargo"];
+        post?: never;
+        /** Delete a cargo by it's name */
+        delete: operations["delete_cargo"];
+        options?: never;
+        head?: never;
+        /** Patch a cargo with it's specification meaning merging current spec with the new one and add history record */
+        patch: operations["patch_cargo"];
+        trace?: never;
+    };
+    "/cargoes/{name}/histories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List cargo histories */
+        get: operations["list_cargo_history"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/cargoes/{name}/histories/{key}/revert": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Revert a cargo to a specific history record */
+        patch: operations["revert_cargo"];
+        trace?: never;
+    };
+    "/cargoes/{name}/inspect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get detailed information about a cargo by its name */
+        get: operations["inspect_cargo"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List events with optional filter */
+        get: operations["list_event"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/events/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Count events with optional filter */
+        get: operations["count_event"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/events/watch": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Watch on new events of all peer nodes with optional condition to stop the stream */
+        post: operations["watch_event"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/events/{key}/inspect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get detailed information about an event */
+        get: operations["inspect_event"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/exec/{id}/cargo/inspect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Inspect a command executed in a cargo */
+        post: operations["inspect_exec_command"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/exec/{id}/cargo/start": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["start_exec_command"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/info": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get host/node system information */
+        get: operations["get_info"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/jobs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List jobs with optional filter */
+        get: operations["list_job"];
+        put?: never;
+        /** Create a new job */
+        post: operations["create_job"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/jobs/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Count jobs */
+        get: operations["count_job"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/jobs/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a job by name */
+        delete: operations["delete_job"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/jobs/{name}/inspect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get detailed information about a job */
+        get: operations["inspect_job"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/metrics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List metrics with optional filter */
+        get: operations["list_metric"];
+        put?: never;
+        /** Create a new metric */
+        post: operations["create_metric"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/metrics/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Count metrics with optional filter */
+        get: operations["count_metric"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/metrics/{key}/inspect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get detailed information about a metric */
+        get: operations["inspect_metric"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/namespaces": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List namespaces with optional filter */
+        get: operations["list_namespace"];
+        put?: never;
+        /** Create a new namespace */
+        post: operations["create_namespace"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/namespaces/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Count namespaces */
+        get: operations["count_namespace"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/namespaces/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a namespace */
+        delete: operations["delete_namespace"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/namespaces/{name}/inspect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get detailed information about a namespace */
+        get: operations["inspect_namespace"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/nodes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List nodes */
+        get: operations["list_node"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/nodes/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Count nodes */
+        get: operations["count_node"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/nodes/ws": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Websocket endpoint for communication between nodes used internally */
+        get: operations["node_ws"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/processes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List processes with optional filter */
+        get: operations["list_processes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/processes/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Count processes */
+        get: operations["count_processes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/processes/{kind}/{name}/kill": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send a signal to all processes of given kind and name (cargo, job, vm) */
+        post: operations["kill_processes"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/processes/{kind}/{name}/logs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get logs of processes of given kind and name (cargo, job, vm) */
+        get: operations["logs_processes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/processes/{kind}/{name}/restart": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restart all processes of given kind and name (cargo, job, vm) */
+        post: operations["restart_processes"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/processes/{kind}/{name}/start": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start all processes of given kind and name (cargo, job, vm) */
+        post: operations["start_processes"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/processes/{kind}/{name}/stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get stats of all processes of given kind and name (cargo, job, vm) */
+        get: operations["stats_processes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/processes/{kind}/{name}/stop": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Stop all processes of given kind and name (cargo, job, vm) */
+        post: operations["stop_processes"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/processes/{kind}/{name}/wait": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Wait for a all processes to reach a specific state */
+        get: operations["wait_processes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/processes/{name}/inspect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get detailed information about a process by it's name */
+        get: operations["inspect_process"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/processes/{name}/logs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get logs of a single process instance by it's name or id */
+        get: operations["logs_process"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/processes/{pk}/start": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start a single process by it's name or id */
+        post: operations["start_process_by_pk"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resource/kinds": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List resource kinds */
+        get: operations["list_resource_kind"];
+        put?: never;
+        /** Create a resource kind */
+        post: operations["create_resource_kind"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resource/kinds/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Count resource kinds */
+        get: operations["count_resource_kind"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resource/kinds/{domain}/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a resource kind */
+        delete: operations["delete_resource_kind"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resource/kinds/{domain}/{name}/inspect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get detailed information about a resource kind */
+        get: operations["inspect_resource_kind"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resource/kinds/{domain}/{name}/version/{version}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get detailed information about a resource kind version */
+        get: operations["inspect_resource_kind_version"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resources": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List resources with optional filter */
+        get: operations["list_resource"];
+        put?: never;
+        /** Create a new resource */
+        post: operations["create_resource"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resources/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Count resources */
+        get: operations["count_resource"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resources/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Create a new resource spec and add history entry */
+        put: operations["put_resource"];
+        post?: never;
+        /** Delete a resource by name */
+        delete: operations["delete_resource"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resources/{name}/histories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List resource history */
+        get: operations["list_resource_history"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/resources/{name}/histories/{id}/revert": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Revert a resource to a specific history */
+        patch: operations["revert_resource"];
+        trace?: never;
+    };
+    "/resources/{name}/inspect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get detailed information about a resource */
+        get: operations["inspect_resource"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/secrets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List secret with optional filter */
+        get: operations["list_secret"];
+        put?: never;
+        /** Create a new secret */
+        post: operations["create_secret"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/secrets/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Count secrets */
+        get: operations["count_secret"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/secrets/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a secret */
+        delete: operations["delete_secret"];
+        options?: never;
+        head?: never;
+        /** Update a secret */
+        patch: operations["patch_secret"];
+        trace?: never;
+    };
+    "/secrets/{key}/inspect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get detailed information about a secret */
+        get: operations["inspect_secret"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/version": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get version information */
+        get: operations["get_version"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/vms": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List virtual machines with optional filter */
+        get: operations["list_vm"];
+        put?: never;
+        /** Create a virtual machine */
+        post: operations["create_vm"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/vms/images": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List virtual machine images with optional filter */
+        get: operations["list_vm_images"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/vms/images/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a virtual machine image */
+        delete: operations["delete_vm_image"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/vms/images/{name}/clone/{clone_name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Clone a virtual machine image */
+        post: operations["clone_vm_image"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/vms/images/{name}/import": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Import a virtual machine image from a file */
+        post: operations["import_vm_image"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/vms/images/{name}/resize": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resize a virtual machine image */
+        post: operations["resize_vm_image"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/vms/images/{name}/snapshot/{snapshot_name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create a snapshot of a virtual machine image */
+        post: operations["snapshot_vm_image"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/vms/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a virtual machine by name */
+        delete: operations["delete_vm"];
+        options?: never;
+        head?: never;
+        /** Patch a virtual machine config meaning merging current config with the new one and add history entry */
+        patch: operations["patch_vm"];
+        trace?: never;
+    };
+    "/vms/{name}/attach": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Attach to a virtual machine via websocket */
+        get: operations["vm_attach"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/vms/{name}/histories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List virtual machine histories */
+        get: operations["list_vm_history"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/vms/{name}/inspect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get detailed information about a virtual machine */
+        get: operations["inspect_vm"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
-
-export type webhooks = Record<string, never>
-
+export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    /** @description Helper to generate have Any type for [OpenApi](OpenApi) usefull for dynamic json objects like [ResourceConfig](ResourceConfig) */
-    Any: OneOf<
-      [
-        string,
-        number,
-        boolean,
-        components["schemas"]["Any"][],
-        {
-          [key: string]: components["schemas"]["Any"] | undefined
-        }
-      ]
-    >
-    /** @description When returning a [HttpError](HttpError) the status code is stripped and the error is returned as a json object with the message field set to the error message. */
-    ApiError: {
-      msg: string
-    }
-    /**
-     * BollardDate
-     * @description BollardDate
-     * @example 2021-01-01T00:00:00.000000000Z
-     */
-    BollardDate: string | null
-    /**
-     * @description A Cargo is a replicable container
-     * It is used to run one or multiple instances of the same container
-     * You can define the number of replicas you want to run
-     * You can also define the minimum and maximum number of replicas
-     * The cluster will automatically scale the number of replicas to match the number of replicas you want
-     * Cargo contain a configuration which is used to create the container
-     * The configuration can be updated and the old configuration will be kept in the history
-     * That way you can rollback to a previous configuration quickly
-     */
-    Cargo: {
-      /** @description Key of the cargo */
-      Key: string
-      /** @description Name of the namespace */
-      NamespaceName: string
-      /** @description Name of the cargo */
-      Name: string
-      /**
-       * Format: uuid
-       * @description Unique identifier of the cargo config
-       */
-      ConfigKey: string
-      Config: components["schemas"]["CargoConfig"]
-    }
-    /**
-     * @description A cargo config is the configuration of a cargo
-     * It used to know the state of the cargo
-     * It keep tracking of an history when you patch an existing cargo
-     */
-    CargoConfig: {
-      /**
-       * Format: uuid
-       * @description Unique identifier of the cargo config
-       */
-      Key: string
-      /**
-       * Format: date-time
-       * @description Creation date of the cargo config
-       */
-      CreatedAt: string
-      /** @description Name of the cargo */
-      Name: string
-      /** @description Version of the config */
-      Version: string
-      /** @description The key of the cargo */
-      CargoKey: string
-      Replication?: components["schemas"]["ReplicationMode"] | null
-      Container: components["schemas"]["Config"]
-    }
-    /** @description A cargo config partial is used to create a Cargo */
-    CargoConfigPartial: {
-      /** @description Name of the cargo */
-      Name: string
-      Replication?: components["schemas"]["ReplicationMode"] | null
-      Container: components["schemas"]["Config"]
-    }
-    /**
-     * @description Payload used to patch a cargo
-     * It will create a new [CargoConfig](CargoConfig) with the new values
-     * It will keep the old values in the history
-     */
-    CargoConfigUpdate: {
-      /** @description New name of the cargo */
-      Name?: string | null
-      Container?: components["schemas"]["Config"] | null
-      Replication?: components["schemas"]["ReplicationMode"] | null
-    }
-    /** @description Cargo Image Partial is used to pull a new container image */
-    CargoImagePartial: {
-      /**
-       * @description Name of the image
-       * @example nginx:latest
-       */
-      Name: string
-    }
-    /**
-     * @description A Cargo Inspect is a detailed view of a cargo
-     * It is used to inspect a cargo
-     * It contains all the information about the cargo
-     * It also contains the list of containers
-     */
-    CargoInspect: {
-      /** @description Key of the cargo */
-      Key: string
-      /** @description Name of the cargo */
-      Name: string
-      /**
-       * Format: uuid
-       * @description Unique identifier of the cargo config
-       */
-      ConfigKey: string
-      /** @description Name of the namespace */
-      NamespaceName: string
-      Config: components["schemas"]["CargoConfig"]
-      /** @description Number of instances */
-      InstanceTotal: number
-      /** @description Number of running instances */
-      InstanceRunning: number
-      /** @description List of containers */
-      Instances: components["schemas"]["NodeContainerSummary"][]
-    }
-    /** @description Options for the kill command */
-    CargoKillOptions: {
-      /** @description Signal to send to the container default: SIGKILL */
-      Signal: string
-    }
-    /**
-     * @description A Cargo Summary is a summary of a cargo
-     * It is used to list all the cargos
-     */
-    CargoSummary: {
-      /** @description Key of the cargo */
-      Key: string
-      /**
-       * Format: date-time
-       * @description Creation date of the cargo
-       */
-      CreatedAt: string
-      /**
-       * Format: date-time
-       * @description Update date of the cargo
-       */
-      UpdatedAt: string
-      /** @description Name of the cargo */
-      Name: string
-      /**
-       * Format: uuid
-       * @description Unique identifier of the cargo config
-       */
-      ConfigKey: string
-      /** @description Name of the namespace */
-      NamespaceName: string
-      Config: components["schemas"]["CargoConfig"]
-      /** @description Number of instances */
-      InstanceTotal: number
-      /** @description Number of running instances */
-      InstanceRunning: number
-    }
-    /** @description Defines a proxy rule target */
-    CargoTarget: {
-      /** @description The cargo key */
-      CargoKey: string
-      /**
-       * Format: int32
-       * @description The cargo port
-       */
-      CargoPort: number
-    }
-    /** @description ClusterInfo represents information about the swarm as is returned by the \"/info\" endpoint. Join-tokens are not included. */
-    ClusterInfo: {
-      /** @description The ID of the swarm. */
-      ID?: string | null
-      Version?: components["schemas"]["ObjectVersion"] | null
-      CreatedAt?: components["schemas"]["BollardDate"] | null
-      UpdatedAt?: components["schemas"]["BollardDate"] | null
-      Spec?: components["schemas"]["SwarmSpec"] | null
-      TLSInfo?: components["schemas"]["TlsInfo"] | null
-      /** @description Whether there is currently a root CA rotation in progress for the swarm */
-      RootRotationInProgress?: boolean | null
-      /**
-       * Format: int32
-       * @description DataPathPort specifies the data path port number for data traffic. Acceptable port range is 1024 to 49151. If no port is set or is set to 0, the default port (4789) is used.
-       */
-      DataPathPort?: number | null
-      /** @description Default Address Pool specifies default subnet pools for global scope networks. */
-      DefaultAddrPool?: string[] | null
-      /**
-       * Format: int32
-       * @description SubnetSize specifies the subnet size of the networks created from the default subnet pool.
-       */
-      SubnetSize?: number | null
-    }
-    /** @description Commit holds the Git-commit (SHA1) that a binary was built from, as reported in the version-string of external tools, such as `containerd`, or `runC`. */
-    Commit: {
-      /** @description Actual commit ID of external tool. */
-      ID?: string | null
-      /** @description Commit ID of external tool expected by dockerd as set at build time. */
-      Expected?: string | null
-    }
-    /** @description Container to create. */
-    Config: {
-      /** @description The hostname to use for the container, as a valid RFC 1123 hostname. */
-      Hostname?: string | null
-      /** @description The domain name to use for the container. */
-      Domainname?: string | null
-      /** @description The user that commands are run as inside the container. */
-      User?: string | null
-      /** @description Whether to attach to `stdin`. */
-      AttachStdin?: boolean | null
-      /** @description Whether to attach to `stdout`. */
-      AttachStdout?: boolean | null
-      /** @description Whether to attach to `stderr`. */
-      AttachStderr?: boolean | null
-      /** @description An object mapping ports to an empty object in the form:  `{\"<port>/<tcp|udp|sctp>\": {}}` */
-      ExposedPorts?: {
-        [key: string]: components["schemas"]["EmptyObject"] | undefined
-      } | null
-      /** @description Attach standard streams to a TTY, including `stdin` if it is not closed. */
-      Tty?: boolean | null
-      /** @description Open `stdin` */
-      OpenStdin?: boolean | null
-      /** @description Close `stdin` after one attached client disconnects */
-      StdinOnce?: boolean | null
-      /** @description A list of environment variables to set inside the container in the form `[\"VAR=value\", ...]`. A variable without `=` is removed from the environment, rather than to have an empty value. */
-      Env?: string[] | null
-      /** @description Command to run specified as a string or an array of strings. */
-      Cmd?: string[] | null
-      Healthcheck?: components["schemas"]["HealthConfig"] | null
-      /** @description Command is already escaped (Windows only) */
-      ArgsEscaped?: boolean | null
-      /** @description The name of the image to use when creating the container */
-      Image?: string | null
-      /** @description An object mapping mount point paths inside the container to empty objects. */
-      Volumes?: {
-        [key: string]: components["schemas"]["EmptyObject"] | undefined
-      } | null
-      /** @description The working directory for commands to run in. */
-      WorkingDir?: string | null
-      /** @description The entry point for the container as a string or an array of strings.  If the array consists of exactly one empty string (`[\"\"]`) then the entry point is reset to system default (i.e., the entry point used by docker when there is no `ENTRYPOINT` instruction in the `Dockerfile`). */
-      Entrypoint?: string[] | null
-      /** @description Disable networking for the container. */
-      NetworkDisabled?: boolean | null
-      /** @description MAC address of the container. */
-      MacAddress?: string | null
-      /** @description `ONBUILD` metadata that were defined in the image's `Dockerfile`. */
-      OnBuild?: string[] | null
-      /** @description User-defined key/value metadata. */
-      Labels?: {
-        [key: string]: string | undefined
-      } | null
-      /** @description Signal to stop a container as a string or unsigned integer. */
-      StopSignal?: string | null
-      /**
-       * Format: int64
-       * @description Timeout to stop a container in seconds.
-       */
-      StopTimeout?: number | null
-      /** @description Shell for when `RUN`, `CMD`, and `ENTRYPOINT` uses a shell. */
-      Shell?: string[] | null
-      HostConfig?: components["schemas"]["HostConfig"] | null
-      NetworkingConfig?: components["schemas"]["NetworkingConfig"] | null
-    }
-    ConfigSpec: {
-      /** @description User-defined name of the config. */
-      Name?: string | null
-      /** @description User-defined key/value metadata. */
-      Labels?: {
-        [key: string]: string | undefined
-      } | null
-      /** @description Base64-url-safe-encoded ([RFC 4648](https://tools.ietf.org/html/rfc4648#section-5)) config data. */
-      Data?: string | null
-      Templating?: components["schemas"]["Driver"] | null
-    }
-    /** @description Configuration for a container that is portable between hosts.  When used as `ContainerConfig` field in an image, `ContainerConfig` is an optional field containing the configuration of the container that was last committed when creating the image.  Previous versions of Docker builder used this field to store build cache, and it is not in active use anymore. */
-    ContainerConfig: {
-      /** @description The hostname to use for the container, as a valid RFC 1123 hostname. */
-      Hostname?: string | null
-      /** @description The domain name to use for the container. */
-      Domainname?: string | null
-      /** @description The user that commands are run as inside the container. */
-      User?: string | null
-      /** @description Whether to attach to `stdin`. */
-      AttachStdin?: boolean | null
-      /** @description Whether to attach to `stdout`. */
-      AttachStdout?: boolean | null
-      /** @description Whether to attach to `stderr`. */
-      AttachStderr?: boolean | null
-      /** @description An object mapping ports to an empty object in the form:  `{\"<port>/<tcp|udp|sctp>\": {}}` */
-      ExposedPorts?: {
-        [key: string]: components["schemas"]["EmptyObject"] | undefined
-      } | null
-      /** @description Attach standard streams to a TTY, including `stdin` if it is not closed. */
-      Tty?: boolean | null
-      /** @description Open `stdin` */
-      OpenStdin?: boolean | null
-      /** @description Close `stdin` after one attached client disconnects */
-      StdinOnce?: boolean | null
-      /** @description A list of environment variables to set inside the container in the form `[\"VAR=value\", ...]`. A variable without `=` is removed from the environment, rather than to have an empty value. */
-      Env?: string[] | null
-      /** @description Command to run specified as a string or an array of strings. */
-      Cmd?: string[] | null
-      Healthcheck?: components["schemas"]["HealthConfig"] | null
-      /** @description Command is already escaped (Windows only) */
-      ArgsEscaped?: boolean | null
-      /** @description The name (or reference) of the image to use when creating the container, or which was used when the container was created. */
-      Image?: string | null
-      /** @description An object mapping mount point paths inside the container to empty objects. */
-      Volumes?: {
-        [key: string]: components["schemas"]["EmptyObject"] | undefined
-      } | null
-      /** @description The working directory for commands to run in. */
-      WorkingDir?: string | null
-      /** @description The entry point for the container as a string or an array of strings.  If the array consists of exactly one empty string (`[\"\"]`) then the entry point is reset to system default (i.e., the entry point used by docker when there is no `ENTRYPOINT` instruction in the `Dockerfile`). */
-      Entrypoint?: string[] | null
-      /** @description Disable networking for the container. */
-      NetworkDisabled?: boolean | null
-      /** @description MAC address of the container. */
-      MacAddress?: string | null
-      /** @description `ONBUILD` metadata that were defined in the image's `Dockerfile`. */
-      OnBuild?: string[] | null
-      /** @description User-defined key/value metadata. */
-      Labels?: {
-        [key: string]: string | undefined
-      } | null
-      /** @description Signal to stop a container as a string or unsigned integer. */
-      StopSignal?: string | null
-      /**
-       * Format: int64
-       * @description Timeout to stop a container in seconds.
-       */
-      StopTimeout?: number | null
-      /** @description Shell for when `RUN`, `CMD`, and `ENTRYPOINT` uses a shell. */
-      Shell?: string[] | null
-    }
-    ContainerSummary: {
-      /** @description The ID of this container */
-      Id?: string | null
-      /** @description The names that this container has been given */
-      Names?: string[] | null
-      /** @description The name of the image used when creating this container */
-      Image?: string | null
-      /** @description The ID of the image that this container was created from */
-      ImageID?: string | null
-      /** @description Command to run when starting the container */
-      Command?: string | null
-      /**
-       * Format: int64
-       * @description When the container was created
-       */
-      Created?: number | null
-      /** @description The ports exposed by this container */
-      Ports?: components["schemas"]["Port"][] | null
-      /**
-       * Format: int64
-       * @description The size of files that have been created or changed by this container
-       */
-      SizeRw?: number | null
-      /**
-       * Format: int64
-       * @description The total size of all the files in this container
-       */
-      SizeRootFs?: number | null
-      /** @description User-defined key/value metadata. */
-      Labels?: {
-        [key: string]: string | undefined
-      } | null
-      /** @description The state of this container (e.g. `Exited`) */
-      State?: string | null
-      /** @description Additional human-readable status of this container (e.g. `Exit 0`) */
-      Status?: string | null
-      HostConfig?: components["schemas"]["ContainerSummaryHostConfig"] | null
-      NetworkSettings?:
-        | components["schemas"]["ContainerSummaryNetworkSettings"]
-        | null
-      Mounts?: components["schemas"]["MountPoint"][] | null
-    }
-    ContainerSummaryHostConfig: {
-      NetworkMode?: string | null
-    }
-    /** @description A summary of the container's network settings */
-    ContainerSummaryNetworkSettings: {
-      Networks?: {
-        [key: string]: components["schemas"]["EndpointSettings"] | undefined
-      } | null
-    }
-    /** @description Exec configuration used in the [Create Exec API](Docker::create_exec()) */
-    CreateExecOptions: {
-      /** @description Attach to `stdin` of the exec command. */
-      AttachStdin?: boolean | null
-      /** @description Attach to stdout of the exec command. */
-      AttachStdout?: boolean | null
-      /** @description Attach to stderr of the exec command. */
-      AttachStderr?: boolean | null
-      /** @description Allocate a pseudo-TTY. */
-      Tty?: boolean | null
-      /**
-       * @description Override the key sequence for detaching a container. Format is a single character `[a-Z]`
-       * or `ctrl-<value>` where `<value>` is one of: `a-z`, `@`, `^`, `[`, `,` or `_`.
-       */
-      DetachKeys?: string | null
-      /** @description A list of environment variables in the form `["VAR=value", ...].` */
-      Env?: string[] | null
-      /** @description Command to run, as a string or array of strings. */
-      Cmd?: string[] | null
-      /** @description Runs the exec process with extended privileges. */
-      Privileged?: boolean | null
-      /**
-       * @description The user, and optionally, group to run the exec process inside the container. Format is one
-       * of: `user`, `user:group`, `uid`, or `uid:gid`.
-       */
-      User?: string | null
-      /** @description The working directory for the exec process inside the container. */
-      WorkingDir?: string | null
-    }
-    /**
-     * @description Configuration of the daemon
-     * It is used to configure the daemon
-     */
-    DaemonConfig: {
-      /** @description List of hosts to listen on */
-      hosts: string[]
-      /** @description Path to the state directory */
-      state_dir: string
-      /** @description Docker host to use */
-      docker_host?: string
-      /** @description Host gateway automatically detected to host default gateway if not set */
-      gateway: string
-      /** @description Hostname to use for the node automatically detected if not set */
-      hostname: string
-      /** @description List of nodes to join */
-      nodes: string[]
-      /** @description Address to advertise to other nodes */
-      advertise_addr: string
-      /** @description Config directory */
-      conf_dir: string
-      /**
-       * Format: int32
-       * @description Group id
-       */
-      gid: number
-    }
-    /** @description A device mapping between the host and container */
-    DeviceMapping: {
-      PathOnHost?: string | null
-      PathInContainer?: string | null
-      CgroupPermissions?: string | null
-    }
-    /** @description A request for devices to be sent to device drivers */
-    DeviceRequest: {
-      Driver?: string | null
-      /** Format: int64 */
-      Count?: number | null
-      DeviceIDs?: string[] | null
-      /** @description A list of capabilities; an OR list of AND lists of capabilities. */
-      Capabilities?: string[][] | null
-      /** @description Driver-specific options, specified as a key/value pairs. These options are passed directly to the driver. */
-      Options?: {
-        [key: string]: string | undefined
-      } | null
-    }
-    DnsEntry: {
-      Name: string
-      IpAddress: string
-    }
-    /** @description Driver represents a driver (network, logging, secrets). */
-    Driver: {
-      /** @description Name of the driver. */
-      Name: string
-      /** @description Key/value map of driver-specific options. */
-      Options?: {
-        [key: string]: string | undefined
-      } | null
-    }
-    /**
-     * EmptyObject
-     * @description EmptyObject
-     */
-    EmptyObject: Record<string, unknown> | null
-    /** @description EndpointIPAMConfig represents an endpoint's IPAM configuration. */
-    EndpointIpamConfig: {
-      IPv4Address?: string | null
-      IPv6Address?: string | null
-      LinkLocalIPs?: string[] | null
-    }
-    /** @description Configuration for a network endpoint. */
-    EndpointSettings: {
-      IPAMConfig?: components["schemas"]["EndpointIpamConfig"] | null
-      Links?: string[] | null
-      Aliases?: string[] | null
-      /** @description Unique ID of the network. */
-      NetworkID?: string | null
-      /** @description Unique ID for the service endpoint in a Sandbox. */
-      EndpointID?: string | null
-      /** @description Gateway address for this network. */
-      Gateway?: string | null
-      /** @description IPv4 address. */
-      IPAddress?: string | null
-      /**
-       * Format: int64
-       * @description Mask length of the IPv4 address.
-       */
-      IPPrefixLen?: number | null
-      /** @description IPv6 gateway address. */
-      IPv6Gateway?: string | null
-      /** @description Global IPv6 address. */
-      GlobalIPv6Address?: string | null
-      /**
-       * Format: int64
-       * @description Mask length of the global IPv6 address.
-       */
-      GlobalIPv6PrefixLen?: number | null
-      /** @description MAC address for the endpoint on this network. */
-      MacAddress?: string | null
-      /** @description DriverOpts is a mapping of driver options and values. These options are passed directly to the driver and are driver specific. */
-      DriverOpts?: {
-        [key: string]: string | undefined
-      } | null
-    }
-    GenericCount: {
-      /**
-       * Format: int64
-       * @description Number of items
-       */
-      Count: number
-    }
-    /** @description Generic delete response */
-    GenericDelete: {
-      /** @description Number of deleted items */
-      Count: number
-    }
-    GenericResources: {
-      NamedResourceSpec?:
-        | components["schemas"]["GenericResourcesInnerNamedResourceSpec"]
-        | null
-      DiscreteResourceSpec?:
-        | components["schemas"]["GenericResourcesInnerDiscreteResourceSpec"]
-        | null
-    }
-    GenericResourcesInnerDiscreteResourceSpec: {
-      Kind?: string | null
-      /** Format: int64 */
-      Value?: number | null
-    }
-    GenericResourcesInnerNamedResourceSpec: {
-      Kind?: string | null
-      Value?: string | null
-    }
-    /** @description Information about the storage driver used to store the container's and image's filesystem. */
-    GraphDriverData: {
-      /** @description Name of the storage driver. */
-      Name: string
-      /** @description Low-level storage metadata, provided as key/value pairs.  This information is driver-specific, and depends on the storage-driver in use, and should be used for informational purposes only. */
-      Data: {
-        [key: string]: string | undefined
-      }
-    }
-    /** @description A test to perform to check that the container is healthy. */
-    HealthConfig: {
-      /** @description The test to perform. Possible values are:  - `[]` inherit healthcheck from image or parent image - `[\"NONE\"]` disable healthcheck - `[\"CMD\", args...]` exec arguments directly - `[\"CMD-SHELL\", command]` run command with system's default shell */
-      Test?: string[] | null
-      /**
-       * Format: int64
-       * @description The time to wait between checks in nanoseconds. It should be 0 or at least 1000000 (1 ms). 0 means inherit.
-       */
-      Interval?: number | null
-      /**
-       * Format: int64
-       * @description The time to wait before considering the check to have hung. It should be 0 or at least 1000000 (1 ms). 0 means inherit.
-       */
-      Timeout?: number | null
-      /**
-       * Format: int64
-       * @description The number of consecutive failures needed to consider a container as unhealthy. 0 means inherit.
-       */
-      Retries?: number | null
-      /**
-       * Format: int64
-       * @description Start period for the container to initialize before starting health-retries countdown in nanoseconds. It should be 0 or at least 1000000 (1 ms). 0 means inherit.
-       */
-      StartPeriod?: number | null
-    }
-    /** @description Container configuration that depends on the host we are running on */
-    HostConfig: {
-      /**
-       * Format: int64
-       * @description An integer value representing this container's relative CPU weight versus other containers.
-       */
-      CpuShares?: number | null
-      /**
-       * Format: int64
-       * @description Memory limit in bytes.
-       */
-      Memory?: number | null
-      /** @description Path to `cgroups` under which the container's `cgroup` is created. If the path is not absolute, the path is considered to be relative to the `cgroups` path of the init process. Cgroups are created if they do not already exist. */
-      CgroupParent?: string | null
-      /**
-       * Format: int32
-       * @description Block IO weight (relative weight).
-       */
-      BlkioWeight?: number | null
-      /** @description Block IO weight (relative device weight) in the form:  ``` [{\"Path\": \"device_path\", \"Weight\": weight}] ``` */
-      BlkioWeightDevice?:
-        | components["schemas"]["ResourcesBlkioWeightDevice"][]
-        | null
-      /** @description Limit read rate (bytes per second) from a device, in the form:  ``` [{\"Path\": \"device_path\", \"Rate\": rate}] ``` */
-      BlkioDeviceReadBps?: components["schemas"]["ThrottleDevice"][] | null
-      /** @description Limit write rate (bytes per second) to a device, in the form:  ``` [{\"Path\": \"device_path\", \"Rate\": rate}] ``` */
-      BlkioDeviceWriteBps?: components["schemas"]["ThrottleDevice"][] | null
-      /** @description Limit read rate (IO per second) from a device, in the form:  ``` [{\"Path\": \"device_path\", \"Rate\": rate}] ``` */
-      BlkioDeviceReadIOps?: components["schemas"]["ThrottleDevice"][] | null
-      /** @description Limit write rate (IO per second) to a device, in the form:  ``` [{\"Path\": \"device_path\", \"Rate\": rate}] ``` */
-      BlkioDeviceWriteIOps?: components["schemas"]["ThrottleDevice"][] | null
-      /**
-       * Format: int64
-       * @description The length of a CPU period in microseconds.
-       */
-      CpuPeriod?: number | null
-      /**
-       * Format: int64
-       * @description Microseconds of CPU time that the container can get in a CPU period.
-       */
-      CpuQuota?: number | null
-      /**
-       * Format: int64
-       * @description The length of a CPU real-time period in microseconds. Set to 0 to allocate no time allocated to real-time tasks.
-       */
-      CpuRealtimePeriod?: number | null
-      /**
-       * Format: int64
-       * @description The length of a CPU real-time runtime in microseconds. Set to 0 to allocate no time allocated to real-time tasks.
-       */
-      CpuRealtimeRuntime?: number | null
-      /** @description CPUs in which to allow execution (e.g., `0-3`, `0,1`). */
-      CpusetCpus?: string | null
-      /** @description Memory nodes (MEMs) in which to allow execution (0-3, 0,1). Only effective on NUMA systems. */
-      CpusetMems?: string | null
-      /** @description A list of devices to add to the container. */
-      Devices?: components["schemas"]["DeviceMapping"][] | null
-      /** @description a list of cgroup rules to apply to the container */
-      DeviceCgroupRules?: string[] | null
-      /** @description A list of requests for devices to be sent to device drivers. */
-      DeviceRequests?: components["schemas"]["DeviceRequest"][] | null
-      /**
-       * Format: int64
-       * @description Hard limit for kernel TCP buffer memory (in bytes). Depending on the OCI runtime in use, this option may be ignored. It is no longer supported by the default (runc) runtime.  This field is omitted when empty.
-       */
-      KernelMemoryTCP?: number | null
-      /**
-       * Format: int64
-       * @description Memory soft limit in bytes.
-       */
-      MemoryReservation?: number | null
-      /**
-       * Format: int64
-       * @description Total memory limit (memory + swap). Set as `-1` to enable unlimited swap.
-       */
-      MemorySwap?: number | null
-      /**
-       * Format: int64
-       * @description Tune a container's memory swappiness behavior. Accepts an integer between 0 and 100.
-       */
-      MemorySwappiness?: number | null
-      /**
-       * Format: int64
-       * @description CPU quota in units of 10<sup>-9</sup> CPUs.
-       */
-      NanoCpus?: number | null
-      /** @description Disable OOM Killer for the container. */
-      OomKillDisable?: boolean | null
-      /** @description Run an init inside the container that forwards signals and reaps processes. This field is omitted if empty, and the default (as configured on the daemon) is used. */
-      Init?: boolean | null
-      /**
-       * Format: int64
-       * @description Tune a container's PIDs limit. Set `0` or `-1` for unlimited, or `null` to not change.
-       */
-      PidsLimit?: number | null
-      /** @description A list of resource limits to set in the container. For example:  ``` {\"Name\": \"nofile\", \"Soft\": 1024, \"Hard\": 2048} ``` */
-      Ulimits?: components["schemas"]["ResourcesUlimits"][] | null
-      /**
-       * Format: int64
-       * @description The number of usable CPUs (Windows only).  On Windows Server containers, the processor resource controls are mutually exclusive. The order of precedence is `CPUCount` first, then `CPUShares`, and `CPUPercent` last.
-       */
-      CpuCount?: number | null
-      /**
-       * Format: int64
-       * @description The usable percentage of the available CPUs (Windows only).  On Windows Server containers, the processor resource controls are mutually exclusive. The order of precedence is `CPUCount` first, then `CPUShares`, and `CPUPercent` last.
-       */
-      CpuPercent?: number | null
-      /**
-       * Format: int64
-       * @description Maximum IOps for the container system drive (Windows only)
-       */
-      IOMaximumIOps?: number | null
-      /**
-       * Format: int64
-       * @description Maximum IO in bytes per second for the container system drive (Windows only).
-       */
-      IOMaximumBandwidth?: number | null
-      /** @description A list of volume bindings for this container. Each volume binding is a string in one of these forms:  - `host-src:container-dest[:options]` to bind-mount a host path   into the container. Both `host-src`, and `container-dest` must   be an _absolute_ path. - `volume-name:container-dest[:options]` to bind-mount a volume   managed by a volume driver into the container. `container-dest`   must be an _absolute_ path.  `options` is an optional, comma-delimited list of:  - `nocopy` disables automatic copying of data from the container   path to the volume. The `nocopy` flag only applies to named volumes. - `[ro|rw]` mounts a volume read-only or read-write, respectively.   If omitted or set to `rw`, volumes are mounted read-write. - `[z|Z]` applies SELinux labels to allow or deny multiple containers   to read and write to the same volume.     - `z`: a _shared_ content label is applied to the content. This       label indicates that multiple containers can share the volume       content, for both reading and writing.     - `Z`: a _private unshared_ label is applied to the content.       This label indicates that only the current container can use       a private volume. Labeling systems such as SELinux require       proper labels to be placed on volume content that is mounted       into a container. Without a label, the security system can       prevent a container's processes from using the content. By       default, the labels set by the host operating system are not       modified. - `[[r]shared|[r]slave|[r]private]` specifies mount   [propagation behavior](https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt).   This only applies to bind-mounted volumes, not internal volumes   or named volumes. Mount propagation requires the source mount   point (the location where the source directory is mounted in the   host operating system) to have the correct propagation properties.   For shared volumes, the source mount point must be set to `shared`.   For slave volumes, the mount must be set to either `shared` or   `slave`. */
-      Binds?: string[] | null
-      /** @description Path to a file where the container ID is written */
-      ContainerIDFile?: string | null
-      LogConfig?: components["schemas"]["HostConfigLogConfig"] | null
-      /** @description Network mode to use for this container. Supported standard values are: `bridge`, `host`, `none`, and `container:<name|id>`. Any other value is taken as a custom network's name to which this container should connect to. */
-      NetworkMode?: string | null
-      PortBindings?: components["schemas"]["PortMap"] | null
-      RestartPolicy?: components["schemas"]["RestartPolicy"] | null
-      /** @description Automatically remove the container when the container's process exits. This has no effect if `RestartPolicy` is set. */
-      AutoRemove?: boolean | null
-      /** @description Driver that this container uses to mount volumes. */
-      VolumeDriver?: string | null
-      /** @description A list of volumes to inherit from another container, specified in the form `<container name>[:<ro|rw>]`. */
-      VolumesFrom?: string[] | null
-      /** @description Specification for mounts to be added to the container. */
-      Mounts?: components["schemas"]["Mount"][] | null
-      /** @description Initial console size, as an `[height, width]` array. */
-      ConsoleSize?: number[] | null
-      /** @description A list of kernel capabilities to add to the container. Conflicts with option 'Capabilities'. */
-      CapAdd?: string[] | null
-      /** @description A list of kernel capabilities to drop from the container. Conflicts with option 'Capabilities'. */
-      CapDrop?: string[] | null
-      CgroupnsMode?: components["schemas"]["HostConfigCgroupnsModeEnum"] | null
-      /** @description A list of DNS servers for the container to use. */
-      Dns?: string[] | null
-      /** @description A list of DNS options. */
-      DnsOptions?: string[] | null
-      /** @description A list of DNS search domains. */
-      DnsSearch?: string[] | null
-      /** @description A list of hostnames/IP mappings to add to the container's `/etc/hosts` file. Specified in the form `[\"hostname:IP\"]`. */
-      ExtraHosts?: string[] | null
-      /** @description A list of additional groups that the container process will run as. */
-      GroupAdd?: string[] | null
-      /** @description IPC sharing mode for the container. Possible values are:  - `\"none\"`: own private IPC namespace, with /dev/shm not mounted - `\"private\"`: own private IPC namespace - `\"shareable\"`: own private IPC namespace, with a possibility to share it with other containers - `\"container:<name|id>\"`: join another (shareable) container's IPC namespace - `\"host\"`: use the host system's IPC namespace  If not specified, daemon default is used, which can either be `\"private\"` or `\"shareable\"`, depending on daemon version and configuration. */
-      IpcMode?: string | null
-      /** @description Cgroup to use for the container. */
-      Cgroup?: string | null
-      /** @description A list of links for the container in the form `container_name:alias`. */
-      Links?: string[] | null
-      /**
-       * Format: int64
-       * @description An integer value containing the score given to the container in order to tune OOM killer preferences.
-       */
-      OomScoreAdj?: number | null
-      /** @description Set the PID (Process) Namespace mode for the container. It can be either:  - `\"container:<name|id>\"`: joins another container's PID namespace - `\"host\"`: use the host's PID namespace inside the container */
-      PidMode?: string | null
-      /** @description Gives the container full access to the host. */
-      Privileged?: boolean | null
-      /** @description Allocates an ephemeral host port for all of a container's exposed ports.  Ports are de-allocated when the container stops and allocated when the container starts. The allocated port might be changed when restarting the container.  The port is selected from the ephemeral port range that depends on the kernel. For example, on Linux the range is defined by `/proc/sys/net/ipv4/ip_local_port_range`. */
-      PublishAllPorts?: boolean | null
-      /** @description Mount the container's root filesystem as read only. */
-      ReadonlyRootfs?: boolean | null
-      /** @description A list of string values to customize labels for MLS systems, such as SELinux. */
-      SecurityOpt?: string[] | null
-      /** @description Storage driver options for this container, in the form `{\"size\": \"120G\"}`. */
-      StorageOpt?: {
-        [key: string]: string | undefined
-      } | null
-      /** @description A map of container directories which should be replaced by tmpfs mounts, and their corresponding mount options. For example:  ``` { \"/run\": \"rw,noexec,nosuid,size=65536k\" } ``` */
-      Tmpfs?: {
-        [key: string]: string | undefined
-      } | null
-      /** @description UTS namespace to use for the container. */
-      UTSMode?: string | null
-      /** @description Sets the usernamespace mode for the container when usernamespace remapping option is enabled. */
-      UsernsMode?: string | null
-      /**
-       * Format: int64
-       * @description Size of `/dev/shm` in bytes. If omitted, the system uses 64MB.
-       */
-      ShmSize?: number | null
-      /** @description A list of kernel parameters (sysctls) to set in the container. For example:  ``` {\"net.ipv4.ip_forward\": \"1\"} ``` */
-      Sysctls?: {
-        [key: string]: string | undefined
-      } | null
-      /** @description Runtime to use with this container. */
-      Runtime?: string | null
-      Isolation?: components["schemas"]["HostConfigIsolationEnum"] | null
-      /** @description The list of paths to be masked inside the container (this overrides the default set of paths). */
-      MaskedPaths?: string[] | null
-      /** @description The list of paths to be set as read-only inside the container (this overrides the default set of paths). */
-      ReadonlyPaths?: string[] | null
-    }
-    /** @enum {string} */
-    HostConfigCgroupnsModeEnum: "EMPTY" | "private" | "host"
-    /** @enum {string} */
-    HostConfigIsolationEnum: "EMPTY" | "default" | "process" | "hyperv"
-    /** @description The logging configuration for this container */
-    HostConfigLogConfig: {
-      Type?: string | null
-      Config?: {
-        [key: string]: string | undefined
-      } | null
-    }
-    /** @description HostInfo contains information about the host and the docker daemon */
-    HostInfo: components["schemas"]["SystemInfo"] & {
-      /** @description HostGateway is the gateway address of the host */
-      HostGateway: string
-      Config: components["schemas"]["DaemonConfig"]
-    }
-    HttpMetric: {
-      /** Format: uuid */
-      Key: string
-      /** Format: date-time */
-      CreatedAt: string
-      /** Format: date-time */
-      ExpireAt: string
-      /** Format: date-time */
-      DateGmt: string
-      /** Format: int64 */
-      Status: number
-      /** Format: int64 */
-      BytesSent: number
-      /** Format: int64 */
-      ContentLength: number
-      /** Format: int64 */
-      BodyBytesSent: number
-      /** Format: double */
-      RequestTime: number
-      NodeName: string
-      Uri: string
-      Host: string
-      RemoteAddr: string
-      RealipRemoteAddr: string
-      ServerProtocol: string
-      RequestMethod: string
-      ProxyHost?: string | null
-      UpstreamAddr?: string | null
-      QueryString?: string | null
-      RequestBody?: string | null
-      ContentType?: string | null
-      HttpUserAgent?: string | null
-      HttpReferrer?: string | null
-      HttpAcceptLanguage?: string | null
-    }
-    HttpTarget: {
-      /** @description Url to target */
-      Url: string
-      Redirect?: components["schemas"]["UrlRedirect"] | null
-    }
-    /** @description Information about an image in the local image cache. */
-    ImageInspect: {
-      /** @description ID is the content-addressable ID of an image.  This identifier is a content-addressable digest calculated from the image's configuration (which includes the digests of layers used by the image).  Note that this digest differs from the `RepoDigests` below, which holds digests of image manifests that reference the image. */
-      Id?: string | null
-      /** @description List of image names/tags in the local image cache that reference this image.  Multiple image tags can refer to the same image, and this list may be empty if no tags reference the image, in which case the image is \"untagged\", in which case it can still be referenced by its ID. */
-      RepoTags?: string[] | null
-      /** @description List of content-addressable digests of locally available image manifests that the image is referenced from. Multiple manifests can refer to the same image.  These digests are usually only available if the image was either pulled from a registry, or if the image was pushed to a registry, which is when the manifest is generated and its digest calculated. */
-      RepoDigests?: string[] | null
-      /** @description ID of the parent image.  Depending on how the image was created, this field may be empty and is only set for images that were built/created locally. This field is empty if the image was pulled from an image registry. */
-      Parent?: string | null
-      /** @description Optional message that was set when committing or importing the image. */
-      Comment?: string | null
-      /** @description Date and time at which the image was created, formatted in [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format with nano-seconds. */
-      Created?: string | null
-      /** @description The ID of the container that was used to create the image.  Depending on how the image was created, this field may be empty. */
-      Container?: string | null
-      ContainerConfig?: components["schemas"]["ContainerConfig"] | null
-      /** @description The version of Docker that was used to build the image.  Depending on how the image was created, this field may be empty. */
-      DockerVersion?: string | null
-      /** @description Name of the author that was specified when committing the image, or as specified through MAINTAINER (deprecated) in the Dockerfile. */
-      Author?: string | null
-      Config?: components["schemas"]["ContainerConfig"] | null
-      /** @description Hardware CPU architecture that the image runs on. */
-      Architecture?: string | null
-      /** @description CPU architecture variant (presently ARM-only). */
-      Variant?: string | null
-      /** @description Operating System the image is built to run on. */
-      Os?: string | null
-      /** @description Operating System version the image is built to run on (especially for Windows). */
-      OsVersion?: string | null
-      /**
-       * Format: int64
-       * @description Total size of the image including all layers it is composed of.
-       */
-      Size?: number | null
-      /**
-       * Format: int64
-       * @description Total size of the image including all layers it is composed of.  In versions of Docker before v1.10, this field was calculated from the image itself and all of its parent images. Docker v1.10 and up store images self-contained, and no longer use a parent-chain, making this field an equivalent of the Size field.  This field is kept for backward compatibility, but may be removed in a future version of the API.
-       */
-      VirtualSize?: number | null
-      GraphDriver?: components["schemas"]["GraphDriverData"] | null
-      RootFS?: components["schemas"]["ImageInspectRootFs"] | null
-      Metadata?: components["schemas"]["ImageInspectMetadata"] | null
-    }
-    /** @description Additional metadata of the image in the local cache. This information is local to the daemon, and not part of the image itself. */
-    ImageInspectMetadata: {
-      LastTagTime?: components["schemas"]["BollardDate"] | null
-    }
-    /** @description Information about the image's RootFS, including the layer IDs. */
-    ImageInspectRootFs: {
-      Type: string
-      Layers?: string[] | null
-    }
-    ImageSummary: {
-      /** @description ID is the content-addressable ID of an image.  This identifier is a content-addressable digest calculated from the image's configuration (which includes the digests of layers used by the image).  Note that this digest differs from the `RepoDigests` below, which holds digests of image manifests that reference the image. */
-      Id: string
-      /** @description ID of the parent image.  Depending on how the image was created, this field may be empty and is only set for images that were built/created locally. This field is empty if the image was pulled from an image registry. */
-      ParentId: string
-      /** @description List of image names/tags in the local image cache that reference this image.  Multiple image tags can refer to the same image, and this list may be empty if no tags reference the image, in which case the image is \"untagged\", in which case it can still be referenced by its ID. */
-      RepoTags: string[]
-      /** @description List of content-addressable digests of locally available image manifests that the image is referenced from. Multiple manifests can refer to the same image.  These digests are usually only available if the image was either pulled from a registry, or if the image was pushed to a registry, which is when the manifest is generated and its digest calculated. */
-      RepoDigests: string[]
-      /**
-       * Format: int64
-       * @description Date and time at which the image was created as a Unix timestamp (number of seconds sinds EPOCH).
-       */
-      Created: number
-      /**
-       * Format: int64
-       * @description Total size of the image including all layers it is composed of.
-       */
-      Size: number
-      /**
-       * Format: int64
-       * @description Total size of image layers that are shared between this image and other images.  This size is not calculated by default. `-1` indicates that the value has not been set / calculated.
-       */
-      SharedSize: number
-      /**
-       * Format: int64
-       * @description Total size of the image including all layers it is composed of.  In versions of Docker before v1.10, this field was calculated from the image itself and all of its parent images. Docker v1.10 and up store images self-contained, and no longer use a parent-chain, making this field an equivalent of the Size field.  This field is kept for backward compatibility, but may be removed in a future version of the API.
-       */
-      VirtualSize: number
-      /** @description User-defined key/value metadata. */
-      Labels: {
-        [key: string]: string | undefined
-      }
-      /**
-       * Format: int64
-       * @description Number of containers using this image. Includes both stopped and running containers.  This size is not calculated by default, and depends on which API endpoint is used. `-1` indicates that the value has not been set / calculated.
-       */
-      Containers: number
-    }
-    /** @description IndexInfo contains information about a registry. */
-    IndexInfo: {
-      /** @description Name of the registry, such as \"docker.io\". */
-      Name?: string | null
-      /** @description List of mirrors, expressed as URIs. */
-      Mirrors?: string[] | null
-      /** @description Indicates if the registry is part of the list of insecure registries.  If `false`, the registry is insecure. Insecure registries accept un-encrypted (HTTP) and/or untrusted (HTTPS with certificates from unknown CAs) communication.  > **Warning**: Insecure registries can be useful when running a local > registry. However, because its use creates security vulnerabilities > it should ONLY be enabled for testing purposes. For increased > security, users should add their CA to their system's list of > trusted CAs instead of enabling this option. */
-      Secure?: boolean | null
-      /** @description Indicates whether this is an official registry (i.e., Docker Hub / docker.io) */
-      Official?: boolean | null
-    }
-    Ipam: {
-      /** @description Name of the IPAM driver to use. */
-      Driver?: string | null
-      /** @description List of IPAM configuration options, specified as a map:  ``` {\"Subnet\": <CIDR>, \"IPRange\": <CIDR>, \"Gateway\": <IP address>, \"AuxAddress\": <device_name:IP address>} ``` */
-      Config?: components["schemas"]["IpamConfig"][] | null
-      /** @description Driver-specific options, specified as a map. */
-      Options?: {
-        [key: string]: string | undefined
-      } | null
-    }
-    IpamConfig: {
-      Subnet?: string | null
-      IPRange?: string | null
-      Gateway?: string | null
-      AuxiliaryAddresses?: {
-        [key: string]: string | undefined
-      } | null
-    }
-    /**
-     * @description Current local status of this node.
-     * Enumeration of values.
-     * Since this enum's variants do not hold data, we can easily define them them as `#[repr(C)]`
-     * which helps with FFI.
-     * @enum {string}
-     */
-    LocalNodeState:
-      | "EMPTY"
-      | "inactive"
-      | "pending"
-      | "active"
-      | "error"
-      | "locked"
-    LocationTarget:
-      | components["schemas"]["CargoTarget"]
-      | components["schemas"]["HttpTarget"]
-      | components["schemas"]["UnixTarget"]
-    /** @description Metric entry */
-    Metric: {
-      /** Format: uuid */
-      Key: string
-      /** Format: date-time */
-      CreatedAt: string
-      /** Format: date-time */
-      ExpireAt: string
-      NodeName: string
-      Kind: components["schemas"]["MetricKind"]
-      Data: unknown
-    }
-    /** @enum {string} */
-    MetricKind: "CPU" | "MEMORY" | "NETWORK" | "DISK"
-    Mount: {
-      /** @description Container path. */
-      Target?: string | null
-      /** @description Mount source (e.g. a volume name, a host path). */
-      Source?: string | null
-      Type?: components["schemas"]["MountTypeEnum"] | null
-      /** @description Whether the mount should be read-only. */
-      ReadOnly?: boolean | null
-      /** @description The consistency requirement for the mount: `default`, `consistent`, `cached`, or `delegated`. */
-      Consistency?: string | null
-      BindOptions?: components["schemas"]["MountBindOptions"] | null
-      VolumeOptions?: components["schemas"]["MountVolumeOptions"] | null
-      TmpfsOptions?: components["schemas"]["MountTmpfsOptions"] | null
-    }
-    /** @description Optional configuration for the `bind` type. */
-    MountBindOptions: {
-      Propagation?:
-        | components["schemas"]["MountBindOptionsPropagationEnum"]
-        | null
-      /** @description Disable recursive bind mount. */
-      NonRecursive?: boolean | null
-      /** @description Create mount point on host if missing */
-      CreateMountpoint?: boolean | null
-    }
-    /** @enum {string} */
-    MountBindOptionsPropagationEnum:
-      | "EMPTY"
-      | "private"
-      | "rprivate"
-      | "shared"
-      | "rshared"
-      | "slave"
-      | "rslave"
-    /** @description MountPoint represents a mount point configuration inside the container. This is used for reporting the mountpoints in use by a container. */
-    MountPoint: {
-      Type?: components["schemas"]["MountPointTypeEnum"] | null
-      /** @description Name is the name reference to the underlying data defined by `Source` e.g., the volume name. */
-      Name?: string | null
-      /** @description Source location of the mount.  For volumes, this contains the storage location of the volume (within `/var/lib/docker/volumes/`). For bind-mounts, and `npipe`, this contains the source (host) part of the bind-mount. For `tmpfs` mount points, this field is empty. */
-      Source?: string | null
-      /** @description Destination is the path relative to the container root (`/`) where the `Source` is mounted inside the container. */
-      Destination?: string | null
-      /** @description Driver is the volume driver used to create the volume (if it is a volume). */
-      Driver?: string | null
-      /** @description Mode is a comma separated list of options supplied by the user when creating the bind/volume mount.  The default is platform-specific (`\"z\"` on Linux, empty on Windows). */
-      Mode?: string | null
-      /** @description Whether the mount is mounted writable (read-write). */
-      RW?: boolean | null
-      /** @description Propagation describes how mounts are propagated from the host into the mount point, and vice-versa. Refer to the [Linux kernel documentation](https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt) for details. This field is not used on Windows. */
-      Propagation?: string | null
-    }
-    /** @enum {string} */
-    MountPointTypeEnum:
-      | "EMPTY"
-      | "bind"
-      | "volume"
-      | "tmpfs"
-      | "npipe"
-      | "cluster"
-    /** @description Optional configuration for the `tmpfs` type. */
-    MountTmpfsOptions: {
-      /**
-       * Format: int64
-       * @description The size for the tmpfs mount in bytes.
-       */
-      SizeBytes?: number | null
-      /**
-       * Format: int64
-       * @description The permission mode for the tmpfs mount in an integer.
-       */
-      Mode?: number | null
-    }
-    /** @enum {string} */
-    MountTypeEnum: "EMPTY" | "bind" | "volume" | "tmpfs" | "npipe" | "cluster"
-    /** @description Optional configuration for the `volume` type. */
-    MountVolumeOptions: {
-      /** @description Populate volume with data from the target. */
-      NoCopy?: boolean | null
-      /** @description User-defined key/value metadata. */
-      Labels?: {
-        [key: string]: string | undefined
-      } | null
-      DriverConfig?:
-        | components["schemas"]["MountVolumeOptionsDriverConfig"]
-        | null
-    }
-    /** @description Map of driver specific options */
-    MountVolumeOptionsDriverConfig: {
-      /** @description Name of the driver to use to create the volume. */
-      Name?: string | null
-      /** @description key/value map of driver specific options. */
-      Options?: {
-        [key: string]: string | undefined
-      } | null
-    }
-    /**
-     * @description Namespace is a identifier for a set of cargoes
-     * It is used to group cargoes together
-     */
-    Namespace: {
-      /** @description Name of the namespace */
-      Name: string
-    }
-    /**
-     * @description A Namespace Inspect is a detailed view of a namespace
-     * It is used to inspect a namespace
-     * It contains all the information about the namespace
-     * It also contains the list of cargoes
-     */
-    NamespaceInspect: {
-      /** @description Name of the namespace */
-      Name: string
-      /** @description Number of cargoes */
-      Cargoes: components["schemas"]["CargoInspect"][]
-      Network: components["schemas"]["Network"]
-    }
-    /** @description A Namespace partial is a payload used to create a new namespace */
-    NamespacePartial: {
-      /** @description Name of the namespace */
-      Name: string
-    }
-    /**
-     * @description A Namespace Summary is a summary of a namespace
-     * It is used to list all the namespaces
-     * It contains the number of cargoes and instances existing in the namespace
-     */
-    NamespaceSummary: {
-      /** @description Name of the namespace */
-      Name: string
-      /**
-       * Format: int64
-       * @description Number of cargoes
-       */
-      Cargoes: number
-      /**
-       * Format: int64
-       * @description Number of instances
-       */
-      Instances: number
-      /** @description Gateway of the namespace */
-      Gateway: string
-    }
-    Network: {
-      Name?: string | null
-      Id?: string | null
-      Created?: components["schemas"]["BollardDate"] | null
-      Scope?: string | null
-      Driver?: string | null
-      EnableIPv6?: boolean | null
-      IPAM?: components["schemas"]["Ipam"] | null
-      Internal?: boolean | null
-      Attachable?: boolean | null
-      Ingress?: boolean | null
-      Containers?: {
-        [key: string]: components["schemas"]["NetworkContainer"] | undefined
-      } | null
-      Options?: {
-        [key: string]: string | undefined
-      } | null
-      Labels?: {
-        [key: string]: string | undefined
-      } | null
-    }
-    NetworkContainer: {
-      Name?: string | null
-      EndpointID?: string | null
-      MacAddress?: string | null
-      IPv4Address?: string | null
-      IPv6Address?: string | null
-    }
-    /** @description NetworkingConfig represents the container's networking configuration for each of its interfaces. It is used for the networking configs specified in the `docker create` and `docker network connect` commands. */
-    NetworkingConfig: {
-      /** @description A mapping of network name to endpoint configuration for that network. */
-      EndpointsConfig?: {
-        [key: string]: components["schemas"]["EndpointSettings"] | undefined
-      } | null
-    }
-    Node: {
-      Name: string
-      IpAddress: string
-    }
-    NodeContainerSummary: {
-      Node: string
-      IpAddress: string
-      Container: components["schemas"]["ContainerSummary"]
-    }
-    /** @description The version number of the object such as node, service, etc. This is needed to avoid conflicting writes. The client must send the version number along with the modified specification when updating these objects.  This approach ensures safe concurrency and determinism in that the change on the object may not be applied if the version number has changed from the last read. In other words, if two update requests specify the same base version, only one of the requests can succeed. As a result, two separate update requests that happen at the same time will not unintentionally overwrite each other. */
-    ObjectVersion: {
-      /** Format: int64 */
-      Index?: number | null
-    }
-    /** @description Represents a peer-node in the swarm */
-    PeerNode: {
-      /** @description Unique identifier of for this node in the swarm. */
-      NodeID?: string | null
-      /** @description IP address and ports at which this node can be reached. */
-      Addr?: string | null
-    }
-    /** @description Available plugins per type.  <p><br /></p>  > **Note**: Only unmanaged (V1) plugins are included in this list. > V1 plugins are \"lazily\" loaded, and are not returned in this list > if there is no resource using the plugin. */
-    PluginsInfo: {
-      /** @description Names of available volume-drivers, and network-driver plugins. */
-      Volume?: string[] | null
-      /** @description Names of available network-drivers, and network-driver plugins. */
-      Network?: string[] | null
-      /** @description Names of available authorization plugins. */
-      Authorization?: string[] | null
-      /** @description Names of available logging-drivers, and logging-driver plugins. */
-      Log?: string[] | null
-    }
-    /** @description An open port on a container */
-    Port: {
-      /** @description Host IP address that the container's port is mapped to */
-      IP?: string | null
-      /**
-       * Format: int64
-       * @description Port on the container
-       */
-      PrivatePort: number
-      /**
-       * Format: int64
-       * @description Port exposed on the host
-       */
-      PublicPort?: number | null
-      Type?: components["schemas"]["PortTypeEnum"] | null
-    }
-    /** @description PortBinding represents a binding between a host IP address and a host port. */
-    PortBinding: {
-      /** @description Host IP address that the container's port is mapped to. */
-      HostIp?: string | null
-      /** @description Host port number that the container's port is mapped to. */
-      HostPort?: string | null
-    }
-    /**
-     * PortMap
-     * @description PortMap
-     */
-    PortMap: {
-      "<port/tcp|udp>"?: {
-        HostPort?: string
-        HostIp?: string
-      }[]
-    } | null
-    /** @enum {string} */
-    PortTypeEnum: "EMPTY" | "tcp" | "udp" | "sctp"
-    /** @description Defines a proxy rule location */
-    ProxyHttpLocation: {
-      /** @description The path */
-      Path: string
-      Target: components["schemas"]["LocationTarget"]
-      /** @description Extras header to add */
-      Headers?: string[] | null
-      /**
-       * Format: double
-       * @description Http version to use
-       */
-      Version?: number | null
-    }
-    /** @description Proxy rules modes */
-    ProxyRule:
-      | components["schemas"]["ProxyRuleHttp"][]
-      | components["schemas"]["ProxyRuleStream"][]
-    /** @description Defines a proxy rule http config */
-    ProxyRuleHttp: {
-      /** @description The domain */
-      Domain?: string | null
-      /** @description Type of private | public | internal | namespace:$namespace_name */
-      Network: string
-      /** @description The locations to handle multiple paths */
-      Locations: components["schemas"]["ProxyHttpLocation"][]
-      Ssl?: components["schemas"]["ProxySslConfig"] | null
-      /** @description Path to extra config file to include */
-      Includes?: string[] | null
-    }
-    /** @description Proxy rules modes */
-    ProxyRuleStream: {
-      /** @description Type of the network binding private | public | internal | namespace:$namespace_name */
-      Network: string
-      Protocol: components["schemas"]["ProxyStreamProtocol"]
-      /**
-       * Format: int32
-       * @description The port to open on nodes
-       */
-      Port: number
-      Ssl?: components["schemas"]["ProxySslConfig"] | null
-      Target: components["schemas"]["StreamTarget"]
-    }
-    ProxySslConfig: {
-      /** @description Path to the certificate */
-      Certificate: string
-      /** @description Path to the certificate key */
-      CertificateKey: string
-      /** @description Path to the certificate client */
-      CertificateClient?: string | null
-      /** @description Enable or disable client verification */
-      VerifyClient?: boolean | null
-      /** @description Path to the dhparam file */
-      DhParam?: string | null
-    }
-    /**
-     * @description Proxy rules modes
-     * @enum {string}
-     */
-    ProxyStreamProtocol: "Tcp" | "Udp"
-    /** @description RegistryServiceConfig stores daemon registry services configuration. */
-    RegistryServiceConfig: {
-      /** @description List of IP ranges to which nondistributable artifacts can be pushed, using the CIDR syntax [RFC 4632](https://tools.ietf.org/html/4632).  Some images (for example, Windows base images) contain artifacts whose distribution is restricted by license. When these images are pushed to a registry, restricted artifacts are not included.  This configuration override this behavior, and enables the daemon to push nondistributable artifacts to all registries whose resolved IP address is within the subnet described by the CIDR syntax.  This option is useful when pushing images containing nondistributable artifacts to a registry on an air-gapped network so hosts on that network can pull the images without connecting to another server.  > **Warning**: Nondistributable artifacts typically have restrictions > on how and where they can be distributed and shared. Only use this > feature to push artifacts to private registries and ensure that you > are in compliance with any terms that cover redistributing > nondistributable artifacts. */
-      AllowNondistributableArtifactsCIDRs?: string[] | null
-      /** @description List of registry hostnames to which nondistributable artifacts can be pushed, using the format `<hostname>[:<port>]` or `<IP address>[:<port>]`.  Some images (for example, Windows base images) contain artifacts whose distribution is restricted by license. When these images are pushed to a registry, restricted artifacts are not included.  This configuration override this behavior for the specified registries.  This option is useful when pushing images containing nondistributable artifacts to a registry on an air-gapped network so hosts on that network can pull the images without connecting to another server.  > **Warning**: Nondistributable artifacts typically have restrictions > on how and where they can be distributed and shared. Only use this > feature to push artifacts to private registries and ensure that you > are in compliance with any terms that cover redistributing > nondistributable artifacts. */
-      AllowNondistributableArtifactsHostnames?: string[] | null
-      /** @description List of IP ranges of insecure registries, using the CIDR syntax ([RFC 4632](https://tools.ietf.org/html/4632)). Insecure registries accept un-encrypted (HTTP) and/or untrusted (HTTPS with certificates from unknown CAs) communication.  By default, local registries (`127.0.0.0/8`) are configured as insecure. All other registries are secure. Communicating with an insecure registry is not possible if the daemon assumes that registry is secure.  This configuration override this behavior, insecure communication with registries whose resolved IP address is within the subnet described by the CIDR syntax.  Registries can also be marked insecure by hostname. Those registries are listed under `IndexConfigs` and have their `Secure` field set to `false`.  > **Warning**: Using this option can be useful when running a local > registry, but introduces security vulnerabilities. This option > should therefore ONLY be used for testing purposes. For increased > security, users should add their CA to their system's list of trusted > CAs instead of enabling this option. */
-      InsecureRegistryCIDRs?: string[] | null
-      IndexConfigs?: {
-        [key: string]: components["schemas"]["IndexInfo"] | undefined
-      } | null
-      /** @description List of registry URLs that act as a mirror for the official (`docker.io`) registry. */
-      Mirrors?: string[] | null
-    }
-    /**
-     * @description Auto is used to automatically define that the number of replicas in the cluster
-     * Number is used to manually set the number of replicas
-     * Note: auto will ensure at least 1 replica exists in the cluster
-     */
-    ReplicationMode: OneOf<
-      [
-        "Auto",
-        "Unique",
-        "UniqueByNode",
-        {
-          /** @description UniqueByNodeGroups is used to ensure one replica is running on each node group */
-          UniqueByNodeGroups: {
-            groups: string[]
-          }
-        },
-        {
-          /** @description UniqueByNodeNames is used to ensure one replica is running on each node name */
-          UniqueByNodeNames: {
-            names: string[]
-          }
-        },
-        {
-          /**
-           * Format: int64
-           * @description Number is used to manually set the number of replicas in one node
-           */
-          Number: number
-        },
-        {
-          /**
-           * Format: int64
-           * @description NumberByNodes is used to manually set the number of replicas in each node
-           */
-          NumberByNodes: number
-        },
-        {
-          /** @description NumberByNodeGroups is used to manually set the number of replicas in each node group */
-          NumberByNodeGroups: {
-            groups: string[]
+    schemas: {
+        /** @description Address represents an IPv4 or IPv6 IP address. */
+        Address: {
+            /** @description IP address. */
+            Addr?: string | null;
+            /**
+             * Format: int64
+             * @description Mask length of the IP address.
+             */
+            PrefixLen?: number | null;
+        };
+        /** @description Helper to generate have Any type for [OpenApi](OpenApi) useful for dynamic json objects like [ResourceSpec](ResourceSpec) */
+        Any: string | number | boolean | components["schemas"]["Primitive"][] | {
+            [key: string]: components["schemas"]["Primitive"];
+        };
+        /** @description When returning a [HttpError](nanocl_error::http::HttpError)
+         *     the status code is stripped and the error
+         *     is returned as a json object with the message
+         *     field set to the error message. */
+        ApiError: {
+            msg: string;
+        };
+        /** @description Details about the binary */
+        BinaryInfo: {
+            /** @description Arch is the architecture of the current binary */
+            Arch: string;
+            /** @description Channel is the channel of the current binary */
+            Channel: string;
+            /** @description Version is the version of the current binary */
+            Version: string;
+            /** @description CommitID is the commit id of the current binary */
+            CommitId: string;
+        };
+        /** @description I/O statistics for the container. */
+        BlkioStats: {
+            io_service_bytes_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+            io_serviced_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+            io_queue_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+            io_service_time_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+            io_wait_time_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+            io_merged_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+            io_time_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+            sectors_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+        };
+        BlkioStatsEntry: {
             /** Format: int64 */
-            number: number
-          }
-        },
-        {
-          /** @description NumberByNodeNames is used to manually set the number of replicas in each node name */
-          NumberByNodeNames: {
-            names: string[]
+            major: number;
             /** Format: int64 */
-            number: number
-          }
-        }
-      ]
-    >
-    /**
-     * @description Resource is a configuration with a name and a kind
-     * It is used to define [proxy rules](ProxyRule) and other kind of config
-     */
-    Resource: {
-      /** @description The name of the resource */
-      Name: string
-      /**
-       * Format: date-time
-       * @description The creation date of the resource
-       */
-      CreatedAt: string
-      /**
-       * Format: date-time
-       * @description The update date of the resource
-       */
-      UpdatedAt: string
-      /** @description Version of the resource */
-      Version: string
-      /** @description The kind of the resource */
-      Kind: string
-      /**
-       * Format: uuid
-       * @description The config of the resource
-       */
-      ConfigKey: string
-      /** @description The config of the resource as a json object */
-      Config: {
-        [key: string]: components["schemas"]["Any"] | undefined
-      }
-    }
-    ResourceConfig: {
-      /**
-       * Format: uuid
-       * @description Key of the resource
-       */
-      Key: string
-      /** @description Version of the config */
-      Version: string
-      /** @description Resource key associated with the config */
-      ResourceKey: string
-      /** @description The config of the resource as a json object */
-      Data: {
-        [key: string]: components["schemas"]["Any"] | undefined
-      }
-    }
-    ResourceDnsRule: {
-      Network: string
-      Entries: components["schemas"]["DnsEntry"][]
-    }
-    /** @description Resource partial is a payload used to create a new resource */
-    ResourcePartial: {
-      /** @description The name of the resource */
-      Name: string
-      /** @description The kind of the resource */
-      Kind: string
-      /** @description Version of the config */
-      Version: string
-      /** @description The config of the resource (json object) */
-      Config: {
-        [key: string]: components["schemas"]["Any"] | undefined
-      }
-    }
-    ResourcePatch: {
-      /** @description Version of the config */
-      Version: string
-      /** @description The config of the resource as a json object */
-      Config: {
-        [key: string]: components["schemas"]["Any"] | undefined
-      }
-    }
-    /** @description Define proxy rules to apply */
-    ResourceProxyRule: {
-      /** @description Cargo to watch for changes */
-      Watch: string[]
-      Rules: components["schemas"]["ProxyRule"]
-    }
-    ResourcesBlkioWeightDevice: {
-      Path?: string | null
-      Weight?: number | null
-    }
-    ResourcesUlimits: {
-      /** @description Name of ulimit */
-      Name?: string | null
-      /**
-       * Format: int64
-       * @description Soft limit
-       */
-      Soft?: number | null
-      /**
-       * Format: int64
-       * @description Hard limit
-       */
-      Hard?: number | null
-    }
-    /** @description The behavior to apply when the container exits. The default is not to restart.  An ever increasing delay (double the previous delay, starting at 100ms) is added before each restart to prevent flooding the server. */
-    RestartPolicy: {
-      Name?: components["schemas"]["RestartPolicyNameEnum"] | null
-      /**
-       * Format: int64
-       * @description If `on-failure` is used, the number of times to retry before giving up.
-       */
-      MaximumRetryCount?: number | null
-    }
-    /** @enum {string} */
-    RestartPolicyNameEnum:
-      | "EMPTY"
-      | "no"
-      | "always"
-      | "unless-stopped"
-      | "on-failure"
-    /** @description Runtime describes an [OCI compliant](https://github.com/opencontainers/runtime-spec) runtime.  The runtime is invoked by the daemon via the `containerd` daemon. OCI runtimes act as an interface to the Linux kernel namespaces, cgroups, and SELinux. */
-    Runtime: {
-      /** @description Name and, optional, path, of the OCI executable binary.  If the path is omitted, the daemon searches the host's `$PATH` for the binary and uses the first result. */
-      path?: string | null
-      /** @description List of command-line arguments to pass to the runtime when invoked. */
-      runtimeArgs?: string[] | null
-    }
-    StreamTarget:
-      | components["schemas"]["CargoTarget"]
-      | components["schemas"]["UriTarget"]
-      | components["schemas"]["UnixTarget"]
-    /** @description Represents generic information about swarm. */
-    SwarmInfo: {
-      /** @description Unique identifier of for this node in the swarm. */
-      NodeID?: string | null
-      /** @description IP address at which this node can be reached by other nodes in the swarm. */
-      NodeAddr?: string | null
-      LocalNodeState?: components["schemas"]["LocalNodeState"] | null
-      ControlAvailable?: boolean | null
-      Error?: string | null
-      /** @description List of ID's and addresses of other managers in the swarm. */
-      RemoteManagers?: components["schemas"]["PeerNode"][] | null
-      /**
-       * Format: int64
-       * @description Total number of nodes in the swarm.
-       */
-      Nodes?: number | null
-      /**
-       * Format: int64
-       * @description Total number of managers in the swarm.
-       */
-      Managers?: number | null
-      Cluster?: components["schemas"]["ClusterInfo"] | null
-    }
-    /** @description User modifiable swarm configuration. */
-    SwarmSpec: {
-      /** @description Name of the swarm. */
-      Name?: string | null
-      /** @description User-defined key/value metadata. */
-      Labels?: {
-        [key: string]: string | undefined
-      } | null
-      Orchestration?: components["schemas"]["SwarmSpecOrchestration"] | null
-      Raft?: components["schemas"]["SwarmSpecRaft"] | null
-      Dispatcher?: components["schemas"]["SwarmSpecDispatcher"] | null
-      CAConfig?: components["schemas"]["SwarmSpecCaConfig"] | null
-      EncryptionConfig?:
-        | components["schemas"]["SwarmSpecEncryptionConfig"]
-        | null
-      TaskDefaults?: components["schemas"]["SwarmSpecTaskDefaults"] | null
-    }
-    /** @description CA configuration. */
-    SwarmSpecCaConfig: {
-      /**
-       * Format: int64
-       * @description The duration node certificates are issued for.
-       */
-      NodeCertExpiry?: number | null
-      /** @description Configuration for forwarding signing requests to an external certificate authority. */
-      ExternalCAs?:
-        | components["schemas"]["SwarmSpecCaConfigExternalCas"][]
-        | null
-      /** @description The desired signing CA certificate for all swarm node TLS leaf certificates, in PEM format. */
-      SigningCACert?: string | null
-      /** @description The desired signing CA key for all swarm node TLS leaf certificates, in PEM format. */
-      SigningCAKey?: string | null
-      /**
-       * Format: int64
-       * @description An integer whose purpose is to force swarm to generate a new signing CA certificate and key, if none have been specified in `SigningCACert` and `SigningCAKey`
-       */
-      ForceRotate?: number | null
-    }
-    SwarmSpecCaConfigExternalCas: {
-      Protocol?:
-        | components["schemas"]["SwarmSpecCaConfigExternalCasProtocolEnum"]
-        | null
-      /** @description URL where certificate signing requests should be sent. */
-      URL?: string | null
-      /** @description An object with key/value pairs that are interpreted as protocol-specific options for the external CA driver. */
-      Options?: {
-        [key: string]: string | undefined
-      } | null
-      /** @description The root CA certificate (in PEM format) this external CA uses to issue TLS certificates (assumed to be to the current swarm root CA certificate if not provided). */
-      CACert?: string | null
-    }
-    /** @enum {string} */
-    SwarmSpecCaConfigExternalCasProtocolEnum: "EMPTY" | "cfssl"
-    /** @description Dispatcher configuration. */
-    SwarmSpecDispatcher: {
-      /**
-       * Format: int64
-       * @description The delay for an agent to send a heartbeat to the dispatcher.
-       */
-      HeartbeatPeriod?: number | null
-    }
-    /** @description Parameters related to encryption-at-rest. */
-    SwarmSpecEncryptionConfig: {
-      /** @description If set, generate a key and use it to lock data stored on the managers. */
-      AutoLockManagers?: boolean | null
-    }
-    /** @description Orchestration configuration. */
-    SwarmSpecOrchestration: {
-      /**
-       * Format: int64
-       * @description The number of historic tasks to keep per instance or node. If negative, never remove completed or failed tasks.
-       */
-      TaskHistoryRetentionLimit?: number | null
-    }
-    /** @description Raft configuration. */
-    SwarmSpecRaft: {
-      /**
-       * Format: int64
-       * @description The number of log entries between snapshots.
-       */
-      SnapshotInterval?: number | null
-      /**
-       * Format: int64
-       * @description The number of snapshots to keep beyond the current snapshot.
-       */
-      KeepOldSnapshots?: number | null
-      /**
-       * Format: int64
-       * @description The number of log entries to keep around to sync up slow followers after a snapshot is created.
-       */
-      LogEntriesForSlowFollowers?: number | null
-      /**
-       * Format: int64
-       * @description The number of ticks that a follower will wait for a message from the leader before becoming a candidate and starting an election. `ElectionTick` must be greater than `HeartbeatTick`.  A tick currently defaults to one second, so these translate directly to seconds currently, but this is NOT guaranteed.
-       */
-      ElectionTick?: number | null
-      /**
-       * Format: int64
-       * @description The number of ticks between heartbeats. Every HeartbeatTick ticks, the leader will send a heartbeat to the followers.  A tick currently defaults to one second, so these translate directly to seconds currently, but this is NOT guaranteed.
-       */
-      HeartbeatTick?: number | null
-    }
-    /** @description Defaults for creating tasks in this cluster. */
-    SwarmSpecTaskDefaults: {
-      LogDriver?: components["schemas"]["SwarmSpecTaskDefaultsLogDriver"] | null
-    }
-    /** @description The log driver to use for tasks created in the orchestrator if unspecified by a service.  Updating this value only affects new tasks. Existing tasks continue to use their previously configured log driver until recreated. */
-    SwarmSpecTaskDefaultsLogDriver: {
-      /** @description The log driver to use as a default for new tasks. */
-      Name?: string | null
-      /** @description Driver-specific options for the selectd log driver, specified as key/value pairs. */
-      Options?: {
-        [key: string]: string | undefined
-      } | null
-    }
-    SystemInfo: {
-      /** @description Unique identifier of the daemon.  <p><br /></p>  > **Note**: The format of the ID itself is not part of the API, and > should not be considered stable. */
-      ID?: string | null
-      /**
-       * Format: int64
-       * @description Total number of containers on the host.
-       */
-      Containers?: number | null
-      /**
-       * Format: int64
-       * @description Number of containers with status `\"running\"`.
-       */
-      ContainersRunning?: number | null
-      /**
-       * Format: int64
-       * @description Number of containers with status `\"paused\"`.
-       */
-      ContainersPaused?: number | null
-      /**
-       * Format: int64
-       * @description Number of containers with status `\"stopped\"`.
-       */
-      ContainersStopped?: number | null
-      /**
-       * Format: int64
-       * @description Total number of images on the host.  Both _tagged_ and _untagged_ (dangling) images are counted.
-       */
-      Images?: number | null
-      /** @description Name of the storage driver in use. */
-      Driver?: string | null
-      /** @description Information specific to the storage driver, provided as \"label\" / \"value\" pairs.  This information is provided by the storage driver, and formatted in a way consistent with the output of `docker info` on the command line.  <p><br /></p>  > **Note**: The information returned in this field, including the > formatting of values and labels, should not be considered stable, > and may change without notice. */
-      DriverStatus?: string[][] | null
-      /** @description Root directory of persistent Docker state.  Defaults to `/var/lib/docker` on Linux, and `C:\\ProgramData\\docker` on Windows. */
-      DockerRootDir?: string | null
-      Plugins?: components["schemas"]["PluginsInfo"] | null
-      /** @description Indicates if the host has memory limit support enabled. */
-      MemoryLimit?: boolean | null
-      /** @description Indicates if the host has memory swap limit support enabled. */
-      SwapLimit?: boolean | null
-      /** @description Indicates if the host has kernel memory TCP limit support enabled. This field is omitted if not supported.  Kernel memory TCP limits are not supported when using cgroups v2, which does not support the corresponding `memory.kmem.tcp.limit_in_bytes` cgroup. */
-      KernelMemoryTCP?: boolean | null
-      /** @description Indicates if CPU CFS(Completely Fair Scheduler) period is supported by the host. */
-      CpuCfsPeriod?: boolean | null
-      /** @description Indicates if CPU CFS(Completely Fair Scheduler) quota is supported by the host. */
-      CpuCfsQuota?: boolean | null
-      /** @description Indicates if CPU Shares limiting is supported by the host. */
-      CPUShares?: boolean | null
-      /** @description Indicates if CPUsets (cpuset.cpus, cpuset.mems) are supported by the host.  See [cpuset(7)](https://www.kernel.org/doc/Documentation/cgroup-v1/cpusets.txt) */
-      CPUSet?: boolean | null
-      /** @description Indicates if the host kernel has PID limit support enabled. */
-      PidsLimit?: boolean | null
-      /** @description Indicates if OOM killer disable is supported on the host. */
-      OomKillDisable?: boolean | null
-      /** @description Indicates IPv4 forwarding is enabled. */
-      IPv4Forwarding?: boolean | null
-      /** @description Indicates if `bridge-nf-call-iptables` is available on the host. */
-      BridgeNfIptables?: boolean | null
-      /** @description Indicates if `bridge-nf-call-ip6tables` is available on the host. */
-      BridgeNfIp6tables?: boolean | null
-      /** @description Indicates if the daemon is running in debug-mode / with debug-level logging enabled. */
-      Debug?: boolean | null
-      /**
-       * Format: int64
-       * @description The total number of file Descriptors in use by the daemon process.  This information is only returned if debug-mode is enabled.
-       */
-      NFd?: number | null
-      /**
-       * Format: int64
-       * @description The  number of goroutines that currently exist.  This information is only returned if debug-mode is enabled.
-       */
-      NGoroutines?: number | null
-      /** @description Current system-time in [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format with nano-seconds. */
-      SystemTime?: string | null
-      /** @description The logging driver to use as a default for new containers. */
-      LoggingDriver?: string | null
-      CgroupDriver?: components["schemas"]["SystemInfoCgroupDriverEnum"] | null
-      CgroupVersion?:
-        | components["schemas"]["SystemInfoCgroupVersionEnum"]
-        | null
-      /**
-       * Format: int64
-       * @description Number of event listeners subscribed.
-       */
-      NEventsListener?: number | null
-      /** @description Kernel version of the host.  On Linux, this information obtained from `uname`. On Windows this information is queried from the <kbd>HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\</kbd> registry value, for example _\"10.0 14393 (14393.1198.amd64fre.rs1_release_sec.170427-1353)\"_. */
-      KernelVersion?: string | null
-      /** @description Name of the host's operating system, for example: \"Ubuntu 16.04.2 LTS\" or \"Windows Server 2016 Datacenter\" */
-      OperatingSystem?: string | null
-      /** @description Version of the host's operating system  <p><br /></p>  > **Note**: The information returned in this field, including its > very existence, and the formatting of values, should not be considered > stable, and may change without notice. */
-      OSVersion?: string | null
-      /** @description Generic type of the operating system of the host, as returned by the Go runtime (`GOOS`).  Currently returned values are \"linux\" and \"windows\". A full list of possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment). */
-      OSType?: string | null
-      /** @description Hardware architecture of the host, as returned by the Go runtime (`GOARCH`).  A full list of possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment). */
-      Architecture?: string | null
-      /**
-       * Format: int64
-       * @description The number of logical CPUs usable by the daemon.  The number of available CPUs is checked by querying the operating system when the daemon starts. Changes to operating system CPU allocation after the daemon is started are not reflected.
-       */
-      NCPU?: number | null
-      /**
-       * Format: int64
-       * @description Total amount of physical memory available on the host, in bytes.
-       */
-      MemTotal?: number | null
-      /** @description Address / URL of the index server that is used for image search, and as a default for user authentication for Docker Hub and Docker Cloud. */
-      IndexServerAddress?: string | null
-      RegistryConfig?: components["schemas"]["RegistryServiceConfig"] | null
-      GenericResources?: components["schemas"]["GenericResources"] | null
-      /** @description HTTP-proxy configured for the daemon. This value is obtained from the [`HTTP_PROXY`](https://www.gnu.org/software/wget/manual/html_node/Proxies.html) environment variable. Credentials ([user info component](https://tools.ietf.org/html/rfc3986#section-3.2.1)) in the proxy URL are masked in the API response.  Containers do not automatically inherit this configuration. */
-      HttpProxy?: string | null
-      /** @description HTTPS-proxy configured for the daemon. This value is obtained from the [`HTTPS_PROXY`](https://www.gnu.org/software/wget/manual/html_node/Proxies.html) environment variable. Credentials ([user info component](https://tools.ietf.org/html/rfc3986#section-3.2.1)) in the proxy URL are masked in the API response.  Containers do not automatically inherit this configuration. */
-      HttpsProxy?: string | null
-      /** @description Comma-separated list of domain extensions for which no proxy should be used. This value is obtained from the [`NO_PROXY`](https://www.gnu.org/software/wget/manual/html_node/Proxies.html) environment variable.  Containers do not automatically inherit this configuration. */
-      NoProxy?: string | null
-      /** @description Hostname of the host. */
-      Name?: string | null
-      /** @description User-defined labels (key/value metadata) as set on the daemon.  <p><br /></p>  > **Note**: When part of a Swarm, nodes can both have _daemon_ labels, > set through the daemon configuration, and _node_ labels, set from a > manager node in the Swarm. Node labels are not included in this > field. Node labels can be retrieved using the `/nodes/(id)` endpoint > on a manager node in the Swarm. */
-      Labels?: string[] | null
-      /** @description Indicates if experimental features are enabled on the daemon. */
-      ExperimentalBuild?: boolean | null
-      /** @description Version string of the daemon.  > **Note**: the [standalone Swarm API](https://docs.docker.com/swarm/swarm-api/) > returns the Swarm version instead of the daemon  version, for example > `swarm/1.2.8`. */
-      ServerVersion?: string | null
-      /** @description URL of the distributed storage backend.   The storage backend is used for multihost networking (to store network and endpoint information) and by the node discovery mechanism.  <p><br /></p>  > **Deprecated**: This field is only propagated when using standalone Swarm > mode, and overlay networking using an external k/v store. Overlay > networks with Swarm mode enabled use the built-in raft store, and > this field will be empty. */
-      ClusterStore?: string | null
-      /** @description The network endpoint that the Engine advertises for the purpose of node discovery. ClusterAdvertise is a `host:port` combination on which the daemon is reachable by other hosts.  <p><br /></p>  > **Deprecated**: This field is only propagated when using standalone Swarm > mode, and overlay networking using an external k/v store. Overlay > networks with Swarm mode enabled use the built-in raft store, and > this field will be empty. */
-      ClusterAdvertise?: string | null
-      /** @description List of [OCI compliant](https://github.com/opencontainers/runtime-spec) runtimes configured on the daemon. Keys hold the \"name\" used to reference the runtime.  The Docker daemon relies on an OCI compliant runtime (invoked via the `containerd` daemon) as its interface to the Linux kernel namespaces, cgroups, and SELinux.  The default runtime is `runc`, and automatically configured. Additional runtimes can be configured by the user and will be listed here. */
-      Runtimes?: {
-        [key: string]: components["schemas"]["Runtime"] | undefined
-      } | null
-      /** @description Name of the default OCI runtime that is used when starting containers.  The default can be overridden per-container at create time. */
-      DefaultRuntime?: string | null
-      Swarm?: components["schemas"]["SwarmInfo"] | null
-      /** @description Indicates if live restore is enabled.  If enabled, containers are kept running when the daemon is shutdown or upon daemon start if running containers are detected. */
-      LiveRestoreEnabled?: boolean | null
-      Isolation?: components["schemas"]["SystemInfoIsolationEnum"] | null
-      /** @description Name and, optional, path of the `docker-init` binary.  If the path is omitted, the daemon searches the host's `$PATH` for the binary and uses the first result. */
-      InitBinary?: string | null
-      ContainerdCommit?: components["schemas"]["Commit"] | null
-      RuncCommit?: components["schemas"]["Commit"] | null
-      InitCommit?: components["schemas"]["Commit"] | null
-      /** @description List of security features that are enabled on the daemon, such as apparmor, seccomp, SELinux, user-namespaces (userns), and rootless.  Additional configuration options for each security feature may be present, and are included as a comma-separated list of key/value pairs. */
-      SecurityOptions?: string[] | null
-      /** @description Reports a summary of the product license on the daemon.  If a commercial license has been applied to the daemon, information such as number of nodes, and expiration are included. */
-      ProductLicense?: string | null
-      /** @description List of custom default address pools for local networks, which can be specified in the daemon.json file or dockerd option.  Example: a Base \"10.10.0.0/16\" with Size 24 will define the set of 256 10.10.[0-255].0/24 address pools. */
-      DefaultAddressPools?:
-        | components["schemas"]["SystemInfoDefaultAddressPools"][]
-        | null
-      /** @description List of warnings / informational messages about missing features, or issues related to the daemon configuration.  These messages can be printed by the client as information to the user. */
-      Warnings?: string[] | null
-    }
-    /** @enum {string} */
-    SystemInfoCgroupDriverEnum: "EMPTY" | "cgroupfs" | "systemd" | "none"
-    /** @enum {string} */
-    SystemInfoCgroupVersionEnum: "EMPTY" | "1" | "2"
-    SystemInfoDefaultAddressPools: {
-      /** @description The network address in CIDR format */
-      Base?: string | null
-      /**
-       * Format: int64
-       * @description The network pool size
-       */
-      Size?: number | null
-    }
-    /** @enum {string} */
-    SystemInfoIsolationEnum: "EMPTY" | "default" | "hyperv" | "process"
-    ThrottleDevice: {
-      /** @description Device path */
-      Path?: string | null
-      /**
-       * Format: int64
-       * @description Rate
-       */
-      Rate?: number | null
-    }
-    /** @description Information about the issuer of leaf TLS certificates and the trusted root CA certificate. */
-    TlsInfo: {
-      /** @description The root CA certificate(s) that are used to validate leaf TLS certificates. */
-      TrustRoot?: string | null
-      /** @description The base64-url-safe-encoded raw subject bytes of the issuer. */
-      CertIssuerSubject?: string | null
-      /** @description The base64-url-safe-encoded raw public key bytes of the issuer. */
-      CertIssuerPublicKey?: string | null
-    }
-    UnixTarget: {
-      UnixPath: string
-    }
-    UriTarget: {
-      /** @description Uri to target */
-      Uri: string
-    }
-    /** @enum {string} */
-    UrlRedirect: "MovedPermanently" | "Permanent" | "Temporary"
-    /** @description Version contain details about the current version nanocl */
-    Version: {
-      Arch: string
-      Channel: string
-      Version: string
-      CommitId: string
-    }
-    /** @description A virtual machine instance */
-    Vm: {
-      /** @description Key of the vm */
-      Key: string
-      /** @description Name of the namespace */
-      NamespaceName: string
-      /** @description Name of the vm */
-      Name: string
-      /**
-       * Format: uuid
-       * @description Unique identifier of the vm config
-       */
-      ConfigKey: string
-      Config: components["schemas"]["VmConfig"]
-    }
-    /**
-     * @description A vm config is the configuration of a vm
-     * It used to know the state of the vm
-     * It keep tracking of an history when you patch an existing vm
-     */
-    VmConfig: {
-      /**
-       * Format: uuid
-       * @description Unique identifier of the vm config
-       */
-      Key: string
-      /**
-       * Format: date-time
-       * @description Creation date of the vm config
-       */
-      CreatedAt: string
-      /** @description Name of the vm */
-      Name: string
-      /** @description Version of the config */
-      Version: string
-      /** @description The key of the vm */
-      VmKey: string
-      /** @description Hostname of the vm */
-      Hostname?: string | null
-      /** @description Default password of the vm (cloud) */
-      Password?: string | null
-      /** @description Default ssh key for the user */
-      SshKey?: string | null
-      /** @description Default user of the vm (cloud) */
-      User?: string | null
-      Disk: components["schemas"]["VmDiskConfig"]
-      /** @description Mac address of the vm */
-      MacAddress?: string | null
-      /** @description User-defined key/value metadata. */
-      Labels?: {
-        [key: string]: string | undefined
-      } | null
-      HostConfig: components["schemas"]["VmHostConfig"]
-    }
-    /** @description A vm config partial is used to create a Vm */
-    VmConfigPartial: {
-      /** @description Name of the vm */
-      Name: string
-      /** @description Hostname of the vm */
-      Hostname?: string | null
-      /** @description Default user of the vm (cloud) */
-      User?: string | null
-      /** @description Default password of the vm (cloud) */
-      Password?: string | null
-      /** @description Default ssh key for the user */
-      SshKey?: string | null
-      Disk: components["schemas"]["VmDiskConfig"]
-      /** @description Mac address of the vm */
-      MacAddress?: string | null
-      /** @description User-defined key/value metadata. */
-      Labels?: {
-        [key: string]: string | undefined
-      } | null
-      HostConfig: components["schemas"]["VmHostConfig"]
-    }
-    /**
-     * @description Payload used to patch a vm
-     * It will create a new [VmConfig](VmConfig) with the new values
-     * It will keep the old values in the history
-     */
-    VmConfigUpdate: {
-      /** @description Name of the vm */
-      Name?: string | null
-      /** @description Hostname of the vm */
-      Hostname?: string | null
-      /** @description Default user of the vm (cloud) */
-      User?: string | null
-      /** @description Default password of the vm (cloud) */
-      Password?: string | null
-      /** @description Default ssh key for the user */
-      SshKey?: string | null
-      /** @description User-defined key/value metadata. */
-      Labels?: {
-        [key: string]: string | undefined
-      } | null
-      HostConfig?: components["schemas"]["VmHostConfig"] | null
-    }
-    /** @description Disk representation of a VM */
-    VmDiskConfig: {
-      /** @description Name of the image to use */
-      Image: string
-      /**
-       * Format: int64
-       * @description Virtual size allowed for the disk
-       */
-      Size?: number | null
-    }
-    /** @description A vm's resources (cpu, memory, network) */
-    VmHostConfig: {
-      /**
-       * Format: int64
-       * @description Number of cpu of the vm
-       */
-      Cpu: number
-      /**
-       * Format: int64
-       * @description Memory of the vm
-       */
-      Memory: number
-      /** @description default network interface of the vm */
-      NetIface?: string | null
-      /** @description Enable KVM */
-      Kvm?: boolean | null
-      /** @description A list of DNS servers for the vm to use. */
-      Dns?: string[] | null
-      /** @description Container image name to use for vm default: nexthat/nanocl-qemu */
-      Runtime?: string | null
-      RuntimeNet?: string | null
-    }
-    VmImage: {
-      /** @description The name of the image */
-      Name: string
-      /**
-       * Format: date-time
-       * @description When the image was created
-       */
-      CreatedAt: string
-      /** @description The path to the image */
-      Path: string
-      /** @description The type of the image */
-      Kind: string
-      /** @description The format of the image */
-      Format: string
-      /**
-       * Format: int64
-       * @description The actual size of the image in bytes
-       */
-      SizeActual: number
-      /**
-       * Format: int64
-       * @description The virtual size of the image in bytes
-       */
-      SizeVirtual: number
-    }
-    VmImageResizePayload: {
-      /**
-       * Format: int64
-       * @description The new size of the image in bytes
-       */
-      Size: number
-      /** @description Whether to shrink the image or not */
-      Shrink: boolean
-    }
-    /**
-     * @description A Vm Inspect is a detailed view of a cargo
-     * It is used to inspect a cargo
-     * It contains all the information about the cargo
-     * It also contains the list of containers
-     */
-    VmInspect: {
-      /** @description Key of the cargo */
-      Key: string
-      /** @description Name of the cargo */
-      Name: string
-      /**
-       * Format: uuid
-       * @description Unique identifier of the cargo config
-       */
-      ConfigKey: string
-      /** @description Name of the namespace */
-      NamespaceName: string
-      Config: components["schemas"]["VmConfig"]
-      /** @description Number of instances */
-      InstanceTotal: number
-      /** @description Number of running instances */
-      InstanceRunning: number
-      /** @description List of containers */
-      Instances: components["schemas"]["ContainerSummary"][]
-    }
-    /**
-     * @description A Vm Summary is a summary of a vm
-     * It is used to list all the vms
-     */
-    VmSummary: {
-      /** @description Key of the vm */
-      Key: string
-      /**
-       * Format: date-time
-       * @description Creation date of the vm
-       */
-      CreatedAt: string
-      /**
-       * Format: date-time
-       * @description Update date of the vm
-       */
-      UpdatedAt: string
-      /** @description Name of the vm */
-      Name: string
-      /**
-       * Format: uuid
-       * @description Unique identifier of the vm config
-       */
-      ConfigKey: string
-      /** @description Name of the namespace */
-      NamespaceName: string
-      Config: components["schemas"]["VmConfig"]
-      /** @description Number of instances */
-      Instances: number
-      /** @description Number of running instances */
-      RunningInstances: number
-    }
-  }
-  responses: never
-  parameters: never
-  requestBodies: never
-  headers: never
-  pathItems: never
+            minor: number;
+            op: string;
+            /** Format: int64 */
+            value: number;
+        };
+        /** @description General CPU statistics for the container. */
+        CPUStats: {
+            cpu_usage: components["schemas"]["CPUUsage"];
+            /** Format: int64 */
+            system_cpu_usage?: number | null;
+            /** Format: int64 */
+            online_cpus?: number | null;
+            throttling_data: components["schemas"]["ThrottlingData"];
+        };
+        /** @description CPU usage statistics for the container. */
+        CPUUsage: {
+            percpu_usage?: number[] | null;
+            /** Format: int64 */
+            usage_in_usermode: number;
+            /** Format: int64 */
+            total_usage: number;
+            /** Format: int64 */
+            usage_in_kernelmode: number;
+        };
+        /** @description A Cargo is a replicable container
+         *     It is used to run one or multiple instances of the same container
+         *     You can define the number of replicas you want to run
+         *     You can also define the minimum and maximum number of replicas
+         *     The cluster will automatically scale the number of replicas to match the number of replicas you want
+         *     Cargo contain a specification which is used to create the container
+         *     The specification can be updated and the old specification will be kept in the history
+         *     That way you can rollback to a previous specification quickly */
+        Cargo: {
+            /** @description Name of the namespace */
+            NamespaceName: string;
+            /**
+             * Format: date-time
+             * @description When the cargo was created
+             */
+            CreatedAt: string;
+            /** @description Status of the cargo */
+            Status: components["schemas"]["ObjPsStatus"];
+            /** @description Specification of the cargo */
+            Spec: components["schemas"]["CargoSpec"];
+        };
+        /** @description Cargo Inspect is a detailed view of a cargo
+         *     It contains all the information about the cargo
+         *     It also contains the list of containers */
+        CargoInspect: {
+            /** @description Name of the namespace */
+            NamespaceName: string;
+            /**
+             * Format: date-time
+             * @description When the cargo was created
+             */
+            CreatedAt: string;
+            /** @description Number of instances */
+            InstanceTotal: number;
+            /** @description Number of running instances */
+            InstanceRunning: number;
+            /** @description Status of the cargo */
+            Status: components["schemas"]["ObjPsStatus"];
+            /** @description Specification of the cargo */
+            Spec: components["schemas"]["CargoSpec"];
+            /** @description List of instances */
+            Instances: components["schemas"]["Process"][];
+        };
+        /** @description Options for the kill command */
+        CargoKillOptions: {
+            /** @description Signal to send to the container default: SIGKILL */
+            signal: string;
+        };
+        /** @description A cargo spec is the specification of a cargo
+         *     It used to know the state of the cargo
+         *     It keep tracking of an history when you patch an existing cargo */
+        CargoSpec: {
+            /**
+             * Format: uuid
+             * @description Unique identifier of the cargo spec
+             */
+            Key: string;
+            /** @description The key of the cargo */
+            CargoKey: string;
+            /** @description Version of the spec */
+            Version: string;
+            /**
+             * Format: date-time
+             * @description Creation date of the cargo spec
+             */
+            CreatedAt: string;
+            /** @description Name of the cargo */
+            Name: string;
+            /** @description Metadata of the cargo (user defined) */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            InitContainer?: null | components["schemas"]["Config"];
+            /** @description List of secrets to use as environment variables */
+            Secrets?: string[] | null;
+            /** @description Secret to use when pulling the image */
+            ImagePullSecret?: string | null;
+            ImagePullPolicy?: null | components["schemas"]["ImagePullPolicy"];
+            /** @description Container specification of the cargo */
+            Container: components["schemas"]["Config"];
+            Replication?: null | components["schemas"]["ReplicationMode"];
+        };
+        /** @description A cargo spec partial is used to create a Cargo */
+        CargoSpecPartial: {
+            /** @description Name of the cargo */
+            Name: string;
+            /** @description Metadata of the cargo (user defined) */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            InitContainer?: null | components["schemas"]["Config"];
+            /** @description List of secrets to use as environment variables */
+            Secrets?: string[] | null;
+            /** @description Secret to use when pulling the image */
+            ImagePullSecret?: string | null;
+            ImagePullPolicy?: null | components["schemas"]["ImagePullPolicy"];
+            /** @description Container specification of the cargo */
+            Container: components["schemas"]["Config"];
+            Replication?: null | components["schemas"]["ReplicationMode"];
+        };
+        /** @description Payload used to patch a cargo
+         *     It will create a new [CargoSpec](CargoSpec) with the new values
+         *     It will keep the old values in the history */
+        CargoSpecUpdate: {
+            /** @description New name of the cargo */
+            Name?: string | null;
+            /** @description New metadata of the cargo (user defined) */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            InitContainer?: null | components["schemas"]["Config"];
+            /** @description List of secrets to use as environment variables */
+            Secrets?: string[] | null;
+            /** @description Secret to use when pulling the image */
+            ImagePullSecret?: string | null;
+            ImagePullPolicy?: null | components["schemas"]["ImagePullPolicy"];
+            Container?: null | components["schemas"]["Config"];
+            Replication?: null | components["schemas"]["ReplicationMode"];
+        };
+        /** @description A CargoSummary is a summary of a cargo
+         *     It's the data structure returned by the list operation */
+        CargoSummary: {
+            /** @description Name of the namespace */
+            NamespaceName: string;
+            /** @description Status of the cargo */
+            Status: components["schemas"]["ObjPsStatus"];
+            /**
+             * Format: date-time
+             * @description When the cargo was created
+             */
+            CreatedAt: string;
+            /** @description Number of instances */
+            InstanceTotal: number;
+            /** @description Number of running instances */
+            InstanceRunning: number;
+            /** @description Specification of the cargo */
+            Spec: components["schemas"]["CargoSpec"];
+        };
+        /** @description ClusterInfo represents information about the swarm as is returned by the \"/info\" endpoint. Join-tokens are not included. */
+        ClusterInfo: {
+            /** @description The ID of the swarm. */
+            ID?: string | null;
+            Version?: null | components["schemas"]["ObjectVersion"];
+            CreatedAt?: null | components["schemas"]["String"];
+            UpdatedAt?: null | components["schemas"]["String"];
+            Spec?: null | components["schemas"]["SwarmSpec"];
+            TLSInfo?: null | components["schemas"]["TlsInfo"];
+            /** @description Whether there is currently a root CA rotation in progress for the swarm */
+            RootRotationInProgress?: boolean | null;
+            /**
+             * Format: int32
+             * @description DataPathPort specifies the data path port number for data traffic. Acceptable port range is 1024 to 49151. If no port is set or is set to 0, the default port (4789) is used.
+             */
+            DataPathPort?: number | null;
+            /** @description Default Address Pool specifies default subnet pools for global scope networks. */
+            DefaultAddrPool?: string[] | null;
+            /**
+             * Format: int32
+             * @description SubnetSize specifies the subnet size of the networks created from the default subnet pool.
+             */
+            SubnetSize?: number | null;
+        };
+        /** @description Commit holds the Git-commit (SHA1) that a binary was built from, as reported in the version-string of external tools, such as `containerd`, or `runC`. */
+        Commit: {
+            /** @description Actual commit ID of external tool. */
+            ID?: string | null;
+            /** @description Commit ID of external tool expected by dockerd as set at build time. */
+            Expected?: string | null;
+        };
+        /** @description Container to create. */
+        Config: {
+            /** @description The hostname to use for the container, as a valid RFC 1123 hostname. */
+            Hostname?: string | null;
+            /** @description The domain name to use for the container. */
+            Domainname?: string | null;
+            /** @description The user that commands are run as inside the container. */
+            User?: string | null;
+            /** @description Whether to attach to `stdin`. */
+            AttachStdin?: boolean | null;
+            /** @description Whether to attach to `stdout`. */
+            AttachStdout?: boolean | null;
+            /** @description Whether to attach to `stderr`. */
+            AttachStderr?: boolean | null;
+            /** @description An object mapping ports to an empty object in the form:  `{\"<port>/<tcp|udp|sctp>\": {}}` */
+            ExposedPorts?: {
+                [key: string]: {
+                    [key: string]: unknown;
+                };
+            } | null;
+            /** @description Attach standard streams to a TTY, including `stdin` if it is not closed. */
+            Tty?: boolean | null;
+            /** @description Open `stdin` */
+            OpenStdin?: boolean | null;
+            /** @description Close `stdin` after one attached client disconnects */
+            StdinOnce?: boolean | null;
+            /** @description A list of environment variables to set inside the container in the form `[\"VAR=value\", ...]`. A variable without `=` is removed from the environment, rather than to have an empty value. */
+            Env?: string[] | null;
+            /** @description Command to run specified as a string or an array of strings. */
+            Cmd?: string[] | null;
+            Healthcheck?: null | components["schemas"]["HealthConfig"];
+            /** @description Command is already escaped (Windows only) */
+            ArgsEscaped?: boolean | null;
+            /** @description The name of the image to use when creating the container */
+            Image?: string | null;
+            /** @description An object mapping mount point paths inside the container to empty objects. */
+            Volumes?: {
+                [key: string]: {
+                    [key: string]: unknown;
+                };
+            } | null;
+            /** @description The working directory for commands to run in. */
+            WorkingDir?: string | null;
+            /** @description The entry point for the container as a string or an array of strings.  If the array consists of exactly one empty string (`[\"\"]`) then the entry point is reset to system default (i.e., the entry point used by docker when there is no `ENTRYPOINT` instruction in the `Dockerfile`). */
+            Entrypoint?: string[] | null;
+            /** @description Disable networking for the container. */
+            NetworkDisabled?: boolean | null;
+            /** @description MAC address of the container. */
+            MacAddress?: string | null;
+            /** @description `ONBUILD` metadata that were defined in the image's `Dockerfile`. */
+            OnBuild?: string[] | null;
+            /** @description User-defined key/value metadata. */
+            Labels?: {
+                [key: string]: string;
+            } | null;
+            /** @description Signal to stop a container as a string or unsigned integer. */
+            StopSignal?: string | null;
+            /**
+             * Format: int64
+             * @description Timeout to stop a container in seconds.
+             */
+            StopTimeout?: number | null;
+            /** @description Shell for when `RUN`, `CMD`, and `ENTRYPOINT` uses a shell. */
+            Shell?: string[] | null;
+            HostConfig?: null | components["schemas"]["HostConfig"];
+            NetworkingConfig?: null | components["schemas"]["NetworkingConfig_String"];
+        };
+        /** @description Configuration for a container that is portable between hosts.  When used as `ContainerConfig` field in an image, `ContainerConfig` is an optional field containing the configuration of the container that was last committed when creating the image.  Previous versions of Docker builder used this field to store build cache, and it is not in active use anymore. */
+        ContainerConfig: {
+            /** @description The hostname to use for the container, as a valid RFC 1123 hostname. */
+            Hostname?: string | null;
+            /** @description The domain name to use for the container. */
+            Domainname?: string | null;
+            /** @description The user that commands are run as inside the container. */
+            User?: string | null;
+            /** @description Whether to attach to `stdin`. */
+            AttachStdin?: boolean | null;
+            /** @description Whether to attach to `stdout`. */
+            AttachStdout?: boolean | null;
+            /** @description Whether to attach to `stderr`. */
+            AttachStderr?: boolean | null;
+            /** @description An object mapping ports to an empty object in the form:  `{\"<port>/<tcp|udp|sctp>\": {}}` */
+            ExposedPorts?: {
+                [key: string]: {
+                    [key: string]: unknown;
+                };
+            } | null;
+            /** @description Attach standard streams to a TTY, including `stdin` if it is not closed. */
+            Tty?: boolean | null;
+            /** @description Open `stdin` */
+            OpenStdin?: boolean | null;
+            /** @description Close `stdin` after one attached client disconnects */
+            StdinOnce?: boolean | null;
+            /** @description A list of environment variables to set inside the container in the form `[\"VAR=value\", ...]`. A variable without `=` is removed from the environment, rather than to have an empty value. */
+            Env?: string[] | null;
+            /** @description Command to run specified as a string or an array of strings. */
+            Cmd?: string[] | null;
+            Healthcheck?: null | components["schemas"]["HealthConfig"];
+            /** @description Command is already escaped (Windows only) */
+            ArgsEscaped?: boolean | null;
+            /** @description The name (or reference) of the image to use when creating the container, or which was used when the container was created. */
+            Image?: string | null;
+            /** @description An object mapping mount point paths inside the container to empty objects. */
+            Volumes?: {
+                [key: string]: {
+                    [key: string]: unknown;
+                };
+            } | null;
+            /** @description The working directory for commands to run in. */
+            WorkingDir?: string | null;
+            /** @description The entry point for the container as a string or an array of strings.  If the array consists of exactly one empty string (`[\"\"]`) then the entry point is reset to system default (i.e., the entry point used by docker when there is no `ENTRYPOINT` instruction in the `Dockerfile`). */
+            Entrypoint?: string[] | null;
+            /** @description Disable networking for the container. */
+            NetworkDisabled?: boolean | null;
+            /** @description MAC address of the container.  Deprecated: this field is deprecated in API v1.44 and up. Use EndpointSettings.MacAddress instead. */
+            MacAddress?: string | null;
+            /** @description `ONBUILD` metadata that were defined in the image's `Dockerfile`. */
+            OnBuild?: string[] | null;
+            /** @description User-defined key/value metadata. */
+            Labels?: {
+                [key: string]: string;
+            } | null;
+            /** @description Signal to stop a container as a string or unsigned integer. */
+            StopSignal?: string | null;
+            /**
+             * Format: int64
+             * @description Timeout to stop a container in seconds.
+             */
+            StopTimeout?: number | null;
+            /** @description Shell for when `RUN`, `CMD`, and `ENTRYPOINT` uses a shell. */
+            Shell?: string[] | null;
+        };
+        ContainerInspectResponse: {
+            /** @description The ID of the container */
+            Id?: string | null;
+            /** @description The time the container was created */
+            Created?: string | null;
+            /** @description The path to the command being run */
+            Path?: string | null;
+            /** @description The arguments to the command being run */
+            Args?: string[] | null;
+            State?: null | components["schemas"]["ContainerState"];
+            /** @description The container's image ID */
+            Image?: string | null;
+            ResolvConfPath?: string | null;
+            HostnamePath?: string | null;
+            HostsPath?: string | null;
+            LogPath?: string | null;
+            Name?: string | null;
+            /** Format: int64 */
+            RestartCount?: number | null;
+            Driver?: string | null;
+            Platform?: string | null;
+            MountLabel?: string | null;
+            ProcessLabel?: string | null;
+            AppArmorProfile?: string | null;
+            /** @description IDs of exec instances that are running in the container. */
+            ExecIDs?: string[] | null;
+            HostConfig?: null | components["schemas"]["HostConfig"];
+            GraphDriver?: null | components["schemas"]["GraphDriverData"];
+            /**
+             * Format: int64
+             * @description The size of files that have been created or changed by this container.
+             */
+            SizeRw?: number | null;
+            /**
+             * Format: int64
+             * @description The total size of all the files in this container.
+             */
+            SizeRootFs?: number | null;
+            Mounts?: components["schemas"]["MountPoint"][] | null;
+            Config?: null | components["schemas"]["ContainerConfig"];
+            NetworkSettings?: null | components["schemas"]["NetworkSettings"];
+        };
+        /** @description ContainerState stores container's running state. It's part of ContainerJSONBase and will be returned by the \"inspect\" command. */
+        ContainerState: {
+            Status?: null | components["schemas"]["ContainerStateStatusEnum"];
+            /** @description Whether this container is running.  Note that a running container can be _paused_. The `Running` and `Paused` booleans are not mutually exclusive:  When pausing a container (on Linux), the freezer cgroup is used to suspend all processes in the container. Freezing the process requires the process to be running. As a result, paused containers are both `Running` _and_ `Paused`.  Use the `Status` field instead to determine if a container's state is \"running\". */
+            Running?: boolean | null;
+            /** @description Whether this container is paused. */
+            Paused?: boolean | null;
+            /** @description Whether this container is restarting. */
+            Restarting?: boolean | null;
+            /** @description Whether a process within this container has been killed because it ran out of memory since the container was last started. */
+            OOMKilled?: boolean | null;
+            Dead?: boolean | null;
+            /**
+             * Format: int64
+             * @description The process ID of this container
+             */
+            Pid?: number | null;
+            /**
+             * Format: int64
+             * @description The last exit code of this container
+             */
+            ExitCode?: number | null;
+            Error?: string | null;
+            /** @description The time when this container was last started. */
+            StartedAt?: string | null;
+            /** @description The time when this container last exited. */
+            FinishedAt?: string | null;
+            Health?: null | components["schemas"]["Health"];
+        };
+        /** @enum {string} */
+        ContainerStateStatusEnum: "EMPTY" | "created" | "running" | "paused" | "restarting" | "removing" | "exited" | "dead";
+        /** @description Exec configuration used in the [Create Exec API](Docker::create_exec()) */
+        CreateExecOptions: {
+            /** @description Attach to `stdin` of the exec command. */
+            AttachStdin?: boolean | null;
+            /** @description Attach to stdout of the exec command. */
+            AttachStdout?: boolean | null;
+            /** @description Attach to stderr of the exec command. */
+            AttachStderr?: boolean | null;
+            /** @description Allocate a pseudo-TTY. */
+            Tty?: boolean | null;
+            /** @description Override the key sequence for detaching a container. Format is a single character `[a-Z]`
+             *     or `ctrl-<value>` where `<value>` is one of: `a-z`, `@`, `^`, `[`, `,` or `_`. */
+            DetachKeys?: string | null;
+            /** @description A list of environment variables in the form `["VAR=value", ...].` */
+            Env?: string[] | null;
+            /** @description Command to run, as a string or array of strings. */
+            Cmd?: string[] | null;
+            /** @description Runs the exec process with extended privileges. */
+            Privileged?: boolean | null;
+            /** @description The user, and optionally, group to run the exec process inside the container. Format is one
+             *     of: `user`, `user:group`, `uid`, or `uid:gid`. */
+            User?: string | null;
+            /** @description The working directory for the exec process inside the container. */
+            WorkingDir?: string | null;
+        };
+        /** @description Configuration of the daemon
+         *     It is used to configure the daemon */
+        DaemonConfig: {
+            /** @description List of hosts to listen on */
+            hosts: string[];
+            /** @description Path to the state directory */
+            state_dir: string;
+            /** @description Docker host to use */
+            docker_host?: string;
+            /** @description Store address to connect to */
+            store_addr?: string | null;
+            /** @description Host gateway automatically detected to host default gateway if not set */
+            gateway: string;
+            /** @description Hostname to use for the node automatically detected if not set */
+            hostname: string;
+            /** @description List of nodes to join */
+            nodes: string[];
+            /** @description Address to advertise to other nodes */
+            advertise_addr: string;
+            /** @description Config directory */
+            conf_dir: string;
+            /**
+             * Format: int32
+             * @description Group id
+             */
+            gid: number;
+            ssl?: null | components["schemas"]["SslConfig"];
+        };
+        /** @description A device mapping between the host and container */
+        DeviceMapping: {
+            PathOnHost?: string | null;
+            PathInContainer?: string | null;
+            CgroupPermissions?: string | null;
+        };
+        /** @description A request for devices to be sent to device drivers */
+        DeviceRequest: {
+            Driver?: string | null;
+            /** Format: int64 */
+            Count?: number | null;
+            DeviceIDs?: string[] | null;
+            /** @description A list of capabilities; an OR list of AND lists of capabilities. */
+            Capabilities?: string[][] | null;
+            /** @description Driver-specific options, specified as a key/value pairs. These options are passed directly to the driver. */
+            Options?: {
+                [key: string]: string;
+            } | null;
+        };
+        DnsEntry: {
+            Name: string;
+            IpAddress: components["schemas"]["NetworkKind"];
+        };
+        /** @description EndpointIPAMConfig represents an endpoint's IPAM configuration. */
+        EndpointIpamConfig: {
+            IPv4Address?: string | null;
+            IPv6Address?: string | null;
+            LinkLocalIPs?: string[] | null;
+        };
+        /** @description Configuration for a network endpoint. */
+        EndpointSettings: {
+            IPAMConfig?: null | components["schemas"]["EndpointIpamConfig"];
+            Links?: string[] | null;
+            /** @description MAC address for the endpoint on this network. The network driver might ignore this parameter. */
+            MacAddress?: string | null;
+            Aliases?: string[] | null;
+            /** @description Unique ID of the network. */
+            NetworkID?: string | null;
+            /** @description Unique ID for the service endpoint in a Sandbox. */
+            EndpointID?: string | null;
+            /** @description Gateway address for this network. */
+            Gateway?: string | null;
+            /** @description IPv4 address. */
+            IPAddress?: string | null;
+            /**
+             * Format: int64
+             * @description Mask length of the IPv4 address.
+             */
+            IPPrefixLen?: number | null;
+            /** @description IPv6 gateway address. */
+            IPv6Gateway?: string | null;
+            /** @description Global IPv6 address. */
+            GlobalIPv6Address?: string | null;
+            /**
+             * Format: int64
+             * @description Mask length of the global IPv6 address.
+             */
+            GlobalIPv6PrefixLen?: number | null;
+            /** @description DriverOpts is a mapping of driver options and values. These options are passed directly to the driver and are driver specific. */
+            DriverOpts?: {
+                [key: string]: string;
+            } | null;
+            /** @description List of all DNS names an endpoint has on a specific network. This list is based on the container name, network aliases, container short ID, and hostname.  These DNS names are non-fully qualified but can contain several dots. You can get fully qualified DNS names by appending `.<network-name>`. For instance, if container name is `my.ctr` and the network is named `testnet`, `DNSNames` will contain `my.ctr` and the FQDN will be `my.ctr.testnet`. */
+            DNSNames?: string[] | null;
+        };
+        /** @description Event is a generic event type that is used to notify state changes */
+        Event: {
+            /**
+             * Format: uuid
+             * @description Unique identifier of this event.
+             */
+            Key: string;
+            /**
+             * Format: date-time
+             * @description When the event was created.
+             */
+            CreatedAt: string;
+            /**
+             * Format: date-time
+             * @description When the event expires.
+             */
+            ExpiresAt: string;
+            /** @description Reporting Node is the name of the node where the Event was generated. */
+            ReportingNode: string;
+            /** @description Reporting Controller is the name of the controller that emitted this Event.
+             *     e.g. `nanocl.io/core`. This field cannot be empty for new Events. */
+            ReportingController: string;
+            /** @description Kind of this event (Error, Normal, Warning), new types could be added in the future.
+             *     It is machine-readable. This field cannot be empty for new Events. */
+            Kind: components["schemas"]["EventKind"];
+            /** @description Action is what action was taken/failed regarding to the regarding actor.
+             *     It is machine-readable.
+             *     This field cannot be empty for new Events and it can have at most 128 characters. */
+            Action: string;
+            /** @description Reason is why the action was taken. It is human-readable.
+             *     This field cannot be empty for new Events and it can have at most 128 characters. */
+            Reason: string;
+            /** @description Human-readable description of the status of this operation */
+            Note?: string | null;
+            Actor?: null | components["schemas"]["EventActor"];
+            Related?: null | components["schemas"]["EventActor"];
+            /** @description Standard metadata. */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+        };
+        /** @description Actor is the actor that triggered the event */
+        EventActor: {
+            Key?: string | null;
+            Kind: components["schemas"]["EventActorKind"];
+            Attributes?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+        };
+        /**
+         * @description Kind is the type of event related to the actor kind
+         * @enum {string}
+         */
+        EventActorKind: "Namespace" | "Cargo" | "Vm" | "Job" | "Resource" | "Secret" | "Process" | "ContainerImage";
+        /** @description Condition to stop watching for events if their are meet */
+        EventCondition: {
+            ActorKey?: string | null;
+            ActorKind?: null | components["schemas"]["EventActorKind"];
+            RelatedKey?: string | null;
+            RelatedKind?: null | components["schemas"]["EventActorKind"];
+            Kind: components["schemas"]["EventKind"][];
+            Action: components["schemas"]["NativeEventAction"][];
+        };
+        /**
+         * @description Kind of event (Error, Normal, Warning), new types could be added in the future.
+         * @enum {string}
+         */
+        EventKind: "error" | "normal" | "warning";
+        ExecInspectResponse: {
+            CanRemove?: boolean | null;
+            DetachKeys?: string | null;
+            ID?: string | null;
+            Running?: boolean | null;
+            /** Format: int64 */
+            ExitCode?: number | null;
+            ProcessConfig?: null | components["schemas"]["ProcessConfig"];
+            OpenStdin?: boolean | null;
+            OpenStderr?: boolean | null;
+            OpenStdout?: boolean | null;
+            ContainerID?: string | null;
+            /**
+             * Format: int64
+             * @description The system process ID for the exec process.
+             */
+            Pid?: number | null;
+        };
+        /** @description Generic count response */
+        GenericCount: {
+            /**
+             * Format: int64
+             * @description Number of items
+             */
+            Count: number;
+        };
+        GenericResourcesInner: {
+            NamedResourceSpec?: null | components["schemas"]["GenericResourcesInnerNamedResourceSpec"];
+            DiscreteResourceSpec?: null | components["schemas"]["GenericResourcesInnerDiscreteResourceSpec"];
+        };
+        GenericResourcesInnerDiscreteResourceSpec: {
+            Kind?: string | null;
+            /** Format: int64 */
+            Value?: number | null;
+        };
+        GenericResourcesInnerNamedResourceSpec: {
+            Kind?: string | null;
+            Value?: string | null;
+        };
+        /** @description Information about the storage driver used to store the container's and image's filesystem. */
+        GraphDriverData: {
+            /** @description Name of the storage driver. */
+            Name: string;
+            /** @description Low-level storage metadata, provided as key/value pairs.  This information is driver-specific, and depends on the storage-driver in use, and should be used for informational purposes only. */
+            Data: {
+                [key: string]: string;
+            };
+        };
+        HashMap: {
+            [key: string]: null | {
+                /** @description Host IP address that the container's port is mapped to. */
+                HostIp?: string | null;
+                /** @description Host port number that the container's port is mapped to. */
+                HostPort?: string | null;
+            }[];
+        };
+        /** @description Health stores information about the container's healthcheck results. */
+        Health: {
+            Status?: null | components["schemas"]["HealthStatusEnum"];
+            /**
+             * Format: int64
+             * @description FailingStreak is the number of consecutive failures
+             */
+            FailingStreak?: number | null;
+            /** @description Log contains the last few results (oldest first) */
+            Log?: components["schemas"]["HealthcheckResult"][] | null;
+        };
+        /** @description A test to perform to check that the container is healthy. */
+        HealthConfig: {
+            /** @description The test to perform. Possible values are:  - `[]` inherit healthcheck from image or parent image - `[\"NONE\"]` disable healthcheck - `[\"CMD\", args...]` exec arguments directly - `[\"CMD-SHELL\", command]` run command with system's default shell */
+            Test?: string[] | null;
+            /**
+             * Format: int64
+             * @description The time to wait between checks in nanoseconds. It should be 0 or at least 1000000 (1 ms). 0 means inherit.
+             */
+            Interval?: number | null;
+            /**
+             * Format: int64
+             * @description The time to wait before considering the check to have hung. It should be 0 or at least 1000000 (1 ms). 0 means inherit.
+             */
+            Timeout?: number | null;
+            /**
+             * Format: int64
+             * @description The number of consecutive failures needed to consider a container as unhealthy. 0 means inherit.
+             */
+            Retries?: number | null;
+            /**
+             * Format: int64
+             * @description Start period for the container to initialize before starting health-retries countdown in nanoseconds. It should be 0 or at least 1000000 (1 ms). 0 means inherit.
+             */
+            StartPeriod?: number | null;
+            /**
+             * Format: int64
+             * @description The time to wait between checks in nanoseconds during the start period. It should be 0 or at least 1000000 (1 ms). 0 means inherit.
+             */
+            StartInterval?: number | null;
+        };
+        /** @enum {string} */
+        HealthStatusEnum: "EMPTY" | "none" | "starting" | "healthy" | "unhealthy";
+        /** @description HealthcheckResult stores information about a single run of a healthcheck probe */
+        HealthcheckResult: {
+            Start?: null | components["schemas"]["String"];
+            End?: null | components["schemas"]["String"];
+            /**
+             * Format: int64
+             * @description ExitCode meanings:  - `0` healthy - `1` unhealthy - `2` reserved (considered unhealthy) - other values: error running probe
+             */
+            ExitCode?: number | null;
+            /** @description Output from last check */
+            Output?: string | null;
+        };
+        /** @description Container configuration that depends on the host we are running on */
+        HostConfig: {
+            /**
+             * Format: int64
+             * @description An integer value representing this container's relative CPU weight versus other containers.
+             */
+            CpuShares?: number | null;
+            /**
+             * Format: int64
+             * @description Memory limit in bytes.
+             */
+            Memory?: number | null;
+            /** @description Path to `cgroups` under which the container's `cgroup` is created. If the path is not absolute, the path is considered to be relative to the `cgroups` path of the init process. Cgroups are created if they do not already exist. */
+            CgroupParent?: string | null;
+            /**
+             * Format: int32
+             * @description Block IO weight (relative weight).
+             */
+            BlkioWeight?: number | null;
+            /** @description Block IO weight (relative device weight) in the form:  ``` [{\"Path\": \"device_path\", \"Weight\": weight}] ``` */
+            BlkioWeightDevice?: components["schemas"]["ResourcesBlkioWeightDevice"][] | null;
+            /** @description Limit read rate (bytes per second) from a device, in the form:  ``` [{\"Path\": \"device_path\", \"Rate\": rate}] ``` */
+            BlkioDeviceReadBps?: components["schemas"]["ThrottleDevice"][] | null;
+            /** @description Limit write rate (bytes per second) to a device, in the form:  ``` [{\"Path\": \"device_path\", \"Rate\": rate}] ``` */
+            BlkioDeviceWriteBps?: components["schemas"]["ThrottleDevice"][] | null;
+            /** @description Limit read rate (IO per second) from a device, in the form:  ``` [{\"Path\": \"device_path\", \"Rate\": rate}] ``` */
+            BlkioDeviceReadIOps?: components["schemas"]["ThrottleDevice"][] | null;
+            /** @description Limit write rate (IO per second) to a device, in the form:  ``` [{\"Path\": \"device_path\", \"Rate\": rate}] ``` */
+            BlkioDeviceWriteIOps?: components["schemas"]["ThrottleDevice"][] | null;
+            /**
+             * Format: int64
+             * @description The length of a CPU period in microseconds.
+             */
+            CpuPeriod?: number | null;
+            /**
+             * Format: int64
+             * @description Microseconds of CPU time that the container can get in a CPU period.
+             */
+            CpuQuota?: number | null;
+            /**
+             * Format: int64
+             * @description The length of a CPU real-time period in microseconds. Set to 0 to allocate no time allocated to real-time tasks.
+             */
+            CpuRealtimePeriod?: number | null;
+            /**
+             * Format: int64
+             * @description The length of a CPU real-time runtime in microseconds. Set to 0 to allocate no time allocated to real-time tasks.
+             */
+            CpuRealtimeRuntime?: number | null;
+            /** @description CPUs in which to allow execution (e.g., `0-3`, `0,1`). */
+            CpusetCpus?: string | null;
+            /** @description Memory nodes (MEMs) in which to allow execution (0-3, 0,1). Only effective on NUMA systems. */
+            CpusetMems?: string | null;
+            /** @description A list of devices to add to the container. */
+            Devices?: components["schemas"]["DeviceMapping"][] | null;
+            /** @description a list of cgroup rules to apply to the container */
+            DeviceCgroupRules?: string[] | null;
+            /** @description A list of requests for devices to be sent to device drivers. */
+            DeviceRequests?: components["schemas"]["DeviceRequest"][] | null;
+            /**
+             * Format: int64
+             * @description Hard limit for kernel TCP buffer memory (in bytes). Depending on the OCI runtime in use, this option may be ignored. It is no longer supported by the default (runc) runtime.  This field is omitted when empty.
+             */
+            KernelMemoryTCP?: number | null;
+            /**
+             * Format: int64
+             * @description Memory soft limit in bytes.
+             */
+            MemoryReservation?: number | null;
+            /**
+             * Format: int64
+             * @description Total memory limit (memory + swap). Set as `-1` to enable unlimited swap.
+             */
+            MemorySwap?: number | null;
+            /**
+             * Format: int64
+             * @description Tune a container's memory swappiness behavior. Accepts an integer between 0 and 100.
+             */
+            MemorySwappiness?: number | null;
+            /**
+             * Format: int64
+             * @description CPU quota in units of 10<sup>-9</sup> CPUs.
+             */
+            NanoCpus?: number | null;
+            /** @description Disable OOM Killer for the container. */
+            OomKillDisable?: boolean | null;
+            /** @description Run an init inside the container that forwards signals and reaps processes. This field is omitted if empty, and the default (as configured on the daemon) is used. */
+            Init?: boolean | null;
+            /**
+             * Format: int64
+             * @description Tune a container's PIDs limit. Set `0` or `-1` for unlimited, or `null` to not change.
+             */
+            PidsLimit?: number | null;
+            /** @description A list of resource limits to set in the container. For example:  ``` {\"Name\": \"nofile\", \"Soft\": 1024, \"Hard\": 2048} ``` */
+            Ulimits?: components["schemas"]["ResourcesUlimits"][] | null;
+            /**
+             * Format: int64
+             * @description The number of usable CPUs (Windows only).  On Windows Server containers, the processor resource controls are mutually exclusive. The order of precedence is `CPUCount` first, then `CPUShares`, and `CPUPercent` last.
+             */
+            CpuCount?: number | null;
+            /**
+             * Format: int64
+             * @description The usable percentage of the available CPUs (Windows only).  On Windows Server containers, the processor resource controls are mutually exclusive. The order of precedence is `CPUCount` first, then `CPUShares`, and `CPUPercent` last.
+             */
+            CpuPercent?: number | null;
+            /**
+             * Format: int64
+             * @description Maximum IOps for the container system drive (Windows only)
+             */
+            IOMaximumIOps?: number | null;
+            /**
+             * Format: int64
+             * @description Maximum IO in bytes per second for the container system drive (Windows only).
+             */
+            IOMaximumBandwidth?: number | null;
+            /** @description A list of volume bindings for this container. Each volume binding is a string in one of these forms:  - `host-src:container-dest[:options]` to bind-mount a host path   into the container. Both `host-src`, and `container-dest` must   be an _absolute_ path. - `volume-name:container-dest[:options]` to bind-mount a volume   managed by a volume driver into the container. `container-dest`   must be an _absolute_ path.  `options` is an optional, comma-delimited list of:  - `nocopy` disables automatic copying of data from the container   path to the volume. The `nocopy` flag only applies to named volumes. - `[ro|rw]` mounts a volume read-only or read-write, respectively.   If omitted or set to `rw`, volumes are mounted read-write. - `[z|Z]` applies SELinux labels to allow or deny multiple containers   to read and write to the same volume.     - `z`: a _shared_ content label is applied to the content. This       label indicates that multiple containers can share the volume       content, for both reading and writing.     - `Z`: a _private unshared_ label is applied to the content.       This label indicates that only the current container can use       a private volume. Labeling systems such as SELinux require       proper labels to be placed on volume content that is mounted       into a container. Without a label, the security system can       prevent a container's processes from using the content. By       default, the labels set by the host operating system are not       modified. - `[[r]shared|[r]slave|[r]private]` specifies mount   [propagation behavior](https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt).   This only applies to bind-mounted volumes, not internal volumes   or named volumes. Mount propagation requires the source mount   point (the location where the source directory is mounted in the   host operating system) to have the correct propagation properties.   For shared volumes, the source mount point must be set to `shared`.   For slave volumes, the mount must be set to either `shared` or   `slave`. */
+            Binds?: string[] | null;
+            /** @description Path to a file where the container ID is written */
+            ContainerIDFile?: string | null;
+            LogConfig?: null | components["schemas"]["HostConfigLogConfig"];
+            /** @description Network mode to use for this container. Supported standard values are: `bridge`, `host`, `none`, and `container:<name|id>`. Any other value is taken as a custom network's name to which this container should connect to. */
+            NetworkMode?: string | null;
+            PortBindings?: null | components["schemas"]["HashMap"];
+            RestartPolicy?: null | components["schemas"]["RestartPolicy"];
+            /** @description Automatically remove the container when the container's process exits. This has no effect if `RestartPolicy` is set. */
+            AutoRemove?: boolean | null;
+            /** @description Driver that this container uses to mount volumes. */
+            VolumeDriver?: string | null;
+            /** @description A list of volumes to inherit from another container, specified in the form `<container name>[:<ro|rw>]`. */
+            VolumesFrom?: string[] | null;
+            /** @description Specification for mounts to be added to the container. */
+            Mounts?: components["schemas"]["Mount"][] | null;
+            /** @description Initial console size, as an `[height, width]` array. */
+            ConsoleSize?: number[] | null;
+            /** @description Arbitrary non-identifying metadata attached to container and provided to the runtime when the container is started. */
+            Annotations?: {
+                [key: string]: string;
+            } | null;
+            /** @description A list of kernel capabilities to add to the container. Conflicts with option 'Capabilities'. */
+            CapAdd?: string[] | null;
+            /** @description A list of kernel capabilities to drop from the container. Conflicts with option 'Capabilities'. */
+            CapDrop?: string[] | null;
+            CgroupnsMode?: null | components["schemas"]["HostConfigCgroupnsModeEnum"];
+            /** @description A list of DNS servers for the container to use. */
+            Dns?: string[] | null;
+            /** @description A list of DNS options. */
+            DnsOptions?: string[] | null;
+            /** @description A list of DNS search domains. */
+            DnsSearch?: string[] | null;
+            /** @description A list of hostnames/IP mappings to add to the container's `/etc/hosts` file. Specified in the form `[\"hostname:IP\"]`. */
+            ExtraHosts?: string[] | null;
+            /** @description A list of additional groups that the container process will run as. */
+            GroupAdd?: string[] | null;
+            /** @description IPC sharing mode for the container. Possible values are:  - `\"none\"`: own private IPC namespace, with /dev/shm not mounted - `\"private\"`: own private IPC namespace - `\"shareable\"`: own private IPC namespace, with a possibility to share it with other containers - `\"container:<name|id>\"`: join another (shareable) container's IPC namespace - `\"host\"`: use the host system's IPC namespace  If not specified, daemon default is used, which can either be `\"private\"` or `\"shareable\"`, depending on daemon version and configuration. */
+            IpcMode?: string | null;
+            /** @description Cgroup to use for the container. */
+            Cgroup?: string | null;
+            /** @description A list of links for the container in the form `container_name:alias`. */
+            Links?: string[] | null;
+            /**
+             * Format: int64
+             * @description An integer value containing the score given to the container in order to tune OOM killer preferences.
+             */
+            OomScoreAdj?: number | null;
+            /** @description Set the PID (Process) Namespace mode for the container. It can be either:  - `\"container:<name|id>\"`: joins another container's PID namespace - `\"host\"`: use the host's PID namespace inside the container */
+            PidMode?: string | null;
+            /** @description Gives the container full access to the host. */
+            Privileged?: boolean | null;
+            /** @description Allocates an ephemeral host port for all of a container's exposed ports.  Ports are de-allocated when the container stops and allocated when the container starts. The allocated port might be changed when restarting the container.  The port is selected from the ephemeral port range that depends on the kernel. For example, on Linux the range is defined by `/proc/sys/net/ipv4/ip_local_port_range`. */
+            PublishAllPorts?: boolean | null;
+            /** @description Mount the container's root filesystem as read only. */
+            ReadonlyRootfs?: boolean | null;
+            /** @description A list of string values to customize labels for MLS systems, such as SELinux. */
+            SecurityOpt?: string[] | null;
+            /** @description Storage driver options for this container, in the form `{\"size\": \"120G\"}`. */
+            StorageOpt?: {
+                [key: string]: string;
+            } | null;
+            /** @description A map of container directories which should be replaced by tmpfs mounts, and their corresponding mount options. For example:  ``` { \"/run\": \"rw,noexec,nosuid,size=65536k\" } ``` */
+            Tmpfs?: {
+                [key: string]: string;
+            } | null;
+            /** @description UTS namespace to use for the container. */
+            UTSMode?: string | null;
+            /** @description Sets the usernamespace mode for the container when usernamespace remapping option is enabled. */
+            UsernsMode?: string | null;
+            /**
+             * Format: int64
+             * @description Size of `/dev/shm` in bytes. If omitted, the system uses 64MB.
+             */
+            ShmSize?: number | null;
+            /** @description A list of kernel parameters (sysctls) to set in the container. For example:  ``` {\"net.ipv4.ip_forward\": \"1\"} ``` */
+            Sysctls?: {
+                [key: string]: string;
+            } | null;
+            /** @description Runtime to use with this container. */
+            Runtime?: string | null;
+            Isolation?: null | components["schemas"]["HostConfigIsolationEnum"];
+            /** @description The list of paths to be masked inside the container (this overrides the default set of paths). */
+            MaskedPaths?: string[] | null;
+            /** @description The list of paths to be set as read-only inside the container (this overrides the default set of paths). */
+            ReadonlyPaths?: string[] | null;
+        };
+        /** @enum {string} */
+        HostConfigCgroupnsModeEnum: "EMPTY" | "private" | "host";
+        /** @enum {string} */
+        HostConfigIsolationEnum: "EMPTY" | "default" | "process" | "hyperv";
+        /** @description The logging configuration for this container */
+        HostConfigLogConfig: {
+            Type?: string | null;
+            Config?: {
+                [key: string]: string;
+            } | null;
+        };
+        /** @description HostInfo contains information about the host and the docker daemon */
+        HostInfo: components["schemas"]["SystemInfo"] & {
+            /** @description HostGateway is the gateway address of the host */
+            HostGateway: string;
+            /** @description Network configuration */
+            Network: components["schemas"]["Network"];
+            /** @description Daemon configuration */
+            Config: components["schemas"]["DaemonConfig"];
+        };
+        HttpTarget: {
+            /** @description Url to target */
+            Url: string;
+            Redirect?: null | components["schemas"]["UrlRedirect"];
+        };
+        /**
+         * @description Policy for pulling images related to process objects (job, cargo, vm)
+         * @enum {string}
+         */
+        ImagePullPolicy: "Never" | "Always" | "IfNotPresent";
+        /** @description IndexInfo contains information about a registry. */
+        IndexInfo: {
+            /** @description Name of the registry, such as \"docker.io\". */
+            Name?: string | null;
+            /** @description List of mirrors, expressed as URIs. */
+            Mirrors?: string[] | null;
+            /** @description Indicates if the registry is part of the list of insecure registries.  If `false`, the registry is insecure. Insecure registries accept un-encrypted (HTTP) and/or untrusted (HTTPS with certificates from unknown CAs) communication.  > **Warning**: Insecure registries can be useful when running a local > registry. However, because its use creates security vulnerabilities > it should ONLY be enabled for testing purposes. For increased > security, users should add their CA to their system's list of > trusted CAs instead of enabling this option. */
+            Secure?: boolean | null;
+            /** @description Indicates whether this is an official registry (i.e., Docker Hub / docker.io) */
+            Official?: boolean | null;
+        };
+        Ipam: {
+            /** @description Name of the IPAM driver to use. */
+            Driver?: string | null;
+            /** @description List of IPAM configuration options, specified as a map:  ``` {\"Subnet\": <CIDR>, \"IPRange\": <CIDR>, \"Gateway\": <IP address>, \"AuxAddress\": <device_name:IP address>} ``` */
+            Config?: components["schemas"]["IpamConfig"][] | null;
+            /** @description Driver-specific options, specified as a map. */
+            Options?: {
+                [key: string]: string;
+            } | null;
+        };
+        IpamConfig: {
+            Subnet?: string | null;
+            IPRange?: string | null;
+            Gateway?: string | null;
+            AuxiliaryAddresses?: {
+                [key: string]: string;
+            } | null;
+        };
+        /** @description A job is a collection of containers to run in sequence as a single unit to act like a command */
+        Job: {
+            /** @description Name of the job */
+            Name: string;
+            /**
+             * Format: date-time
+             * @description When the job have been created
+             */
+            CreatedAt: string;
+            /**
+             * Format: date-time
+             * @description When the job have been updated
+             */
+            UpdatedAt: string;
+            /** @description Status of the job */
+            Status: components["schemas"]["ObjPsStatus"];
+            /** @description Secrets to load as environment variables */
+            Secrets?: string[] | null;
+            /** @description Metadata (user defined) */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            /** @description Schedule of the job (cron) */
+            Schedule?: string | null;
+            /** @description Remove the job after (x) seconds after execution */
+            Ttl?: number | null;
+            /** @description Secret to use when pulling the image */
+            ImagePullSecret?: string | null;
+            ImagePullPolicy?: null | components["schemas"]["ImagePullPolicy"];
+            /** @description Containers to run */
+            Containers: components["schemas"]["Config"][];
+        };
+        /** @description Detailed information about a job */
+        JobInspect: {
+            /** @description Number of instances */
+            InstanceTotal: number;
+            /** @description Number of instance that succeeded */
+            InstanceSuccess: number;
+            /** @description Number of instance running */
+            InstanceRunning: number;
+            /** @description Number of instance failed */
+            InstanceFailed: number;
+            /** @description Specification of the job */
+            Spec: components["schemas"]["Job"];
+            /** @description List of instances */
+            Instances: components["schemas"]["Process"][];
+        };
+        /** @description Job partial is used to create a new job */
+        JobPartial: {
+            /** @description Name of the job */
+            Name: string;
+            /** @description Secrets to load as environment variables */
+            Secrets?: string[] | null;
+            /** @description Metadata (user defined) */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            /** @description Schedule of the job (cron) */
+            Schedule?: string | null;
+            /** @description Remove the job after (x) seconds after execution */
+            Ttl?: number | null;
+            /** @description Secret to use when pulling the image */
+            ImagePullSecret?: string | null;
+            ImagePullPolicy?: null | components["schemas"]["ImagePullPolicy"];
+            /** @description List of container to run */
+            Containers: components["schemas"]["Config"][];
+        };
+        /** @description Summary of a job (used in list) */
+        JobSummary: {
+            /** @description Number of instances */
+            InstanceTotal: number;
+            /** @description Number of instance that succeeded */
+            InstanceSuccess: number;
+            /** @description Number of instance running */
+            InstanceRunning: number;
+            /** @description Number of instance failed */
+            InstanceFailed: number;
+            /** @description Specification of the job */
+            Spec: components["schemas"]["Job"];
+        };
+        LimitReq: {
+            /** @description The burst size */
+            Burst: number;
+            /** @description The delay to wait before retrying */
+            Delay?: number | null;
+        };
+        LimitReqZone: {
+            /** @description The max size of the cache in megabytes */
+            Size: number;
+            /** @description The max number of request per second */
+            Rate: number;
+        };
+        /**
+         * @description Current local status of this node.
+         *     Enumeration of values.
+         *     Since this enum's variants do not hold data, we can easily define them them as `#[repr(C)]`
+         *     which helps with FFI.
+         * @enum {string}
+         */
+        LocalNodeState: "EMPTY" | "inactive" | "pending" | "active" | "error" | "locked";
+        LocationTarget: components["schemas"]["UpstreamTarget"] | components["schemas"]["HttpTarget"] | components["schemas"]["UnixTarget"];
+        /** @description General memory statistics for the container. */
+        MemoryStats: {
+            stats?: null | components["schemas"]["MemoryStatsStats"];
+            /** Format: int64 */
+            max_usage?: number | null;
+            /** Format: int64 */
+            usage?: number | null;
+            /** Format: int64 */
+            failcnt?: number | null;
+            /** Format: int64 */
+            limit?: number | null;
+            /** Format: int64 */
+            commit?: number | null;
+            /** Format: int64 */
+            commit_peak?: number | null;
+            /** Format: int64 */
+            commitbytes?: number | null;
+            /** Format: int64 */
+            commitpeakbytes?: number | null;
+            /** Format: int64 */
+            privateworkingset?: number | null;
+        };
+        /** @description Granular memory statistics for the container. */
+        MemoryStatsStats: components["schemas"]["MemoryStatsStatsV1"] | components["schemas"]["MemoryStatsStatsV2"];
+        /** @description Granular memory statistics for the container, v1 cgroups.
+         *
+         *     Exposed in the docker library [here](https://github.com/moby/moby/blob/40d9e2aff130b42ba0f83d5238b9b53184c8ab3b/daemon/daemon_unix.go#L1436). */
+        MemoryStatsStatsV1: {
+            /** Format: int64 */
+            cache: number;
+            /** Format: int64 */
+            dirty: number;
+            /** Format: int64 */
+            mapped_file: number;
+            /** Format: int64 */
+            total_inactive_file: number;
+            /** Format: int64 */
+            pgpgout: number;
+            /** Format: int64 */
+            rss: number;
+            /** Format: int64 */
+            total_mapped_file: number;
+            /** Format: int64 */
+            writeback: number;
+            /** Format: int64 */
+            unevictable: number;
+            /** Format: int64 */
+            pgpgin: number;
+            /** Format: int64 */
+            total_unevictable: number;
+            /** Format: int64 */
+            pgmajfault: number;
+            /** Format: int64 */
+            total_rss: number;
+            /** Format: int64 */
+            total_rss_huge: number;
+            /** Format: int64 */
+            total_writeback: number;
+            /** Format: int64 */
+            total_inactive_anon: number;
+            /** Format: int64 */
+            rss_huge: number;
+            /** Format: int64 */
+            hierarchical_memory_limit: number;
+            /** Format: int64 */
+            total_pgfault: number;
+            /** Format: int64 */
+            total_active_file: number;
+            /** Format: int64 */
+            active_anon: number;
+            /** Format: int64 */
+            total_active_anon: number;
+            /** Format: int64 */
+            total_pgpgout: number;
+            /** Format: int64 */
+            total_cache: number;
+            /** Format: int64 */
+            total_dirty: number;
+            /** Format: int64 */
+            inactive_anon: number;
+            /** Format: int64 */
+            active_file: number;
+            /** Format: int64 */
+            pgfault: number;
+            /** Format: int64 */
+            inactive_file: number;
+            /** Format: int64 */
+            total_pgmajfault: number;
+            /** Format: int64 */
+            total_pgpgin: number;
+            /** Format: int64 */
+            hierarchical_memsw_limit?: number | null;
+            /** Format: int64 */
+            shmem?: number | null;
+            /** Format: int64 */
+            total_shmem?: number | null;
+        };
+        /** @description Granular memory statistics for the container, v2 cgroups.
+         *
+         *     Exposed in the docker library [here](https://github.com/moby/moby/blob/40d9e2aff130b42ba0f83d5238b9b53184c8ab3b/daemon/daemon_unix.go#L1542). */
+        MemoryStatsStatsV2: {
+            /** Format: int64 */
+            anon: number;
+            /** Format: int64 */
+            file: number;
+            /** Format: int64 */
+            kernel_stack: number;
+            /** Format: int64 */
+            slab: number;
+            /** Format: int64 */
+            sock: number;
+            /** Format: int64 */
+            shmem: number;
+            /** Format: int64 */
+            file_mapped: number;
+            /** Format: int64 */
+            file_dirty: number;
+            /** Format: int64 */
+            file_writeback: number;
+            /** Format: int64 */
+            anon_thp: number;
+            /** Format: int64 */
+            inactive_anon: number;
+            /** Format: int64 */
+            active_anon: number;
+            /** Format: int64 */
+            inactive_file: number;
+            /** Format: int64 */
+            active_file: number;
+            /** Format: int64 */
+            unevictable: number;
+            /** Format: int64 */
+            slab_reclaimable: number;
+            /** Format: int64 */
+            slab_unreclaimable: number;
+            /** Format: int64 */
+            pgfault: number;
+            /** Format: int64 */
+            pgmajfault: number;
+            /** Format: int64 */
+            workingset_refault: number;
+            /** Format: int64 */
+            workingset_activate: number;
+            /** Format: int64 */
+            workingset_nodereclaim: number;
+            /** Format: int64 */
+            pgrefill: number;
+            /** Format: int64 */
+            pgscan: number;
+            /** Format: int64 */
+            pgsteal: number;
+            /** Format: int64 */
+            pgactivate: number;
+            /** Format: int64 */
+            pgdeactivate: number;
+            /** Format: int64 */
+            pglazyfree: number;
+            /** Format: int64 */
+            pglazyfreed: number;
+            /** Format: int64 */
+            thp_fault_alloc: number;
+            /** Format: int64 */
+            thp_collapse_alloc: number;
+        };
+        /** @description Metric entry */
+        Metric: {
+            /**
+             * Format: uuid
+             * @description The key of the metric in the database `UUID`
+             */
+            Key: string;
+            /**
+             * Format: date-time
+             * @description When the metric was created
+             */
+            CreatedAt: string;
+            /**
+             * Format: date-time
+             * @description When the metric will expire
+             */
+            ExpiresAt: string;
+            /** @description The node where the metric come from */
+            NodeName: string;
+            /** @description The kind of the metric */
+            Kind: string;
+            /** @description The data of the metric */
+            Data: unknown;
+            /** @description Optional note about the metric */
+            Note?: string | null;
+        };
+        /** @description Used to create a new metric */
+        MetricPartial: {
+            /** @description The kind of the metric */
+            Kind: string;
+            /** @description The data of the metric */
+            Data: unknown;
+            /** @description Optional note about the metric */
+            Note?: string | null;
+        };
+        Mount: {
+            /** @description Container path. */
+            Target?: string | null;
+            /** @description Mount source (e.g. a volume name, a host path). */
+            Source?: string | null;
+            Type?: null | components["schemas"]["MountTypeEnum"];
+            /** @description Whether the mount should be read-only. */
+            ReadOnly?: boolean | null;
+            /** @description The consistency requirement for the mount: `default`, `consistent`, `cached`, or `delegated`. */
+            Consistency?: string | null;
+            BindOptions?: null | components["schemas"]["MountBindOptions"];
+            VolumeOptions?: null | components["schemas"]["MountVolumeOptions"];
+            TmpfsOptions?: null | components["schemas"]["MountTmpfsOptions"];
+        };
+        /** @description Optional configuration for the `bind` type. */
+        MountBindOptions: {
+            Propagation?: null | components["schemas"]["MountBindOptionsPropagationEnum"];
+            /** @description Disable recursive bind mount. */
+            NonRecursive?: boolean | null;
+            /** @description Create mount point on host if missing */
+            CreateMountpoint?: boolean | null;
+            /** @description Make the mount non-recursively read-only, but still leave the mount recursive (unless NonRecursive is set to `true` in conjunction).  Addded in v1.44, before that version all read-only mounts were non-recursive by default. To match the previous behaviour this will default to `true` for clients on versions prior to v1.44. */
+            ReadOnlyNonRecursive?: boolean | null;
+            /** @description Raise an error if the mount cannot be made recursively read-only. */
+            ReadOnlyForceRecursive?: boolean | null;
+        };
+        /** @enum {string} */
+        MountBindOptionsPropagationEnum: "EMPTY" | "private" | "rprivate" | "shared" | "rshared" | "slave" | "rslave";
+        /** @description MountPoint represents a mount point configuration inside the container. This is used for reporting the mountpoints in use by a container. */
+        MountPoint: {
+            Type?: null | components["schemas"]["MountPointTypeEnum"];
+            /** @description Name is the name reference to the underlying data defined by `Source` e.g., the volume name. */
+            Name?: string | null;
+            /** @description Source location of the mount.  For volumes, this contains the storage location of the volume (within `/var/lib/docker/volumes/`). For bind-mounts, and `npipe`, this contains the source (host) part of the bind-mount. For `tmpfs` mount points, this field is empty. */
+            Source?: string | null;
+            /** @description Destination is the path relative to the container root (`/`) where the `Source` is mounted inside the container. */
+            Destination?: string | null;
+            /** @description Driver is the volume driver used to create the volume (if it is a volume). */
+            Driver?: string | null;
+            /** @description Mode is a comma separated list of options supplied by the user when creating the bind/volume mount.  The default is platform-specific (`\"z\"` on Linux, empty on Windows). */
+            Mode?: string | null;
+            /** @description Whether the mount is mounted writable (read-write). */
+            RW?: boolean | null;
+            /** @description Propagation describes how mounts are propagated from the host into the mount point, and vice-versa. Refer to the [Linux kernel documentation](https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt) for details. This field is not used on Windows. */
+            Propagation?: string | null;
+        };
+        /** @enum {string} */
+        MountPointTypeEnum: "EMPTY" | "bind" | "volume" | "tmpfs" | "npipe" | "cluster";
+        /** @description Optional configuration for the `tmpfs` type. */
+        MountTmpfsOptions: {
+            /**
+             * Format: int64
+             * @description The size for the tmpfs mount in bytes.
+             */
+            SizeBytes?: number | null;
+            /**
+             * Format: int64
+             * @description The permission mode for the tmpfs mount in an integer.
+             */
+            Mode?: number | null;
+        };
+        /** @enum {string} */
+        MountTypeEnum: "EMPTY" | "bind" | "volume" | "tmpfs" | "npipe" | "cluster";
+        /** @description Optional configuration for the `volume` type. */
+        MountVolumeOptions: {
+            /** @description Populate volume with data from the target. */
+            NoCopy?: boolean | null;
+            /** @description User-defined key/value metadata. */
+            Labels?: {
+                [key: string]: string;
+            } | null;
+            DriverConfig?: null | components["schemas"]["MountVolumeOptionsDriverConfig"];
+            /** @description Source path inside the volume. Must be relative without any back traversals. */
+            Subpath?: string | null;
+        };
+        /** @description Map of driver specific options */
+        MountVolumeOptionsDriverConfig: {
+            /** @description Name of the driver to use to create the volume. */
+            Name?: string | null;
+            /** @description key/value map of driver specific options. */
+            Options?: {
+                [key: string]: string;
+            } | null;
+        };
+        /** @description Namespace is a identifier for a set of cargoes
+         *     It is used to group cargoes together */
+        Namespace: {
+            /** @description The name as primary key of the namespace */
+            Name: string;
+            /**
+             * Format: date-time
+             * @description When the namespace was created
+             */
+            CreatedAt: string;
+            /** @description User defined metadata */
+            Metadata?: unknown;
+        };
+        /** @description A Namespace Inspect is a detailed view of a namespace
+         *     It is used to inspect a namespace
+         *     It contains all the information about the namespace
+         *     It also contains the list of cargoes */
+        NamespaceInspect: {
+            /** @description Name of the namespace */
+            Name: string;
+            /** @description Number of cargoes */
+            Cargoes: components["schemas"]["CargoInspect"][];
+        };
+        /** @description A Namespace partial is a payload used to create a new namespace */
+        NamespacePartial: {
+            /** @description Name of the namespace */
+            Name: string;
+            /** @description User defined metadata */
+            Metadata?: unknown;
+        };
+        /** @description A Namespace Summary is a summary of a namespace
+         *     It is used to list all the namespaces
+         *     It contains the number of cargoes and instances existing in the namespace */
+        NamespaceSummary: {
+            /** @description Name of the namespace */
+            Name: string;
+            /** @description Number of cargoes */
+            Cargoes: number;
+            /** @description Number of instances */
+            Instances: number;
+            /**
+             * Format: date-time
+             * @description When the namespace was created
+             */
+            CreatedAt: string;
+        };
+        /** @description Action is the action that triggered the event */
+        NativeEventAction: "create" | "starting" | "start" | "updating" | "update" | "destroying" | "destroy" | "stopping" | "stop" | "restart" | "finish" | "fail" | "die" | "downloading" | "download" | {
+            other: string;
+        };
+        Network: {
+            Name?: string | null;
+            Id?: string | null;
+            Created?: null | components["schemas"]["String"];
+            Scope?: string | null;
+            Driver?: string | null;
+            EnableIPv6?: boolean | null;
+            IPAM?: null | components["schemas"]["Ipam"];
+            Internal?: boolean | null;
+            Attachable?: boolean | null;
+            Ingress?: boolean | null;
+            Containers?: {
+                [key: string]: components["schemas"]["NetworkContainer"];
+            } | null;
+            Options?: {
+                [key: string]: string;
+            } | null;
+            Labels?: {
+                [key: string]: string;
+            } | null;
+        };
+        NetworkContainer: {
+            Name?: string | null;
+            EndpointID?: string | null;
+            MacAddress?: string | null;
+            IPv4Address?: string | null;
+            IPv6Address?: string | null;
+        };
+        /** @description Network binding kinds */
+        NetworkKind: "All" | "Local" | "Public" | "Internal" | {
+            /** @description Specific ip address */
+            Other: string;
+        };
+        /** @description NetworkSettings exposes the network settings in the API */
+        NetworkSettings: {
+            /** @description Name of the default bridge interface when dockerd's --bridge flag is set. */
+            Bridge?: string | null;
+            /** @description SandboxID uniquely represents a container's network stack. */
+            SandboxID?: string | null;
+            /** @description Indicates if hairpin NAT should be enabled on the virtual interface.  Deprecated: This field is never set and will be removed in a future release. */
+            HairpinMode?: boolean | null;
+            /** @description IPv6 unicast address using the link-local prefix.  Deprecated: This field is never set and will be removed in a future release. */
+            LinkLocalIPv6Address?: string | null;
+            /**
+             * Format: int64
+             * @description Prefix length of the IPv6 unicast address.  Deprecated: This field is never set and will be removed in a future release.
+             */
+            LinkLocalIPv6PrefixLen?: number | null;
+            Ports?: null | components["schemas"]["HashMap"];
+            /** @description SandboxKey is the full path of the netns handle */
+            SandboxKey?: string | null;
+            /** @description Deprecated: This field is never set and will be removed in a future release. */
+            SecondaryIPAddresses?: components["schemas"]["Address"][] | null;
+            /** @description Deprecated: This field is never set and will be removed in a future release. */
+            SecondaryIPv6Addresses?: components["schemas"]["Address"][] | null;
+            /** @description EndpointID uniquely represents a service endpoint in a Sandbox.  <p><br /></p>  > **Deprecated**: This field is only propagated when attached to the > default \"bridge\" network. Use the information from the \"bridge\" > network inside the `Networks` map instead, which contains the same > information. This field was deprecated in Docker 1.9 and is scheduled > to be removed in Docker 17.12.0 */
+            EndpointID?: string | null;
+            /** @description Gateway address for the default \"bridge\" network.  <p><br /></p>  > **Deprecated**: This field is only propagated when attached to the > default \"bridge\" network. Use the information from the \"bridge\" > network inside the `Networks` map instead, which contains the same > information. This field was deprecated in Docker 1.9 and is scheduled > to be removed in Docker 17.12.0 */
+            Gateway?: string | null;
+            /** @description Global IPv6 address for the default \"bridge\" network.  <p><br /></p>  > **Deprecated**: This field is only propagated when attached to the > default \"bridge\" network. Use the information from the \"bridge\" > network inside the `Networks` map instead, which contains the same > information. This field was deprecated in Docker 1.9 and is scheduled > to be removed in Docker 17.12.0 */
+            GlobalIPv6Address?: string | null;
+            /**
+             * Format: int64
+             * @description Mask length of the global IPv6 address.  <p><br /></p>  > **Deprecated**: This field is only propagated when attached to the > default \"bridge\" network. Use the information from the \"bridge\" > network inside the `Networks` map instead, which contains the same > information. This field was deprecated in Docker 1.9 and is scheduled > to be removed in Docker 17.12.0
+             */
+            GlobalIPv6PrefixLen?: number | null;
+            /** @description IPv4 address for the default \"bridge\" network.  <p><br /></p>  > **Deprecated**: This field is only propagated when attached to the > default \"bridge\" network. Use the information from the \"bridge\" > network inside the `Networks` map instead, which contains the same > information. This field was deprecated in Docker 1.9 and is scheduled > to be removed in Docker 17.12.0 */
+            IPAddress?: string | null;
+            /**
+             * Format: int64
+             * @description Mask length of the IPv4 address.  <p><br /></p>  > **Deprecated**: This field is only propagated when attached to the > default \"bridge\" network. Use the information from the \"bridge\" > network inside the `Networks` map instead, which contains the same > information. This field was deprecated in Docker 1.9 and is scheduled > to be removed in Docker 17.12.0
+             */
+            IPPrefixLen?: number | null;
+            /** @description IPv6 gateway address for this network.  <p><br /></p>  > **Deprecated**: This field is only propagated when attached to the > default \"bridge\" network. Use the information from the \"bridge\" > network inside the `Networks` map instead, which contains the same > information. This field was deprecated in Docker 1.9 and is scheduled > to be removed in Docker 17.12.0 */
+            IPv6Gateway?: string | null;
+            /** @description MAC address for the container on the default \"bridge\" network.  <p><br /></p>  > **Deprecated**: This field is only propagated when attached to the > default \"bridge\" network. Use the information from the \"bridge\" > network inside the `Networks` map instead, which contains the same > information. This field was deprecated in Docker 1.9 and is scheduled > to be removed in Docker 17.12.0 */
+            MacAddress?: string | null;
+            /** @description Information about all networks that the container is connected to. */
+            Networks?: {
+                [key: string]: components["schemas"]["EndpointSettings"];
+            } | null;
+        };
+        /** @description Network statistics for the container. */
+        NetworkStats: {
+            /** Format: int64 */
+            rx_dropped: number;
+            /** Format: int64 */
+            rx_bytes: number;
+            /** Format: int64 */
+            rx_errors: number;
+            /** Format: int64 */
+            tx_packets: number;
+            /** Format: int64 */
+            tx_dropped: number;
+            /** Format: int64 */
+            rx_packets: number;
+            /** Format: int64 */
+            tx_errors: number;
+            /** Format: int64 */
+            tx_bytes: number;
+        };
+        /** @description This container's networking configuration. */
+        NetworkingConfig_String: {
+            EndpointsConfig: {
+                [key: string]: components["schemas"]["EndpointSettings"];
+            };
+        };
+        Node: {
+            /** @description The name of the node */
+            Name: string;
+            /**
+             * Format: date-time
+             * @description The created at date
+             */
+            CreatedAt: string;
+            /** @description The ip address of the node */
+            IpAddress: string;
+            /** @description Endpoint to connect to the node */
+            Endpoint: string;
+            /** @description Version of the node */
+            Version: string;
+            /** @description User defined metadata */
+            Metadata?: unknown;
+        };
+        ObjPsStatus: {
+            /** Format: date-time */
+            UpdatedAt: string;
+            Wanted: components["schemas"]["ObjPsStatusKind"];
+            PrevWanted: components["schemas"]["ObjPsStatusKind"];
+            Actual: components["schemas"]["ObjPsStatusKind"];
+            PrevActual: components["schemas"]["ObjPsStatusKind"];
+        };
+        /** @enum {string} */
+        ObjPsStatusKind: "create" | "starting" | "start" | "updating" | "update" | "destroying" | "destroy" | "stopping" | "stop" | "fail" | "finish" | "unknown";
+        /** @description The version number of the object such as node, service, etc. This is needed to avoid conflicting writes. The client must send the version number along with the modified specification when updating these objects.  This approach ensures safe concurrency and determinism in that the change on the object may not be applied if the version number has changed from the last read. In other words, if two update requests specify the same base version, only one of the requests can succeed. As a result, two separate update requests that happen at the same time will not unintentionally overwrite each other. */
+        ObjectVersion: {
+            /** Format: int64 */
+            Index?: number | null;
+        };
+        /** @description Represents a peer-node in the swarm */
+        PeerNode: {
+            /** @description Unique identifier of for this node in the swarm. */
+            NodeID?: string | null;
+            /** @description IP address and ports at which this node can be reached. */
+            Addr?: string | null;
+        };
+        /** @description Process ID statistics for the container. */
+        PidsStats: {
+            /** Format: int64 */
+            current?: number | null;
+            /** Format: int64 */
+            limit?: number | null;
+        };
+        /** @description Available plugins per type.  <p><br /></p>  > **Note**: Only unmanaged (V1) plugins are included in this list. > V1 plugins are \"lazily\" loaded, and are not returned in this list > if there is no resource using the plugin. */
+        PluginsInfo: {
+            /** @description Names of available volume-drivers, and network-driver plugins. */
+            Volume?: string[] | null;
+            /** @description Names of available network-drivers, and network-driver plugins. */
+            Network?: string[] | null;
+            /** @description Names of available authorization plugins. */
+            Authorization?: string[] | null;
+            /** @description Names of available logging-drivers, and logging-driver plugins. */
+            Log?: string[] | null;
+        };
+        Primitive: string | number | boolean;
+        /** @description Represents a process (Vm, Job, Cargo) */
+        Process: {
+            /** @description The key of the process */
+            Key: string;
+            /**
+             * Format: date-time
+             * @description The created at date
+             */
+            CreatedAt: string;
+            /**
+             * Format: date-time
+             * @description Last time the instance was updated
+             */
+            UpdatedAt: string;
+            /** @description Name of the process */
+            Name: string;
+            /** @description Kind of the process (Job, Vm, Cargo) */
+            Kind: components["schemas"]["ProcessKind"];
+            /** @description Name of the node where the container is running */
+            NodeName: string;
+            /** @description Key of the related kind */
+            KindKey: string;
+            /** @description The data of the process a ContainerInspect */
+            Data: components["schemas"]["ContainerInspectResponse"];
+        };
+        ProcessConfig: {
+            privileged?: boolean | null;
+            user?: string | null;
+            tty?: boolean | null;
+            entrypoint?: string | null;
+            arguments?: string[] | null;
+        };
+        /**
+         * @description Kind of process (Vm, Job, Cargo)
+         * @enum {string}
+         */
+        ProcessKind: "vm" | "job" | "cargo";
+        /** @description Stats of a process */
+        ProcessStats: {
+            Name: string;
+            Stats: components["schemas"]["Stats"];
+        };
+        /** @description Defines a proxy rule location */
+        ProxyHttpLocation: {
+            /** @description The path */
+            Path: string;
+            /** @description The target cargo */
+            Target: components["schemas"]["LocationTarget"];
+            LimitReq?: null | components["schemas"]["LimitReq"];
+            /** @description Allowed ip addr */
+            AllowedIps?: string[] | null;
+            /** @description Extras header to add */
+            Headers?: string[] | null;
+            /**
+             * Format: double
+             * @description Http version to use
+             */
+            Version?: number | null;
+        };
+        /** @description Proxy rules modes */
+        ProxyRule: components["schemas"]["ProxyRuleHttp"] | components["schemas"]["ProxyRuleStream"];
+        /** @description Defines a proxy rule http config */
+        ProxyRuleHttp: {
+            /** @description The domain */
+            Domain?: string | null;
+            /**
+             * Format: int32
+             * @description Port to listen on (default 80 or 443)
+             */
+            Port?: number | null;
+            /** @description Type of network binding */
+            Network: components["schemas"]["NetworkKind"];
+            LimitReqZone?: null | components["schemas"]["LimitReqZone"];
+            /** @description The locations to handle multiple paths */
+            Locations: components["schemas"]["ProxyHttpLocation"][];
+            Ssl?: null | components["schemas"]["ProxySsl"];
+            /** @description Path to extra config file to include */
+            Includes?: string[] | null;
+        };
+        /** @description Proxy rules modes */
+        ProxyRuleStream: {
+            /** @description Type of the network binding */
+            Network: components["schemas"]["NetworkKind"];
+            /** @description Protocol to use Tcp | Udp */
+            Protocol: components["schemas"]["ProxyStreamProtocol"];
+            /**
+             * Format: int32
+             * @description The port to open on nodes
+             */
+            Port: number;
+            Ssl?: null | components["schemas"]["ProxySsl"];
+            /** @description The target */
+            Target: components["schemas"]["StreamTarget"];
+        };
+        ProxySsl: components["schemas"]["ProxySslConfig"] | string;
+        ProxySslConfig: {
+            /** @description Path to the certificate */
+            Certificate: string;
+            /** @description Path to the certificate key */
+            CertificateKey: string;
+            /** @description Path to the certificate client */
+            CertificateClient?: string | null;
+            /** @description Enable or disable client verification */
+            VerifyClient?: boolean | null;
+            /** @description Path to the dhparam file */
+            Dhparam?: string | null;
+        };
+        /**
+         * @description Proxy rules modes
+         * @enum {string}
+         */
+        ProxyStreamProtocol: "Tcp" | "Udp";
+        /** @description RegistryServiceConfig stores daemon registry services configuration. */
+        RegistryServiceConfig: {
+            /** @description List of IP ranges to which nondistributable artifacts can be pushed, using the CIDR syntax [RFC 4632](https://tools.ietf.org/html/4632).  Some images (for example, Windows base images) contain artifacts whose distribution is restricted by license. When these images are pushed to a registry, restricted artifacts are not included.  This configuration override this behavior, and enables the daemon to push nondistributable artifacts to all registries whose resolved IP address is within the subnet described by the CIDR syntax.  This option is useful when pushing images containing nondistributable artifacts to a registry on an air-gapped network so hosts on that network can pull the images without connecting to another server.  > **Warning**: Nondistributable artifacts typically have restrictions > on how and where they can be distributed and shared. Only use this > feature to push artifacts to private registries and ensure that you > are in compliance with any terms that cover redistributing > nondistributable artifacts. */
+            AllowNondistributableArtifactsCIDRs?: string[] | null;
+            /** @description List of registry hostnames to which nondistributable artifacts can be pushed, using the format `<hostname>[:<port>]` or `<IP address>[:<port>]`.  Some images (for example, Windows base images) contain artifacts whose distribution is restricted by license. When these images are pushed to a registry, restricted artifacts are not included.  This configuration override this behavior for the specified registries.  This option is useful when pushing images containing nondistributable artifacts to a registry on an air-gapped network so hosts on that network can pull the images without connecting to another server.  > **Warning**: Nondistributable artifacts typically have restrictions > on how and where they can be distributed and shared. Only use this > feature to push artifacts to private registries and ensure that you > are in compliance with any terms that cover redistributing > nondistributable artifacts. */
+            AllowNondistributableArtifactsHostnames?: string[] | null;
+            /** @description List of IP ranges of insecure registries, using the CIDR syntax ([RFC 4632](https://tools.ietf.org/html/4632)). Insecure registries accept un-encrypted (HTTP) and/or untrusted (HTTPS with certificates from unknown CAs) communication.  By default, local registries (`127.0.0.0/8`) are configured as insecure. All other registries are secure. Communicating with an insecure registry is not possible if the daemon assumes that registry is secure.  This configuration override this behavior, insecure communication with registries whose resolved IP address is within the subnet described by the CIDR syntax.  Registries can also be marked insecure by hostname. Those registries are listed under `IndexConfigs` and have their `Secure` field set to `false`.  > **Warning**: Using this option can be useful when running a local > registry, but introduces security vulnerabilities. This option > should therefore ONLY be used for testing purposes. For increased > security, users should add their CA to their system's list of trusted > CAs instead of enabling this option. */
+            InsecureRegistryCIDRs?: string[] | null;
+            IndexConfigs?: {
+                [key: string]: components["schemas"]["IndexInfo"];
+            } | null;
+            /** @description List of registry URLs that act as a mirror for the official (`docker.io`) registry. */
+            Mirrors?: string[] | null;
+        };
+        /** @description Auto is used to automatically define that the number of replicas in the cluster
+         *     Number is used to manually set the number of replicas
+         *     Note: auto will ensure at least 1 replica exists in the cluster */
+        ReplicationMode: {
+            /** @enum {string} */
+            Mode: "Auto";
+        } | {
+            /** @enum {string} */
+            Mode: "Unique";
+        } | {
+            /** @enum {string} */
+            Mode: "UniqueByNode";
+        } | {
+            groups: string[];
+            /** @enum {string} */
+            Mode: "UniqueByNodeGroups";
+        } | {
+            names: string[];
+            /** @enum {string} */
+            Mode: "UniqueByNodeNames";
+        } | (components["schemas"]["ReplicationStatic"] & {
+            /** @enum {string} */
+            Mode: "Static";
+        }) | (components["schemas"]["ReplicationStatic"] & {
+            /** @enum {string} */
+            Mode: "StaticByNodes";
+        }) | {
+            groups: string[];
+            /** Format: int64 */
+            number: number;
+            /** @enum {string} */
+            Mode: "StaticByNodeGroups";
+        } | {
+            names: string[];
+            /** Format: int64 */
+            number: number;
+            /** @enum {string} */
+            Mode: "StaticByNodeNames";
+        };
+        ReplicationStatic: {
+            Number: number;
+        };
+        /** @description Resource is a specification with a name and a kind
+         *     It is used to define [proxy rules](ProxyRule) and other kind of spec */
+        Resource: {
+            /** @description The kind of the resource */
+            Kind: string;
+            /**
+             * Format: date-time
+             * @description The creation date of the resource
+             */
+            CreatedAt: string;
+            /** @description Specification of the ressource */
+            Spec: components["schemas"]["ResourceSpec"];
+        };
+        ResourceDnsRule: {
+            Network: components["schemas"]["NetworkKind"];
+            Entries: components["schemas"]["DnsEntry"][];
+        };
+        ResourceKind: {
+            /** @description Name of the kind */
+            Name: string;
+            /** @description When the kind have been created */
+            Version: string;
+            /**
+             * Format: date-time
+             * @description When the kind have been created
+             */
+            CreatedAt: string;
+            /** @description When the kind have been created */
+            Metadata?: unknown;
+            /** @description When the kind have been created */
+            Data: components["schemas"]["ResourceKindSpec"];
+        };
+        ResourceKindInspect: {
+            /** @description Name of the kind */
+            Name: string;
+            /**
+             * Format: date-time
+             * @description When the kind have been created
+             */
+            CreatedAt: string;
+            /** @description List of versions available */
+            Versions: components["schemas"]["ResourceKindVersion"][];
+        };
+        /** @description This structure is a partial representation of a resource kind.
+         *     Used to define a new kind type for plugins. */
+        ResourceKindPartial: {
+            /** @description The name of the resource kind */
+            Name: string;
+            /** @description The version of the resource kind */
+            Version: string;
+            /** @description Metadata (user defined) of the resource kind */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            /** @description Spec of the resource kind */
+            Data: components["schemas"]["ResourceKindSpec"];
+        };
+        /** @description Specification of a resource kind.
+         *     Depending on the spec it will validate a JSONSchema or call a service. */
+        ResourceKindSpec: {
+            /** @description The JSONSchema of the resource of this kind and version */
+            Schema?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            /** @description The service to call when creating, updating or deleting a resource of this kind and version */
+            Url?: string | null;
+        };
+        ResourceKindVersion: {
+            /**
+             * Format: uuid
+             * @description Key of the version
+             */
+            Key: string;
+            /**
+             * Format: date-time
+             * @description When the version have been created
+             */
+            CreatedAt: string;
+            /** @description Kind linked to this version */
+            KindKey: string;
+            /** @description Version */
+            Version: string;
+            /** @description Metadata (user defined) */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            /** @description Spec of the kind */
+            Data: components["schemas"]["ResourceKindSpec"];
+        };
+        /** @description Payload used to create a new resource */
+        ResourcePartial: {
+            /** @description The name of the resource */
+            Name: string;
+            /** @description The kind of the resource */
+            Kind: string;
+            /** @description The data of the resource (json object) */
+            Data: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            /** @description The metadata of the resource (user defined) */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+        };
+        /** @description Define proxy rules to apply */
+        ResourceProxyRule: {
+            /** @description The rules to apply */
+            Rules: components["schemas"]["ProxyRule"][];
+        };
+        /** @description The spec of a resource once created in the system */
+        ResourceSpec: {
+            /**
+             * Format: uuid
+             * @description Key of the resource
+             */
+            Key: string;
+            /** @description Version of the resource */
+            Version: string;
+            /**
+             * Format: date-time
+             * @description The creation date of the resource
+             */
+            CreatedAt: string;
+            /** @description Resource key associated with the data */
+            ResourceKey: string;
+            /** @description The data of the resource as a json object */
+            Data: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            /** @description The metadata of the resource (user defined) */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+        };
+        /** @description Payload used to update a resource */
+        ResourceUpdate: {
+            /** @description The spec of the resource as a json object */
+            Data: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            /** @description The metadata of the resource as a json object */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+        };
+        ResourcesBlkioWeightDevice: {
+            Path?: string | null;
+            Weight?: number | null;
+        };
+        ResourcesUlimits: {
+            /** @description Name of ulimit */
+            Name?: string | null;
+            /**
+             * Format: int64
+             * @description Soft limit
+             */
+            Soft?: number | null;
+            /**
+             * Format: int64
+             * @description Hard limit
+             */
+            Hard?: number | null;
+        };
+        /** @description The behavior to apply when the container exits. The default is not to restart.  An ever increasing delay (double the previous delay, starting at 100ms) is added before each restart to prevent flooding the server. */
+        RestartPolicy: {
+            Name?: null | components["schemas"]["RestartPolicyNameEnum"];
+            /**
+             * Format: int64
+             * @description If `on-failure` is used, the number of times to retry before giving up.
+             */
+            MaximumRetryCount?: number | null;
+        };
+        /** @enum {string} */
+        RestartPolicyNameEnum: "EMPTY" | "no" | "always" | "unless-stopped" | "on-failure";
+        /** @description Runtime describes an [OCI compliant](https://github.com/opencontainers/runtime-spec) runtime.  The runtime is invoked by the daemon via the `containerd` daemon. OCI runtimes act as an interface to the Linux kernel namespaces, cgroups, and SELinux. */
+        Runtime: {
+            /** @description Name and, optional, path, of the OCI executable binary.  If the path is omitted, the daemon searches the host's `$PATH` for the binary and uses the first result. */
+            path?: string | null;
+            /** @description List of command-line arguments to pass to the runtime when invoked. */
+            runtimeArgs?: string[] | null;
+            /** @description Information specific to the runtime.  While this API specification does not define data provided by runtimes, the following well-known properties may be provided by runtimes:  `org.opencontainers.runtime-spec.features`: features structure as defined in the [OCI Runtime Specification](https://github.com/opencontainers/runtime-spec/blob/main/features.md), in a JSON string representation.  <p><br /></p>  > **Note**: The information returned in this field, including the > formatting of values and labels, should not be considered stable, > and may change without notice. */
+            status?: {
+                [key: string]: string;
+            } | null;
+        };
+        /** @description This structure represent the secret in the database.
+         *     A secret is a key/value pair that can be used by the user to store
+         *     sensitive data. It is stored as a json object in the database. */
+        Secret: {
+            /** @description The name of the secret */
+            Name: string;
+            /**
+             * Format: date-time
+             * @description The creation date
+             */
+            CreatedAt: string;
+            /**
+             * Format: date-time
+             * @description The last update date
+             */
+            UpdatedAt: string;
+            /** @description The kind of secret */
+            Kind: string;
+            /** @description The secret cannot be updated */
+            Immutable: boolean;
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            /** @description The secret data */
+            Data: {
+                [key: string]: components["schemas"]["Any"];
+            };
+        };
+        /** @description A partial secret object. This is used to create a secret.
+         *     A secret is a key/value pair that can be used by the user to store
+         *     sensitive data. It is stored as a json object in the database. */
+        SecretPartial: {
+            /** @description The name of the secret */
+            Name: string;
+            /** @description The kind of secret */
+            Kind: string;
+            /** @description The secret cannot be updated */
+            Immutable?: boolean;
+            /** @description The metadata of the resource (user defined) */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            /** @description The secret data */
+            Data: {
+                [key: string]: components["schemas"]["Any"];
+            };
+        };
+        /** @description This structure is used to update a secret. */
+        SecretUpdate: {
+            /** @description The metadata of the secret (user defined) */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            /** @description The data of the secret as a json object */
+            Data: {
+                [key: string]: components["schemas"]["Any"];
+            };
+        };
+        SslConfig: {
+            /** @description The certificate content */
+            Cert?: string | null;
+            /** @description The certificate key content */
+            CertKey?: string | null;
+            /** @description The certificate authority content */
+            CertCa?: string | null;
+            /** @description Verify certificate authority */
+            Verify: boolean;
+            /** @description The certificate password if any */
+            Password?: string | null;
+        };
+        /** @description Exec configuration used in the [Create Exec API](Docker::create_exec()) */
+        StartExecOptions: {
+            /** @description Detach from the command. */
+            Detach: boolean;
+            /** @description Allocate a pseudo-TTY. */
+            Tty: boolean;
+            /** @description The maximum size for a line of output. The default is 8 * 1024 (roughly 1024 characters). */
+            OutputCapacity?: number | null;
+        };
+        /** @description Structure that represent a Statefile */
+        Statefile: {
+            /** @description Api version to use or remote url */
+            ApiVersion: string;
+            /** @description Arguments to pass to the Statefile */
+            Args?: components["schemas"]["StatefileArg"][] | null;
+            /** @description Include sub states that will be applied before the current state */
+            SubStates?: components["schemas"]["SubState"][] | null;
+            /** @description Set the group of defined objects default to `{name_of_directory}.{name_of_file}` */
+            Group?: string | null;
+            /** @description Namespace where the cargoes and virtual machines are deployed */
+            Namespace?: string | null;
+            /** @description List of secrets to create */
+            Secrets?: components["schemas"]["SecretPartial"][] | null;
+            /** @description List of resources to create */
+            Resources?: components["schemas"]["ResourcePartial"][] | null;
+            /** @description List of cargoes to create and run */
+            Cargoes?: components["schemas"]["CargoSpecPartial"][] | null;
+            /** @description List of virtual machines to create and run */
+            VirtualMachines?: components["schemas"]["VmSpecPartial"][] | null;
+            /** @description List of jobs to create and run */
+            Jobs?: components["schemas"]["JobPartial"][] | null;
+        };
+        /** @description Statefile argument definition to pass to the Statefile */
+        StatefileArg: {
+            /** @description Name of the build arg */
+            Name: string;
+            /** @description Kind of the build arg */
+            Kind: components["schemas"]["StatefileArgKind"];
+            /** @description Default value of the build arg */
+            Default?: string | null;
+        };
+        /**
+         * @description Statefile argument definition to pass to the Statefile
+         * @enum {string}
+         */
+        StatefileArgKind: "String" | "Number" | "Boolean";
+        /** @description Statistics for the container. */
+        Stats: {
+            read: string;
+            preread: string;
+            /** Format: int32 */
+            num_procs: number;
+            pids_stats: components["schemas"]["PidsStats"];
+            network?: null | components["schemas"]["NetworkStats"];
+            networks?: {
+                [key: string]: components["schemas"]["NetworkStats"];
+            } | null;
+            memory_stats: components["schemas"]["MemoryStats"];
+            blkio_stats: components["schemas"]["BlkioStats"];
+            cpu_stats: components["schemas"]["CPUStats"];
+            precpu_stats: components["schemas"]["CPUStats"];
+            storage_stats: components["schemas"]["StorageStats"];
+            name?: string;
+            id?: string;
+        };
+        /** @description File I/O statistics for the container. */
+        StorageStats: {
+            /** Format: int64 */
+            read_count_normalized?: number | null;
+            /** Format: int64 */
+            read_size_bytes?: number | null;
+            /** Format: int64 */
+            write_count_normalized?: number | null;
+            /** Format: int64 */
+            write_size_bytes?: number | null;
+        };
+        StreamTarget: components["schemas"]["UpstreamTarget"] | components["schemas"]["UriTarget"] | components["schemas"]["UnixTarget"];
+        String: string;
+        SubState: string | components["schemas"]["SubStateDef"];
+        /** @description Statefile argument definition to pass to the Statefile */
+        SubStateArg: {
+            /** @description Name of the argument */
+            Name: string;
+            /** @description Value for the argument */
+            Value: components["schemas"]["SubStateValue"];
+        };
+        SubStateDef: {
+            Path: string;
+            Args?: components["schemas"]["SubStateArg"][] | null;
+        };
+        /** @description Statefile argument definition to pass to the Statefile */
+        SubStateValue: number | string | boolean;
+        /** @description Represents generic information about swarm. */
+        SwarmInfo: {
+            /** @description Unique identifier of for this node in the swarm. */
+            NodeID?: string | null;
+            /** @description IP address at which this node can be reached by other nodes in the swarm. */
+            NodeAddr?: string | null;
+            LocalNodeState?: null | components["schemas"]["LocalNodeState"];
+            ControlAvailable?: boolean | null;
+            Error?: string | null;
+            /** @description List of ID's and addresses of other managers in the swarm. */
+            RemoteManagers?: components["schemas"]["PeerNode"][] | null;
+            /**
+             * Format: int64
+             * @description Total number of nodes in the swarm.
+             */
+            Nodes?: number | null;
+            /**
+             * Format: int64
+             * @description Total number of managers in the swarm.
+             */
+            Managers?: number | null;
+            Cluster?: null | components["schemas"]["ClusterInfo"];
+        };
+        /** @description User modifiable swarm configuration. */
+        SwarmSpec: {
+            /** @description Name of the swarm. */
+            Name?: string | null;
+            /** @description User-defined key/value metadata. */
+            Labels?: {
+                [key: string]: string;
+            } | null;
+            Orchestration?: null | components["schemas"]["SwarmSpecOrchestration"];
+            Raft?: null | components["schemas"]["SwarmSpecRaft"];
+            Dispatcher?: null | components["schemas"]["SwarmSpecDispatcher"];
+            CAConfig?: null | components["schemas"]["SwarmSpecCaConfig"];
+            EncryptionConfig?: null | components["schemas"]["SwarmSpecEncryptionConfig"];
+            TaskDefaults?: null | components["schemas"]["SwarmSpecTaskDefaults"];
+        };
+        /** @description CA configuration. */
+        SwarmSpecCaConfig: {
+            /**
+             * Format: int64
+             * @description The duration node certificates are issued for.
+             */
+            NodeCertExpiry?: number | null;
+            /** @description Configuration for forwarding signing requests to an external certificate authority. */
+            ExternalCAs?: components["schemas"]["SwarmSpecCaConfigExternalCas"][] | null;
+            /** @description The desired signing CA certificate for all swarm node TLS leaf certificates, in PEM format. */
+            SigningCACert?: string | null;
+            /** @description The desired signing CA key for all swarm node TLS leaf certificates, in PEM format. */
+            SigningCAKey?: string | null;
+            /**
+             * Format: int64
+             * @description An integer whose purpose is to force swarm to generate a new signing CA certificate and key, if none have been specified in `SigningCACert` and `SigningCAKey`
+             */
+            ForceRotate?: number | null;
+        };
+        SwarmSpecCaConfigExternalCas: {
+            Protocol?: null | components["schemas"]["SwarmSpecCaConfigExternalCasProtocolEnum"];
+            /** @description URL where certificate signing requests should be sent. */
+            URL?: string | null;
+            /** @description An object with key/value pairs that are interpreted as protocol-specific options for the external CA driver. */
+            Options?: {
+                [key: string]: string;
+            } | null;
+            /** @description The root CA certificate (in PEM format) this external CA uses to issue TLS certificates (assumed to be to the current swarm root CA certificate if not provided). */
+            CACert?: string | null;
+        };
+        /** @enum {string} */
+        SwarmSpecCaConfigExternalCasProtocolEnum: "EMPTY" | "cfssl";
+        /** @description Dispatcher configuration. */
+        SwarmSpecDispatcher: {
+            /**
+             * Format: int64
+             * @description The delay for an agent to send a heartbeat to the dispatcher.
+             */
+            HeartbeatPeriod?: number | null;
+        };
+        /** @description Parameters related to encryption-at-rest. */
+        SwarmSpecEncryptionConfig: {
+            /** @description If set, generate a key and use it to lock data stored on the managers. */
+            AutoLockManagers?: boolean | null;
+        };
+        /** @description Orchestration configuration. */
+        SwarmSpecOrchestration: {
+            /**
+             * Format: int64
+             * @description The number of historic tasks to keep per instance or node. If negative, never remove completed or failed tasks.
+             */
+            TaskHistoryRetentionLimit?: number | null;
+        };
+        /** @description Raft configuration. */
+        SwarmSpecRaft: {
+            /**
+             * Format: int64
+             * @description The number of log entries between snapshots.
+             */
+            SnapshotInterval?: number | null;
+            /**
+             * Format: int64
+             * @description The number of snapshots to keep beyond the current snapshot.
+             */
+            KeepOldSnapshots?: number | null;
+            /**
+             * Format: int64
+             * @description The number of log entries to keep around to sync up slow followers after a snapshot is created.
+             */
+            LogEntriesForSlowFollowers?: number | null;
+            /**
+             * Format: int64
+             * @description The number of ticks that a follower will wait for a message from the leader before becoming a candidate and starting an election. `ElectionTick` must be greater than `HeartbeatTick`.  A tick currently defaults to one second, so these translate directly to seconds currently, but this is NOT guaranteed.
+             */
+            ElectionTick?: number | null;
+            /**
+             * Format: int64
+             * @description The number of ticks between heartbeats. Every HeartbeatTick ticks, the leader will send a heartbeat to the followers.  A tick currently defaults to one second, so these translate directly to seconds currently, but this is NOT guaranteed.
+             */
+            HeartbeatTick?: number | null;
+        };
+        /** @description Defaults for creating tasks in this cluster. */
+        SwarmSpecTaskDefaults: {
+            LogDriver?: null | components["schemas"]["SwarmSpecTaskDefaultsLogDriver"];
+        };
+        /** @description The log driver to use for tasks created in the orchestrator if unspecified by a service.  Updating this value only affects new tasks. Existing tasks continue to use their previously configured log driver until recreated. */
+        SwarmSpecTaskDefaultsLogDriver: {
+            /** @description The log driver to use as a default for new tasks. */
+            Name?: string | null;
+            /** @description Driver-specific options for the selectd log driver, specified as key/value pairs. */
+            Options?: {
+                [key: string]: string;
+            } | null;
+        };
+        SystemInfo: {
+            /** @description Unique identifier of the daemon.  <p><br /></p>  > **Note**: The format of the ID itself is not part of the API, and > should not be considered stable. */
+            ID?: string | null;
+            /**
+             * Format: int64
+             * @description Total number of containers on the host.
+             */
+            Containers?: number | null;
+            /**
+             * Format: int64
+             * @description Number of containers with status `\"running\"`.
+             */
+            ContainersRunning?: number | null;
+            /**
+             * Format: int64
+             * @description Number of containers with status `\"paused\"`.
+             */
+            ContainersPaused?: number | null;
+            /**
+             * Format: int64
+             * @description Number of containers with status `\"stopped\"`.
+             */
+            ContainersStopped?: number | null;
+            /**
+             * Format: int64
+             * @description Total number of images on the host.  Both _tagged_ and _untagged_ (dangling) images are counted.
+             */
+            Images?: number | null;
+            /** @description Name of the storage driver in use. */
+            Driver?: string | null;
+            /** @description Information specific to the storage driver, provided as \"label\" / \"value\" pairs.  This information is provided by the storage driver, and formatted in a way consistent with the output of `docker info` on the command line.  <p><br /></p>  > **Note**: The information returned in this field, including the > formatting of values and labels, should not be considered stable, > and may change without notice. */
+            DriverStatus?: string[][] | null;
+            /** @description Root directory of persistent Docker state.  Defaults to `/var/lib/docker` on Linux, and `C:\\ProgramData\\docker` on Windows. */
+            DockerRootDir?: string | null;
+            Plugins?: null | components["schemas"]["PluginsInfo"];
+            /** @description Indicates if the host has memory limit support enabled. */
+            MemoryLimit?: boolean | null;
+            /** @description Indicates if the host has memory swap limit support enabled. */
+            SwapLimit?: boolean | null;
+            /** @description Indicates if the host has kernel memory TCP limit support enabled. This field is omitted if not supported.  Kernel memory TCP limits are not supported when using cgroups v2, which does not support the corresponding `memory.kmem.tcp.limit_in_bytes` cgroup. */
+            KernelMemoryTCP?: boolean | null;
+            /** @description Indicates if CPU CFS(Completely Fair Scheduler) period is supported by the host. */
+            CpuCfsPeriod?: boolean | null;
+            /** @description Indicates if CPU CFS(Completely Fair Scheduler) quota is supported by the host. */
+            CpuCfsQuota?: boolean | null;
+            /** @description Indicates if CPU Shares limiting is supported by the host. */
+            CPUShares?: boolean | null;
+            /** @description Indicates if CPUsets (cpuset.cpus, cpuset.mems) are supported by the host.  See [cpuset(7)](https://www.kernel.org/doc/Documentation/cgroup-v1/cpusets.txt) */
+            CPUSet?: boolean | null;
+            /** @description Indicates if the host kernel has PID limit support enabled. */
+            PidsLimit?: boolean | null;
+            /** @description Indicates if OOM killer disable is supported on the host. */
+            OomKillDisable?: boolean | null;
+            /** @description Indicates IPv4 forwarding is enabled. */
+            IPv4Forwarding?: boolean | null;
+            /** @description Indicates if `bridge-nf-call-iptables` is available on the host. */
+            BridgeNfIptables?: boolean | null;
+            /** @description Indicates if `bridge-nf-call-ip6tables` is available on the host. */
+            BridgeNfIp6tables?: boolean | null;
+            /** @description Indicates if the daemon is running in debug-mode / with debug-level logging enabled. */
+            Debug?: boolean | null;
+            /**
+             * Format: int64
+             * @description The total number of file Descriptors in use by the daemon process.  This information is only returned if debug-mode is enabled.
+             */
+            NFd?: number | null;
+            /**
+             * Format: int64
+             * @description The  number of goroutines that currently exist.  This information is only returned if debug-mode is enabled.
+             */
+            NGoroutines?: number | null;
+            /** @description Current system-time in [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format with nano-seconds. */
+            SystemTime?: string | null;
+            /** @description The logging driver to use as a default for new containers. */
+            LoggingDriver?: string | null;
+            CgroupDriver?: null | components["schemas"]["SystemInfoCgroupDriverEnum"];
+            CgroupVersion?: null | components["schemas"]["SystemInfoCgroupVersionEnum"];
+            /**
+             * Format: int64
+             * @description Number of event listeners subscribed.
+             */
+            NEventsListener?: number | null;
+            /** @description Kernel version of the host.  On Linux, this information obtained from `uname`. On Windows this information is queried from the <kbd>HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\</kbd> registry value, for example _\"10.0 14393 (14393.1198.amd64fre.rs1_release_sec.170427-1353)\"_. */
+            KernelVersion?: string | null;
+            /** @description Name of the host's operating system, for example: \"Ubuntu 16.04.2 LTS\" or \"Windows Server 2016 Datacenter\" */
+            OperatingSystem?: string | null;
+            /** @description Version of the host's operating system  <p><br /></p>  > **Note**: The information returned in this field, including its > very existence, and the formatting of values, should not be considered > stable, and may change without notice. */
+            OSVersion?: string | null;
+            /** @description Generic type of the operating system of the host, as returned by the Go runtime (`GOOS`).  Currently returned values are \"linux\" and \"windows\". A full list of possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment). */
+            OSType?: string | null;
+            /** @description Hardware architecture of the host, as returned by the Go runtime (`GOARCH`).  A full list of possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment). */
+            Architecture?: string | null;
+            /**
+             * Format: int64
+             * @description The number of logical CPUs usable by the daemon.  The number of available CPUs is checked by querying the operating system when the daemon starts. Changes to operating system CPU allocation after the daemon is started are not reflected.
+             */
+            NCPU?: number | null;
+            /**
+             * Format: int64
+             * @description Total amount of physical memory available on the host, in bytes.
+             */
+            MemTotal?: number | null;
+            /** @description Address / URL of the index server that is used for image search, and as a default for user authentication for Docker Hub and Docker Cloud. */
+            IndexServerAddress?: string | null;
+            RegistryConfig?: null | components["schemas"]["RegistryServiceConfig"];
+            GenericResources?: null | components["schemas"]["GenericResourcesInner"];
+            /** @description HTTP-proxy configured for the daemon. This value is obtained from the [`HTTP_PROXY`](https://www.gnu.org/software/wget/manual/html_node/Proxies.html) environment variable. Credentials ([user info component](https://tools.ietf.org/html/rfc3986#section-3.2.1)) in the proxy URL are masked in the API response.  Containers do not automatically inherit this configuration. */
+            HttpProxy?: string | null;
+            /** @description HTTPS-proxy configured for the daemon. This value is obtained from the [`HTTPS_PROXY`](https://www.gnu.org/software/wget/manual/html_node/Proxies.html) environment variable. Credentials ([user info component](https://tools.ietf.org/html/rfc3986#section-3.2.1)) in the proxy URL are masked in the API response.  Containers do not automatically inherit this configuration. */
+            HttpsProxy?: string | null;
+            /** @description Comma-separated list of domain extensions for which no proxy should be used. This value is obtained from the [`NO_PROXY`](https://www.gnu.org/software/wget/manual/html_node/Proxies.html) environment variable.  Containers do not automatically inherit this configuration. */
+            NoProxy?: string | null;
+            /** @description Hostname of the host. */
+            Name?: string | null;
+            /** @description User-defined labels (key/value metadata) as set on the daemon.  <p><br /></p>  > **Note**: When part of a Swarm, nodes can both have _daemon_ labels, > set through the daemon configuration, and _node_ labels, set from a > manager node in the Swarm. Node labels are not included in this > field. Node labels can be retrieved using the `/nodes/(id)` endpoint > on a manager node in the Swarm. */
+            Labels?: string[] | null;
+            /** @description Indicates if experimental features are enabled on the daemon. */
+            ExperimentalBuild?: boolean | null;
+            /** @description Version string of the daemon. */
+            ServerVersion?: string | null;
+            /** @description List of [OCI compliant](https://github.com/opencontainers/runtime-spec) runtimes configured on the daemon. Keys hold the \"name\" used to reference the runtime.  The Docker daemon relies on an OCI compliant runtime (invoked via the `containerd` daemon) as its interface to the Linux kernel namespaces, cgroups, and SELinux.  The default runtime is `runc`, and automatically configured. Additional runtimes can be configured by the user and will be listed here. */
+            Runtimes?: {
+                [key: string]: components["schemas"]["Runtime"];
+            } | null;
+            /** @description Name of the default OCI runtime that is used when starting containers.  The default can be overridden per-container at create time. */
+            DefaultRuntime?: string | null;
+            Swarm?: null | components["schemas"]["SwarmInfo"];
+            /** @description Indicates if live restore is enabled.  If enabled, containers are kept running when the daemon is shutdown or upon daemon start if running containers are detected. */
+            LiveRestoreEnabled?: boolean | null;
+            Isolation?: null | components["schemas"]["SystemInfoIsolationEnum"];
+            /** @description Name and, optional, path of the `docker-init` binary.  If the path is omitted, the daemon searches the host's `$PATH` for the binary and uses the first result. */
+            InitBinary?: string | null;
+            ContainerdCommit?: null | components["schemas"]["Commit"];
+            RuncCommit?: null | components["schemas"]["Commit"];
+            InitCommit?: null | components["schemas"]["Commit"];
+            /** @description List of security features that are enabled on the daemon, such as apparmor, seccomp, SELinux, user-namespaces (userns), rootless and no-new-privileges.  Additional configuration options for each security feature may be present, and are included as a comma-separated list of key/value pairs. */
+            SecurityOptions?: string[] | null;
+            /** @description Reports a summary of the product license on the daemon.  If a commercial license has been applied to the daemon, information such as number of nodes, and expiration are included. */
+            ProductLicense?: string | null;
+            /** @description List of custom default address pools for local networks, which can be specified in the daemon.json file or dockerd option.  Example: a Base \"10.10.0.0/16\" with Size 24 will define the set of 256 10.10.[0-255].0/24 address pools. */
+            DefaultAddressPools?: components["schemas"]["SystemInfoDefaultAddressPools"][] | null;
+            /** @description List of warnings / informational messages about missing features, or issues related to the daemon configuration.  These messages can be printed by the client as information to the user. */
+            Warnings?: string[] | null;
+            /** @description List of directories where (Container Device Interface) CDI specifications are located.  These specifications define vendor-specific modifications to an OCI runtime specification for a container being created.  An empty list indicates that CDI device injection is disabled.  Note that since using CDI device injection requires the daemon to have experimental enabled. For non-experimental daemons an empty list will always be returned. */
+            CDISpecDirs?: string[] | null;
+        };
+        /** @enum {string} */
+        SystemInfoCgroupDriverEnum: "EMPTY" | "cgroupfs" | "systemd" | "none";
+        /** @enum {string} */
+        SystemInfoCgroupVersionEnum: "EMPTY" | "1" | "2";
+        SystemInfoDefaultAddressPools: {
+            /** @description The network address in CIDR format */
+            Base?: string | null;
+            /**
+             * Format: int64
+             * @description The network pool size
+             */
+            Size?: number | null;
+        };
+        /** @enum {string} */
+        SystemInfoIsolationEnum: "EMPTY" | "default" | "hyperv" | "process";
+        ThrottleDevice: {
+            /** @description Device path */
+            Path?: string | null;
+            /**
+             * Format: int64
+             * @description Rate
+             */
+            Rate?: number | null;
+        };
+        /** @description CPU throttling statistics. */
+        ThrottlingData: {
+            /** Format: int64 */
+            periods: number;
+            /** Format: int64 */
+            throttled_periods: number;
+            /** Format: int64 */
+            throttled_time: number;
+        };
+        /** @description Information about the issuer of leaf TLS certificates and the trusted root CA certificate. */
+        TlsInfo: {
+            /** @description The root CA certificate(s) that are used to validate leaf TLS certificates. */
+            TrustRoot?: string | null;
+            /** @description The base64-url-safe-encoded raw subject bytes of the issuer. */
+            CertIssuerSubject?: string | null;
+            /** @description The base64-url-safe-encoded raw public key bytes of the issuer. */
+            CertIssuerPublicKey?: string | null;
+        };
+        UnixTarget: {
+            UnixPath: string;
+        };
+        /** @description Config for targeting a cargo or a vm */
+        UpstreamTarget: {
+            /** @description The key of the cargo or the vm to target */
+            Key: string;
+            /**
+             * Format: int32
+             * @description The port of the cargo or the vm to target
+             */
+            Port: number;
+            /** @description The http path to target when using http */
+            Path?: string | null;
+            /** @description Disable logging for this target */
+            DisableLogging?: boolean | null;
+            Ssl?: null | components["schemas"]["ProxySsl"];
+        };
+        UriTarget: {
+            /** @description Uri to target */
+            Uri: string;
+        };
+        /** @enum {string} */
+        UrlRedirect: "MovedPermanently" | "Permanent" | "Temporary";
+        /** @description A virtual machine instance */
+        Vm: {
+            /** @description Name of the namespace */
+            NamespaceName: string;
+            /**
+             * Format: date-time
+             * @description When the vm was created
+             */
+            CreatedAt: string;
+            /** @description Status of the vm */
+            Status: components["schemas"]["ObjPsStatus"];
+            /** @description Specification of the vm */
+            Spec: components["schemas"]["VmSpec"];
+        };
+        /** @description Disk representation of a VM */
+        VmDisk: {
+            /** @description Name of the image to use */
+            Image: string;
+            /**
+             * Format: int64
+             * @description Virtual size allowed for the disk in GB (default: 20)
+             */
+            Size?: number | null;
+        };
+        /** @description A vm's resources (cpu, memory, network) */
+        VmHostConfig: {
+            /**
+             * Format: int64
+             * @description Number of cpu of the vm (default: 1)
+             */
+            Cpu: number;
+            /**
+             * Format: int64
+             * @description Memory of the vm in MB (default: 512)
+             */
+            Memory: number;
+            /** @description Network interface of the vm to setup (default: ens3) */
+            NetIface?: string | null;
+            /** @description Network interface to link the vm (default: eth0) */
+            LinkNetIface?: string | null;
+            /** @description Enable KVM acceleration (default: false) */
+            Kvm?: boolean | null;
+            /** @description A list of DNS servers for the vm to use */
+            Dns?: string[] | null;
+            /** @description Container image name to use for vm (default: nanocl-qemu) */
+            Runtime?: string | null;
+            RuntimeNetwork?: string | null;
+            /** @description Use host tun device */
+            HostTun?: boolean | null;
+        };
+        VmImage: {
+            /** @description The name of the image */
+            Name: string;
+            /**
+             * Format: date-time
+             * @description When the image was created
+             */
+            CreatedAt: string;
+            /** @description The path to the image */
+            Path: string;
+            /** @description The type of the image */
+            Kind: string;
+            /** @description The format of the image */
+            Format: string;
+            /**
+             * Format: int64
+             * @description The actual size of the image in bytes
+             */
+            SizeActual: number;
+            /**
+             * Format: int64
+             * @description The virtual size of the image in bytes
+             */
+            SizeVirtual: number;
+        };
+        VmImageResizePayload: {
+            /**
+             * Format: int64
+             * @description The new size of the image in bytes
+             */
+            Size: number;
+            /** @description Whether to shrink the image or not */
+            Shrink: boolean;
+        };
+        /** @description A Vm Inspect is a detailed view of a vm
+         *     It is used to inspect a vm
+         *     It contains all the information about the vm
+         *     It also contains the list of containers */
+        VmInspect: {
+            /** @description Name of the namespace */
+            NamespaceName: string;
+            /**
+             * Format: date-time
+             * @description Creation date of the vm
+             */
+            CreatedAt: string;
+            /** @description Number of instances */
+            InstanceTotal: number;
+            /** @description Number of running instances */
+            InstanceRunning: number;
+            /** @description Status of the vm */
+            Status: components["schemas"]["ObjPsStatus"];
+            /** @description Specification of the vm */
+            Spec: components["schemas"]["VmSpec"];
+            /** @description List of instances */
+            Instances: components["schemas"]["Process"][];
+        };
+        /** @description A vm spec is the specification of a vm
+         *     It used to know the state of the vm
+         *     It keep tracking of an history when you patch an existing vm */
+        VmSpec: {
+            /**
+             * Format: uuid
+             * @description Unique identifier of the vm spec
+             */
+            Key: string;
+            /**
+             * Format: date-time
+             * @description Creation date of the vm spec
+             */
+            CreatedAt: string;
+            /** @description Name of the vm */
+            Name: string;
+            /** @description Version of the spec */
+            Version: string;
+            /** @description The key of the vm */
+            VmKey: string;
+            /** @description The metadata (user defined) */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            /** @description Hostname of the vm */
+            Hostname?: string | null;
+            /** @description Default password of the vm (cloud) */
+            Password?: string | null;
+            /** @description Default ssh key for the user */
+            SshKey?: string | null;
+            /** @description Default user of the vm (cloud) */
+            User?: string | null;
+            /** @description Disk config of the vm */
+            Disk: components["schemas"]["VmDisk"];
+            /** @description Mac address of the vm */
+            MacAddress?: string | null;
+            /** @description User-defined key/value metadata. */
+            Labels?: {
+                [key: string]: string;
+            } | null;
+            /** @description A vm's resources (cpu, memory, network) */
+            HostConfig: components["schemas"]["VmHostConfig"];
+        };
+        /** @description A vm spec partial is used to create a vm */
+        VmSpecPartial: {
+            /** @description Name of the vm */
+            Name: string;
+            /** @description The metadata (user defined) */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            /** @description Hostname of the vm (default: generated from name) */
+            Hostname?: string | null;
+            /** @description Default user of the vm (default: cloud) */
+            User?: string | null;
+            /** @description Default password of the vm (default: cloud) */
+            Password?: string | null;
+            /** @description Default ssh pub key for the user (recommended) */
+            SshKey?: string | null;
+            /** @description Disk config of the vm (image, size) required */
+            Disk: components["schemas"]["VmDisk"];
+            /** @description Mac address of the vm (default: generated) */
+            MacAddress?: string | null;
+            /** @description User-defined key/value metadata. */
+            Labels?: {
+                [key: string]: string;
+            } | null;
+            HostConfig?: null | components["schemas"]["VmHostConfig"];
+        };
+        /** @description ## VmSpecUpdate
+         *
+         *     Payload used to patch a vm
+         *     It will create a new [VmSpec](VmSpec) with the new values
+         *     and keep the old values in the history
+         *      */
+        VmSpecUpdate: {
+            /** @description Name of the vm */
+            Name?: string | null;
+            /** @description The metadata (user defined) */
+            Metadata?: {
+                [key: string]: components["schemas"]["Any"];
+            };
+            /** @description Hostname of the vm */
+            Hostname?: string | null;
+            /** @description Default user of the vm (cloud) */
+            User?: string | null;
+            /** @description Default password of the vm (cloud) */
+            Password?: string | null;
+            /** @description Default ssh key for the user */
+            SshKey?: string | null;
+            /** @description User-defined key/value metadata. */
+            Labels?: {
+                [key: string]: string;
+            } | null;
+            HostConfig?: null | components["schemas"]["VmHostConfig"];
+        };
+        /** @description A Vm Summary is a summary of a vm
+         *     It is used to list all the vms */
+        VmSummary: {
+            /** @description Name of the namespace */
+            NamespaceName: string;
+            /** @description Status of the vm */
+            Status: components["schemas"]["ObjPsStatus"];
+            /**
+             * Format: date-time
+             * @description Creation date of the vm
+             */
+            CreatedAt: string;
+            /** @description Number of instances */
+            InstanceTotal: number;
+            /** @description Number of running instances */
+            InstanceRunning: number;
+            /** @description Specification of the vm */
+            Spec: components["schemas"]["VmSpec"];
+        };
+    };
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-
-export type external = Record<string, never>
-
+export type $defs = Record<string, never>;
 export interface operations {
-  /**
-   * Get version information
-   * @description Get version information
-   */
-  get_ping: {
-    responses: {
-      /** @description Server is up */
-      202: never
-    }
-  }
-  /**
-   * List cargoes
-   * @description List cargoes
-   */
-  list_cargo: {
-    parameters: {
-      query: {
-        /** @description Namespace of the cargo */
-        Namespace?: string | null
-        /** @description Filter for cargoes with similar name */
-        Name?: string | null
-        /** @description Max amount of cargoes in response */
-        Limit?: number | null
-        /** @description Offset of the first cargo in response */
-        Offset?: number | null
-      }
-    }
-    responses: {
-      /** @description List of cargoes */
-      200: {
-        content: {
-          "application/json": components["schemas"]["CargoSummary"][]
-        }
-      }
-    }
-  }
-  /**
-   * Create a new cargo
-   * @description Create a new cargo
-   */
-  create_cargo: {
-    parameters: {
-      query: {
-        /** @description Namespace of the cargo */
-        Namespace?: string | null
-      }
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CargoConfigPartial"]
-      }
-    }
-    responses: {
-      /** @description Cargo created */
-      201: {
-        content: {
-          "application/json": components["schemas"]["CargoInspect"]
-        }
-      }
-    }
-  }
-  /**
-   * List container images
-   * @description List container images
-   */
-  list_cargo_image: {
-    responses: {
-      /** @description List of container image */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ImageSummary"][]
-        }
-      }
-    }
-  }
-  /**
-   * Download a container image
-   * @description Download a container image
-   */
-  create_cargo_image: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CargoImagePartial"]
-      }
-    }
-    responses: {
-      /** @description Download stream */
-      200: never
-      /** @description Image not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ApiError"]
-        }
-      }
-    }
-  }
-  /**
-   * Import a container image from a tarball
-   * @description Import a container image from a tarball
-   */
-  import_cargo_image: {
-    requestBody: {
-      content: {
-        "text/plain": string
-      }
-    }
-    responses: {
-      /** @description Image imported */
-      200: never
-      /** @description Image not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ApiError"]
-        }
-      }
-    }
-  }
-  /**
-   * Get detailed information about a container image
-   * @description Get detailed information about a container image
-   */
-  inspect_cargo_image: {
-    parameters: {
-      path: {
-        /** @description Image ID or name */
-        IdOrName: string
-      }
-    }
-    responses: {
-      /** @description Detailed information about an image */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ImageInspect"]
-        }
-      }
-      /** @description Image not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ApiError"]
-        }
-      }
-    }
-  }
-  /**
-   * Delete a container image
-   * @description Delete a container image
-   */
-  delete_cargo_image: {
-    parameters: {
-      path: {
-        /** @description Image ID or name */
-        IdOrName: string
-      }
-    }
-    responses: {
-      /** @description Delete response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["GenericDelete"]
-        }
-      }
-      /** @description Image not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ApiError"]
-        }
-      }
-    }
-  }
-  /**
-   * Create a new cargo config from scratch and add history entry
-   * @description Create a new cargo config from scratch and add history entry
-   */
-  put_cargo: {
-    parameters: {
-      query: {
-        /** @description Namespace of the cargo */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description Name of the cargo */
-        Name: string
-      }
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CargoConfigUpdate"]
-      }
-    }
-    responses: {
-      /** @description Cargo updated */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Cargo"]
-        }
-      }
-      /** @description Cargo does not exist */
-      404: never
-    }
-  }
-  /**
-   * Delete a cargo
-   * @description Delete a cargo
-   */
-  delete_cargo: {
-    parameters: {
-      query: {
-        /** @description Namespace of the cargo */
-        Namespace?: string | null
-        /** @description If true forces the delete operation */
-        Force: boolean
-      }
-      path: {
-        /** @description Name of the cargo */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description Cargo deleted */
-      202: never
-      /** @description Cargo does not exist */
-      404: never
-    }
-  }
-  /**
-   * Patch a cargo config meaning merging current config with the new one and add history entry
-   * @description Patch a cargo config meaning merging current config with the new one and add history entry
-   */
-  patch_cargo: {
-    parameters: {
-      query: {
-        /** @description Namespace of the cargo */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description Name of the cargo */
-        Name: string
-      }
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CargoConfigUpdate"]
-      }
-    }
-    responses: {
-      /** @description Cargo updated */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Cargo"]
-        }
-      }
-      /** @description Cargo does not exist */
-      404: never
-    }
-  }
-  /**
-   * Execute a command in a cargo
-   * @description Execute a command in a cargo
-   */
-  exec_command: {
-    parameters: {
-      query: {
-        /** @description Namespace of the cargo */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description Name of the cargo */
-        Name: string
-      }
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateExecOptions"]
-      }
-    }
-    responses: {
-      /** @description Event Stream of the command output */
-      200: never
-      /** @description Cargo does not exist */
-      404: never
-    }
-  }
-  /**
-   * List cargo histories
-   * @description List cargo histories
-   */
-  list_cargo_history: {
-    parameters: {
-      query: {
-        /** @description Namespace of the cargo */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description Name of the cargo */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description List of cargo histories */
-      200: {
-        content: {
-          "application/json": components["schemas"]["CargoConfig"][]
-        }
-      }
-      /** @description Cargo does not exist */
-      404: never
-    }
-  }
-  /**
-   * Reset a cargo to a specific history
-   * @description Reset a cargo to a specific history
-   */
-  reset_cargo: {
-    parameters: {
-      query: {
-        /** @description Namespace of the cargo */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description Name of the cargo */
-        Name: string
-        /** @description Id of the cargo history */
-        Id: string
-      }
-    }
-    responses: {
-      /** @description Cargo reset */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Cargo"]
-        }
-      }
-      /** @description Cargo does not exist */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ApiError"]
-        }
-      }
-    }
-  }
-  /**
-   * Inspect a cargo
-   * @description Inspect a cargo
-   */
-  inspect_cargo: {
-    parameters: {
-      query: {
-        /** @description Namespace of the cargo */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description Name of the cargo */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description Cargo details */
-      200: {
-        content: {
-          "application/json": components["schemas"]["CargoInspect"]
-        }
-      }
-    }
-  }
-  /**
-   * List cargo instances
-   * @description List cargo instances
-   */
-  list_cargo_instance: {
-    parameters: {
-      query: {
-        /** @description Namespace of the cargo */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description Name of the cargo */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description List of cargo instances */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ContainerSummary"][]
-        }
-      }
-    }
-  }
-  /**
-   * Send a signal to a cargo this will kill the cargo if the signal is SIGKILL
-   * @description Send a signal to a cargo this will kill the cargo if the signal is SIGKILL
-   */
-  kill_cargo: {
-    parameters: {
-      query: {
-        /** @description Namespace of the cargo */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description Name of the cargo */
-        Name: string
-      }
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CargoKillOptions"]
-      }
-    }
-    responses: {
-      /** @description Cargo killed */
-      200: never
-      /** @description Cargo does not exist */
-      404: never
-    }
-  }
-  /**
-   * Get logs of a cargo instance
-   * @description Get logs of a cargo instance
-   */
-  logs_cargo: {
-    parameters: {
-      query: {
-        /** @description Namespace of the cargo */
-        Namespace?: string | null
-        /** @description Only logs returned since timestamp */
-        Since?: number | null
-        /** @description Only logs returned until timestamp */
-        Until?: number | null
-        /** @description Add timestamps to every log line */
-        Timestamps?: boolean | null
-        /** @description Boolean to return a stream or not */
-        Follow?: boolean | null
-        /** @description Only return the n last (integer) or all ("all") logs */
-        Tail?: string | null
-      }
-      path: {
-        /** @description Name of the cargo instance usually `name` or `name-number` */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description Cargo logs */
-      200: never
-      /** @description Cargo does not exist */
-      404: never
-    }
-  }
-  /**
-   * Start a cargo
-   * @description Start a cargo
-   */
-  start_cargo: {
-    parameters: {
-      query: {
-        /** @description Namespace of the cargo */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description Name of the cargo */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description Cargo started */
-      202: never
-      /** @description Cargo does not exist */
-      404: never
-    }
-  }
-  /**
-   * Stop a cargo
-   * @description Stop a cargo
-   */
-  stop_cargo: {
-    parameters: {
-      query: {
-        /** @description Namespace of the cargo */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description Name of the cargo */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description Cargo stopped */
-      202: never
-      /** @description Cargo does not exist */
-      404: never
-    }
-  }
-  /**
-   * Listen on events using Server-Sent Events / EventSource
-   * @description Listen on events using Server-Sent Events / EventSource
-   */
-  watch_event: {
-    responses: {
-      /** @description Event stream */
-      200: {
-        content: {
-          "text/plain": string
-        }
-      }
-    }
-  }
-  /**
-   * Get http metrics of all peer nodes
-   * @description Get http metrics of all peer nodes
-   */
-  list_http_metric: {
-    parameters: {
-      query: {
-        /** @description Limit of the list */
-        Limit?: number | null
-        /** @description Offset of the list */
-        Offset?: number | null
-      }
-    }
-    responses: {
-      /** @description Array of HTTP metrics founds */
-      200: {
-        content: {
-          "application/json": components["schemas"]["HttpMetric"][]
-        }
-      }
-    }
-  }
-  /**
-   * Count http metrics of all peer nodes
-   * @description Count http metrics of all peer nodes
-   */
-  count_http_metric: {
-    parameters: {
-      query: {
-        /**
-         * @description Filter by status
-         * @example 200,299
-         */
-        Status?: string | null
-      }
-    }
-    responses: {
-      /** @description Count of HTTP metrics founds */
-      200: {
-        content: {
-          "application/json": components["schemas"]["GenericCount"]
-        }
-      }
-    }
-  }
-  /**
-   * Get host/node system information
-   * @description Get host/node system information
-   */
-  get_info: {
-    responses: {
-      /** @description Host/Node information */
-      200: {
-        content: {
-          "application/json": components["schemas"]["HostInfo"]
-        }
-      }
-    }
-  }
-  /**
-   * Get specific metric of all peer nodes
-   * @description Get specific metric of all peer nodes
-   */
-  list_metric: {
-    parameters: {
-      query: {
-        /**
-         * @description Kind of the metrics CPU | MEMORY | NETWORK | DISK
-         * @example CPU
-         */
-        Kind: components["schemas"]["MetricKind"]
-      }
-    }
-    responses: {
-      /** @description Kind of the metrics peer node */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Metric"][]
-        }
-      }
-    }
-  }
-  /**
-   * List namespaces
-   * @description List namespaces
-   */
-  list_namespace: {
-    parameters: {
-      query: {
-        /** @description Filter by name */
-        Name?: string | null
-        /** @description Limit the number of items returned */
-        Limit?: number | null
-        /** @description Offset the number of items returned */
-        Offset?: number | null
-      }
-    }
-    responses: {
-      /** @description List of namespace */
-      200: {
-        content: {
-          "application/json": components["schemas"]["NamespaceSummary"][]
-        }
-      }
-    }
-  }
-  /**
-   * Create a namespace
-   * @description Create a namespace
-   */
-  create_namespace: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["NamespacePartial"]
-      }
-    }
-    responses: {
-      /** @description List of namespace */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Namespace"]
-        }
-      }
-      /** @description Namespace already exist */
-      409: {
-        content: {
-          "application/json": components["schemas"]["ApiError"]
-        }
-      }
-    }
-  }
-  /**
-   * Delete a namespace
-   * @description Delete a namespace
-   */
-  delete_namespace: {
-    parameters: {
-      path: {
-        /** @description The namespace name to delete */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description Delete response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["GenericDelete"]
-        }
-      }
-      /** @description Namespace is not existing */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ApiError"]
-        }
-      }
-    }
-  }
-  /**
-   * Get detailed information about a namespace
-   * @description Get detailed information about a namespace
-   */
-  inspect_namespace: {
-    parameters: {
-      path: {
-        /** @description The namespace name to inspect */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description Detailed information about a namespace */
-      200: {
-        content: {
-          "application/json": components["schemas"]["NamespaceInspect"][]
-        }
-      }
-      /** @description Namespace is not existing */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ApiError"]
-        }
-      }
-    }
-  }
-  /**
-   * List nodes
-   * @description List nodes
-   */
-  list_node: {
-    responses: {
-      /** @description List of nodes */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Node"][]
-        }
-      }
-    }
-  }
-  /**
-   * Websocket endpoint for communication between nodes used internally
-   * @description Websocket endpoint for communication between nodes used internally
-   */
-  node_ws: {
-    responses: {
-      /** @description Websocket connection */
-      101: never
-    }
-  }
-  /**
-   * List instances (cargo/vm) including non running ones
-   * @description List instances (cargo/vm) including non running ones
-   */
-  get_processes: {
-    parameters: {
-      query: {
-        /** @description Return instances from all nodes */
-        All: boolean
-        /** @description Return this number of most recently created containers */
-        Last?: number | null
-        /** @description Return instances from this namespace only */
-        Namespace?: string | null
-      }
-    }
-    responses: {
-      /** @description List of instances */
-      200: {
-        content: {
-          "application/json": components["schemas"]["NodeContainerSummary"][]
-        }
-      }
-    }
-  }
-  /**
-   * List resources
-   * @description List resources
-   */
-  list_resource: {
-    parameters: {
-      query: {
-        /** @description Filter by resource kind */
-        Kind?: string | null
-        /** @description Filter by resource content */
-        Contains?: string | null
-      }
-    }
-    responses: {
-      /** @description List of resources */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Resource"][]
-        }
-      }
-    }
-  }
-  /**
-   * Create a resource
-   * @description Create a resource
-   */
-  create_resource: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ResourcePartial"]
-      }
-    }
-    responses: {
-      /** @description The created resource */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Resource"]
-        }
-      }
-    }
-  }
-  /**
-   * Get detailed information about a resource
-   * @description Get detailed information about a resource
-   */
-  inspect_resource: {
-    parameters: {
-      path: {
-        /** @description The resource name to inspect */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description Detailed information about a resource */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Resource"]
-        }
-      }
-      /** @description Resource is not existing */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ApiError"]
-        }
-      }
-    }
-  }
-  /**
-   * Delete a resource
-   * @description Delete a resource
-   */
-  delete_resource: {
-    parameters: {
-      path: {
-        /** @description The resource name to delete */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description The resource and his history has been deleted */
-      202: never
-      /** @description Resource is not existing */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ApiError"]
-        }
-      }
-    }
-  }
-  /**
-   * Patch a resource (update its version and/or config) and create a new history
-   * @description Patch a resource (update its version and/or config) and create a new history
-   */
-  patch_resource: {
-    parameters: {
-      path: {
-        /** @description The resource name to patch */
-        Name: string
-      }
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ResourcePatch"]
-      }
-    }
-    responses: {
-      /** @description The patched resource */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Resource"]
-        }
-      }
-      /** @description Resource is not existing */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ApiError"]
-        }
-      }
-    }
-  }
-  /**
-   * List resource history
-   * @description List resource history
-   */
-  list_resource_history: {
-    parameters: {
-      path: {
-        /** @description The resource name to list history */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description The resource history */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ResourceConfig"][]
-        }
-      }
-      /** @description Resource is not existing */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ApiError"]
-        }
-      }
-    }
-  }
-  /**
-   * Reset a resource to a specific history
-   * @description Reset a resource to a specific history
-   */
-  reset_resource: {
-    parameters: {
-      path: {
-        /** @description The resource name to reset */
-        Name: string
-        /** @description The resource history id to reset to */
-        Id: string
-      }
-    }
-    responses: {
-      /** @description The resource has been reset */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Resource"]
-        }
-      }
-      /** @description Resource is not existing */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ApiError"]
-        }
-      }
-    }
-  }
-  /**
-   * Get version information
-   * @description Get version information
-   */
-  get_version: {
-    responses: {
-      /** @description Version information */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Version"]
-        }
-      }
-    }
-  }
-  /**
-   * List virtual machines
-   * @description List virtual machines
-   */
-  list_vm: {
-    parameters: {
-      query: {
-        /** @description The namespace of the virtual machine */
-        Namespace?: string | null
-      }
-    }
-    responses: {
-      /** @description List of virtual machine */
-      200: {
-        content: {
-          "application/json": components["schemas"]["VmSummary"][]
-        }
-      }
-    }
-  }
-  /**
-   * Create a virtual machine
-   * @description Create a virtual machine
-   */
-  create_vm: {
-    parameters: {
-      query: {
-        /** @description The namespace of the virtual machine */
-        Namespace?: string | null
-      }
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["VmConfigPartial"]
-      }
-    }
-    responses: {
-      /** @description The virtual machine has been created */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Vm"]
-        }
-      }
-    }
-  }
-  /**
-   * List virtual machine images
-   * @description List virtual machine images
-   */
-  list_vm_images: {
-    responses: {
-      /** @description List of vm images */
-      200: {
-        content: {
-          "application/json": components["schemas"]["VmImage"][]
-        }
-      }
-    }
-  }
-  /**
-   * Delete a virtual machine image
-   * @description Delete a virtual machine image
-   */
-  delete_vm_image: {
-    parameters: {
-      path: {
-        /** @description The name of the vm image */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description Image have been deleted */
-      200: never
-    }
-  }
-  /**
-   * Clone a virtual machine image
-   * @description Clone a virtual machine image
-   */
-  clone_vm_image: {
-    parameters: {
-      path: {
-        /** @description The name of the vm image */
-        Name: string
-        /** @description The name of the clone */
-        CloneName: string
-      }
-    }
-    requestBody: {
-      content: {
-        "text/plain": string
-      }
-    }
-    responses: {
-      /** @description The snapshot have been created */
-      200: {
-        content: {
-          "application/json": components["schemas"]["VmImage"]
-        }
-      }
-    }
-  }
-  /**
-   * Import a virtual machine image from a file
-   * @description Import a virtual machine image from a file
-   */
-  import_vm_image: {
-    parameters: {
-      path: {
-        /** @description The name of the vm image */
-        Name: string
-      }
-    }
-    requestBody: {
-      content: {
-        "text/plain": string
-      }
-    }
-    responses: {
-      /** @description Image have been imported */
-      200: never
-    }
-  }
-  /**
-   * Resize a virtual machine image
-   * @description Resize a virtual machine image
-   */
-  resize_vm_image: {
-    parameters: {
-      path: {
-        /** @description The name of the vm image */
-        Name: string
-        /** @description The name of the clone */
-        CloneName: string
-      }
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["VmImageResizePayload"]
-      }
-    }
-    responses: {
-      /** @description The snapshot have been created */
-      200: {
-        content: {
-          "application/json": components["schemas"]["VmImage"]
-        }
-      }
-    }
-  }
-  /**
-   * Create a snapshot of a virtual machine image
-   * @description Create a snapshot of a virtual machine image
-   */
-  snapshot_vm_image: {
-    parameters: {
-      path: {
-        /** @description The name of the vm image */
-        Name: string
-        /** @description The name of the snapshot */
-        SnapshotName: string
-      }
-    }
-    requestBody: {
-      content: {
-        "text/plain": string
-      }
-    }
-    responses: {
-      /** @description The snapshot have been created */
-      200: {
-        content: {
-          "application/json": components["schemas"]["VmImage"]
-        }
-      }
-    }
-  }
-  /**
-   * Delete a virtual machine
-   * @description Delete a virtual machine
-   */
-  delete_vm: {
-    parameters: {
-      query: {
-        /** @description The namespace of the virtual machine */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description The name of the virtual machine */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description The virtual machine has been deleted */
-      200: never
-    }
-  }
-  /**
-   * Patch a virtual machine config meaning merging current config with the new one and add history entry
-   * @description Patch a virtual machine config meaning merging current config with the new one and add history entry
-   */
-  patch_vm: {
-    parameters: {
-      query: {
-        /** @description Namespace of the virtual machine */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description Name of the virtual machine */
-        Name: string
-      }
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["VmConfigUpdate"]
-      }
-    }
-    responses: {
-      /** @description Updated virtual machine */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Vm"]
-        }
-      }
-      /** @description Virtual machine not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ApiError"]
-        }
-      }
-    }
-  }
-  /**
-   * Attach to a virtual machine via websocket
-   * @description Attach to a virtual machine via websocket
-   */
-  vm_attach: {
-    parameters: {
-      query: {
-        /** @description Namespace of the virtual machine */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description Name of the virtual machine */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description Websocket connection */
-      101: never
-    }
-  }
-  /**
-   * List virtual machine histories
-   * @description List virtual machine histories
-   */
-  list_vm_history: {
-    parameters: {
-      query: {
-        /** @description The namespace of the virtual machine */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description The name of the virtual machine */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description The virtual machine histories have been listed */
-      200: {
-        content: {
-          "application/json": components["schemas"]["VmConfig"][]
-        }
-      }
-    }
-  }
-  /**
-   * Inspect a virtual machine
-   * @description Inspect a virtual machine
-   */
-  inspect_vm: {
-    parameters: {
-      query: {
-        /** @description The namespace of the virtual machine */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description The name of the virtual machine */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description Detailed information about a virtual machine */
-      200: {
-        content: {
-          "application/json": components["schemas"]["VmInspect"]
-        }
-      }
-    }
-  }
-  /**
-   * Start a virtual machine
-   * @description Start a virtual machine
-   */
-  start_vm: {
-    parameters: {
-      query: {
-        /** @description The namespace of the virtual machine */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description The name of the virtual machine */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description The virtual machine has been started */
-      200: never
-    }
-  }
-  /**
-   * Stop a virtual machine
-   * @description Stop a virtual machine
-   */
-  stop_vm: {
-    parameters: {
-      query: {
-        /** @description The namespace of the virtual machine */
-        Namespace?: string | null
-      }
-      path: {
-        /** @description The name of the virtual machine */
-        Name: string
-      }
-    }
-    responses: {
-      /** @description The virtual machine has been stopped */
-      200: never
-    }
-  }
+    get_ping: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Server is up */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    list_cargo: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "name": { "eq": "test" } } } }
+                 */
+                filter?: string;
+                /** @description Namespace where the cargoes belongs default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of cargoes */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CargoSummary"][];
+                };
+            };
+        };
+    };
+    create_cargo: {
+        parameters: {
+            query?: {
+                /** @description Namespace where to create the cargo default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CargoSpecPartial"];
+            };
+        };
+        responses: {
+            /** @description Cargo created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Cargo"];
+                };
+            };
+            /** @description Cargo already exist */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    count_cargo: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "name": { "eq": "my-cargo" } } } }
+                 */
+                filter?: string;
+                /** @description Namespace where the cargoes belongs default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Count result */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericCount"];
+                };
+            };
+        };
+    };
+    create_exec_command: {
+        parameters: {
+            query?: {
+                /** @description Namespace of the cargo */
+                Namespace?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Name of the cargo */
+                Name: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateExecOptions"];
+            };
+        };
+        responses: {
+            /** @description Event Stream of the command output */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/event-stream": unknown;
+                };
+            };
+            /** @description Cargo does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    put_cargo: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the cargoes belongs default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Name of the cargo */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CargoSpecPartial"];
+            };
+        };
+        responses: {
+            /** @description Cargo updated */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Cargo"];
+                };
+            };
+            /** @description Cargo does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    delete_cargo: {
+        parameters: {
+            query: {
+                /** @description If true forces the delete operation even if the cargo is started */
+                force: boolean;
+                /** @description Namespace where the cargoes belongs default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Name of the cargo */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Cargo deleted */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Cargo does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    patch_cargo: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the cargoes belongs default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Name of the cargo */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CargoSpecUpdate"];
+            };
+        };
+        responses: {
+            /** @description Cargo updated */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Cargo"];
+                };
+            };
+            /** @description Cargo does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    list_cargo_history: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the cargoes belongs default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Name of the cargo */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of cargo histories */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CargoSpec"][];
+                };
+            };
+            /** @description Cargo does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    revert_cargo: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the cargoes belongs default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Name of the cargo */
+                name: string;
+                /** @description Key of the cargo history */
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Cargo revert */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Cargo"];
+                };
+            };
+            /** @description Cargo does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    inspect_cargo: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the cargoes belongs default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Name of the cargo */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Cargo details */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CargoInspect"];
+                };
+            };
+        };
+    };
+    list_event: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "kind": { "eq": "normal" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of events */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Event"][];
+                };
+            };
+        };
+    };
+    count_event: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "namespace_name": { "eq": "global" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Count result */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericCount"];
+                };
+            };
+        };
+    };
+    watch_event: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["EventCondition"][] | null;
+            };
+        };
+        responses: {
+            /** @description Event stream */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/event-stream": string;
+                };
+            };
+        };
+    };
+    inspect_event: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Key of the event */
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Detailed information about the event */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Event"];
+                };
+            };
+        };
+    };
+    inspect_exec_command: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Exec id to inspect */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Inspect exec infos */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExecInspectResponse"];
+                };
+            };
+            /** @description Exec instance does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    start_exec_command: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Exec command id */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StartExecOptions"];
+            };
+        };
+        responses: {
+            /** @description Event Stream of the command output */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/event-stream": unknown;
+                };
+            };
+            /** @description Cargo does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    get_info: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Host/Node information */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HostInfo"];
+                };
+            };
+        };
+    };
+    list_job: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "name": { "eq": "job-example" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of jobs */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobSummary"][];
+                };
+            };
+        };
+    };
+    create_job: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["JobPartial"];
+            };
+        };
+        responses: {
+            /** @description Job created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Job"];
+                };
+            };
+            /** @description Job already exist */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    count_job: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "key": { "eq": "job-example" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Count result */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericCount"];
+                };
+            };
+        };
+    };
+    delete_job: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Name of the job */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Job deleted */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Job does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    inspect_job: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Name of the job */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Job details */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobInspect"];
+                };
+            };
+        };
+    };
+    list_metric: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "kind": { "eq": "CPU" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of metrics */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Metric"][];
+                };
+            };
+        };
+    };
+    create_metric: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MetricPartial"];
+            };
+        };
+        responses: {
+            /** @description Metric created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Metric"];
+                };
+            };
+            /** @description Metric already exist */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    count_metric: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "kind": { "eq": "ncproxy.io/http" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Count result */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericCount"];
+                };
+            };
+        };
+    };
+    inspect_metric: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Key of the metric */
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Detailed information about a metric */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Metric"];
+                };
+            };
+            /** @description Metric not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    list_namespace: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "name": { "eq": "test" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of namespace */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NamespaceSummary"][];
+                };
+            };
+        };
+    };
+    create_namespace: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NamespacePartial"];
+            };
+        };
+        responses: {
+            /** @description The created namespace */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Namespace"];
+                };
+            };
+            /** @description Namespace already exist */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    count_namespace: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "name": { "eq": "global" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Count result */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericCount"];
+                };
+            };
+        };
+    };
+    delete_namespace: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Name of the namespace to delete */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Namespace have been deleted */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Deletion of this namespace is forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Namespace is not existing */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    inspect_namespace: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The namespace name to inspect */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Detailed information about a namespace */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NamespaceInspect"][];
+                };
+            };
+            /** @description Namespace doesn't exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    list_node: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "name": { "eq": "test" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of nodes */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Node"][];
+                };
+            };
+        };
+    };
+    count_node: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "name": { "eq": "test" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of nodes */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericCount"][];
+                };
+            };
+        };
+    };
+    node_ws: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Websocket connection */
+            101: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    list_processes: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "where": { "name": { "eq": "test" } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of instances */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Process"][];
+                };
+            };
+        };
+    };
+    count_processes: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "name": { "eq": "global" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Count result */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericCount"];
+                };
+            };
+        };
+    };
+    kill_processes: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the process belongs if needed */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /**
+                 * @description Kind of the process
+                 * @example cargo
+                 */
+                kind: string;
+                /**
+                 * @description Name of the process
+                 * @example deploy-example
+                 */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CargoKillOptions"];
+            };
+        };
+        responses: {
+            /** @description Process instances killed */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    logs_processes: {
+        parameters: {
+            query?: {
+                /** @description Namespace of the process */
+                namespace?: string;
+                /** @description Only logs returned since timestamp */
+                since?: number;
+                /** @description Only logs returned until timestamp */
+                until?: number;
+                /** @description Add timestamps to every log line */
+                timestamps?: boolean;
+                /** @description Boolean to return a stream or not */
+                follow?: boolean;
+                /** @description Only return the n last (integer) or all ('all') logs */
+                tail?: string;
+            };
+            header?: never;
+            path: {
+                /**
+                 * @description Kind of the process
+                 * @example cargo
+                 */
+                kind: string;
+                /**
+                 * @description Name of the process
+                 * @example deploy-example
+                 */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Process instances logs */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/vdn.nanocl.raw-stream": unknown;
+                };
+            };
+        };
+    };
+    restart_processes: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the process belongs if needed */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /**
+                 * @description Kind of the process
+                 * @example cargo
+                 */
+                kind: string;
+                /**
+                 * @description Name of the process
+                 * @example deploy-example
+                 */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Process instances restarted */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    start_processes: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the process belongs if needed */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /**
+                 * @description Kind of the process
+                 * @example cargo
+                 */
+                kind: string;
+                /**
+                 * @description Name of the process
+                 * @example deploy-example
+                 */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Process instances started */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    stats_processes: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the process belongs if needed */
+                namespace?: string;
+                /** @description Return a stream of stats */
+                stream?: boolean;
+                /** @description Return stats only once */
+                one_shot?: boolean;
+            };
+            header?: never;
+            path: {
+                /**
+                 * @description Kind of process
+                 * @example cargo
+                 */
+                kind: string;
+                /**
+                 * @description Name of the process group
+                 * @example deploy-example
+                 */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Process stats */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/vdn.nanocl.raw-stream": components["schemas"]["ProcessStats"];
+                };
+            };
+            /** @description Process does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    stop_processes: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the process belongs if needed */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /**
+                 * @description Kind of the process
+                 * @example cargo
+                 */
+                kind: string;
+                /**
+                 * @description Name of the process
+                 * @example deploy-example
+                 */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Process instances stopped */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    wait_processes: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description Kind of the process instance eg: (cargo, job, vm)
+                 * @example cargo
+                 */
+                kind: string;
+                /** @description Name of the process instance */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Process wait stream */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/vdn.nanocl.raw-stream": unknown;
+                };
+            };
+            /** @description Process does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    inspect_process: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Name of the process */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Process details */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Process"];
+                };
+            };
+            /** @description Process doesn't exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    logs_process: {
+        parameters: {
+            query?: {
+                /** @description Only logs returned since timestamp */
+                since?: number;
+                /** @description Only logs returned until timestamp */
+                until?: number;
+                /** @description Add timestamps to every log line */
+                timestamps?: boolean;
+                /** @description Boolean to return a stream or not */
+                follow?: boolean;
+                /** @description Only return the n last (integer) or all ('all') logs */
+                tail?: string;
+            };
+            header?: never;
+            path: {
+                /**
+                 * @description Name of the process
+                 * @example deploy-example
+                 */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Process instances logs */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/vdn.nanocl.raw-stream": unknown;
+                };
+            };
+        };
+    };
+    start_process_by_pk: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description Pk of the process
+                 * @example 1234567890
+                 */
+                pk: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Process instances started */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    list_resource_kind: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "name": { "eq": "test" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of jobs */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourceKind"][];
+                };
+            };
+        };
+    };
+    create_resource_kind: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResourceKindPartial"];
+            };
+        };
+        responses: {
+            /** @description Job created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourceKind"];
+                };
+            };
+            /** @description Resource kind already exist */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    count_resource_kind: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "name": { "eq": "global" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Count result */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericCount"];
+                };
+            };
+        };
+    };
+    delete_resource_kind: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Domain of the resource kind */
+                domain: string;
+                /** @description Name of the resource kind */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Resource kind deleted */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Resource kind doesn't exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    inspect_resource_kind: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Domain of the resource kind */
+                domain: string;
+                /** @description Name of the resource kind */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Details about a resource kind */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourceKindInspect"];
+                };
+            };
+            /** @description Resource kind doesn't exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    inspect_resource_kind_version: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Domain of the resource kind */
+                domain: string;
+                /** @description Name of the resource kind */
+                name: string;
+                /** @description Version of the resource kind */
+                version: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Details about a resource kind */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourceKindVersion"];
+                };
+            };
+            /** @description Resource kind doesn't exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    list_resource: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "kind": { "eq": "ncproxy.io/rule" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of resources */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Resource"][];
+                };
+            };
+        };
+    };
+    create_resource: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResourcePartial"];
+            };
+        };
+        responses: {
+            /** @description The created resource */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Resource"];
+                };
+            };
+            /** @description Resource already exist */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    count_resource: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "name": { "eq": "global" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Count result */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericCount"];
+                };
+            };
+        };
+    };
+    put_resource: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Name of the resource */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResourceUpdate"];
+            };
+        };
+        responses: {
+            /** @description Resource updated */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Resource"];
+                };
+            };
+            /** @description Resource does not exit */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    delete_resource: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The resource name to delete */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The resource and his history has been deleted */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Resource doesn't exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    list_resource_history: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The resource name to list history */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The resource history */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResourceSpec"][];
+                };
+            };
+            /** @description Resource is not existing */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    revert_resource: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The resource name to revert */
+                name: string;
+                /** @description The resource history id to revert to */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The resource has been revert */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Resource"];
+                };
+            };
+            /** @description Resource doesn't exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    inspect_resource: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The resource name to inspect */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Detailed information about a resource */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Resource"];
+                };
+            };
+            /** @description Resource doesn't exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    list_secret: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "kind": { "eq": "Env" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of secret */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Secret"][];
+                };
+            };
+        };
+    };
+    create_secret: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SecretPartial"];
+            };
+        };
+        responses: {
+            /** @description List of secret */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Secret"];
+                };
+            };
+            /** @description Secret already exist */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    count_secret: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "name": { "eq": "global" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Count result */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericCount"];
+                };
+            };
+        };
+    };
+    delete_secret: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Key of the secret */
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Secret have been deleted */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Secret doesn't exists */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    patch_secret: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Key of the secret */
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SecretUpdate"];
+            };
+        };
+        responses: {
+            /** @description Secret patched */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Secret"];
+                };
+            };
+            /** @description Secret does't exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    inspect_secret: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Key of the secret */
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Detailed information about a secret */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Secret"];
+                };
+            };
+            /** @description Secret doesn't */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    get_version: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Version information */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BinaryInfo"];
+                };
+            };
+        };
+    };
+    list_vm: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "name": { "eq": "my-vm" } } } }
+                 */
+                filter?: string;
+                /** @description Namespace where the virtual machine belongs default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of virtual machine */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VmSummary"][];
+                };
+            };
+        };
+    };
+    create_vm: {
+        parameters: {
+            query?: {
+                /** @description The namespace of the virtual machine */
+                namespace?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VmSpecPartial"];
+            };
+        };
+        responses: {
+            /** @description The virtual machine has been created */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Vm"];
+                };
+            };
+            /** @description The virtual machine already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    list_vm_images: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Generic filter
+                 * @example { "filter": { "where": { "name": { "eq": "my-image" } } } }
+                 */
+                filter?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of vm images */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VmImage"][];
+                };
+            };
+        };
+    };
+    delete_vm_image: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The name of the vm image */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Image have been deleted */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description The vm image does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    clone_vm_image: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The name of the vm image */
+                name: string;
+                /** @description The name of the clone */
+                clone_name: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "text/plain": string;
+            };
+        };
+        responses: {
+            /** @description The snapshot have been created */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VmImage"];
+                };
+            };
+            /** @description The vm image does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    import_vm_image: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The name of the vm image */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "text/plain": string;
+            };
+        };
+        responses: {
+            /** @description Image have been imported */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    resize_vm_image: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The name of the vm image */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VmImageResizePayload"];
+            };
+        };
+        responses: {
+            /** @description The snapshot have been created */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VmImage"];
+                };
+            };
+        };
+    };
+    snapshot_vm_image: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The name of the vm image */
+                name: string;
+                /** @description The name of the snapshot */
+                snap: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "text/plain": string;
+            };
+        };
+        responses: {
+            /** @description The snapshot have been created */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VmImage"];
+                };
+            };
+        };
+    };
+    delete_vm: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the virtual machine belongs default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /** @description The name of the virtual machine */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The virtual machine has been deleted */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description The virtual machine does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    patch_vm: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the virtual machine belongs default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Name of the virtual machine */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VmSpecUpdate"];
+            };
+        };
+        responses: {
+            /** @description Updated virtual machine */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Vm"];
+                };
+            };
+            /** @description Virtual machine not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    vm_attach: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the virtual machine belongs default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Name of the virtual machine */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Websocket connection */
+            101: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    list_vm_history: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the virtual machine belongs default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /** @description The name of the virtual machine */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The virtual machine histories have been listed */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VmSpec"][];
+                };
+            };
+            /** @description The virtual machine does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    inspect_vm: {
+        parameters: {
+            query?: {
+                /** @description Namespace where the virtual machine belongs default to 'global' */
+                namespace?: string;
+            };
+            header?: never;
+            path: {
+                /** @description The name of the virtual machine */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Detailed information about a virtual machine */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VmInspect"];
+                };
+            };
+            /** @description The virtual machine does not exist */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
 }

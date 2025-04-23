@@ -9,7 +9,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  transpilePackages: ["nanocl-gui-toolkit"],
 }
 
 export default nextConfig

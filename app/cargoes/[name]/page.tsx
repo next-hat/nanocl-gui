@@ -2,7 +2,7 @@
 
 import React from "react"
 import { ApiContext } from "@/utils/api"
-import { ModalConfirm } from "nanocl-gui-toolkit/components/modal-confirm"
+import { ModalConfirm } from "@/components/modal-confirm"
 
 import type { components } from "@/types/api-schema"
 

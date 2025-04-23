@@ -2,8 +2,8 @@
 
 import React from "react"
 import { ApiContext } from "@/utils/api"
-import { ProgressBar } from "nanocl-gui-toolkit/components/progress-bar"
-import { Card } from "nanocl-gui-toolkit/components/ui/card"
+import { ProgressBar } from "@/components/progress-bar"
+import { Card } from "@/components/ui/card"
 
 import { HttpCharts } from "@/components/http-charts"
 

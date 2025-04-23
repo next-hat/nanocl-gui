@@ -9,8 +9,8 @@ import moment from "moment"
 import {
   DataTable,
   type ColumnDef,
-} from "nanocl-gui-toolkit/components/data-table"
-import { Button } from "nanocl-gui-toolkit/components/ui/button"
+} from "@/components/data-table"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,14 +18,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "nanocl-gui-toolkit/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu"
 
 import type { components } from "@/types/api-schema"
 import { containerColorState } from "@/config/container-color-state"
 import { Icons } from "@/components/icons"
 
 type CargoInspect = components["schemas"]["CargoInspect"]
-type NodeContainerSummary = components["schemas"]["NodeContainerSummary"]
+type NodeContainerSummary = components["schemas"]["CargoSummary"]
 
 export interface TableCargoesProps {
   onDelete: (namespace: CargoInspect) => void
@@ -58,13 +58,13 @@ export function InfoCargo({ onDelete }: TableCargoesProps) {
       cell: ({ row }) => (
         <div className="flex flex-row items-center">
           <span
-            className="mr-2 h-2 w-2 animate-pulse rounded-full"
+            className="mr-2 size-2 animate-pulse rounded-full"
             style={{
               backgroundColor:
-                containerColorState[row.original?.Container?.State || "none"],
+                containerColorState[row.original?.Status.Wanted || "none"],
             }}
           />
-          <span>{row.original.Container.Status || "n/a"}</span>
+          <span>{row.original.Status.Wanted || "n/a"}</span>
         </div>
       ),
     },
@@ -73,7 +73,7 @@ export function InfoCargo({ onDelete }: TableCargoesProps) {
       id: "node",
       cell: ({ row }) => (
         <div className="flex flex-row items-center">
-          <span>{row.original.Node || "n/a"}</span>
+          <span>{row.original.Spec.CargoKey || "n/a"}</span>
         </div>
       ),
     },
@@ -81,7 +81,7 @@ export function InfoCargo({ onDelete }: TableCargoesProps) {
       header: "Ip address",
       id: "ip_address",
       cell: ({ row }) => {
-        const network = row.original?.Container?.NetworkSettings
+        const network = row.original?.Spec.Container?.NetworkingConfig?.EndpointsConfig
           ?.Networks as any
 
         const ipam = network && network[namespace] && network[namespace]
@@ -99,15 +99,14 @@ export function InfoCargo({ onDelete }: TableCargoesProps) {
       header: "Created at",
       id: "created_at",
       cell: ({ row }) =>
-        (row.original.Container.Created &&
-          moment.unix(row.original.Container.Created).fromNow()) ||
+        (row.original.Spec.CreatedAt) ||
         "n/a",
     },
     {
       id: "actions",
       cell: ({ row }) => {
         const name =
-          ((row.original?.Container?.Names as any)[0] || "")
+          ((row.original?.Spec.Container?.Hostname as any)[0] || "")
             .replace("/", "")
             .split(".")[0] + (row.index ? `-${row.index}` : "")
         return (
@@ -116,10 +115,10 @@ export function InfoCargo({ onDelete }: TableCargoesProps) {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="selected:outline-none h-8 w-8 border-0 p-0"
+                  className="selected:outline-none size-8 border-0 p-0"
                 >
                   <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
+                  <MoreHorizontal className="size-4" />
                 </Button>
               </DropdownMenuTrigger>
             </div>
@@ -148,12 +147,12 @@ export function InfoCargo({ onDelete }: TableCargoesProps) {
     <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
       <div className="">
         <h1 className="text-2xl font-extrabold leading-tight tracking-tighter">
-          {cargo?.Name}
+          {cargo?.Spec.Name}
         </h1>
-        <h2>{cargo?.Config?.Container?.Image}</h2>
+        <h2>{cargo?.Spec?.Container?.Image}</h2>
       </div>
       {cargo ? (
-        <DataTable data={cargo?.Instances || []} columns={columns} />
+        <DataTable data={cargo?.Instances|| []} columns={columns} />
       ) : null}
     </section>
   )
