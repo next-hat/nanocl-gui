@@ -1,17 +1,13 @@
-ApiVersion: v0.8
-Kind: Deployment
+ApiVersion: v0.16
 
 Namespace: global
 
 Resources:
-  - Name: console.nanocl.internal
-    Kind: ProxyRule
-    Version: v0.7
-    Config:
-      Watch:
-        - console.global.c
+  - Name: console.nanocl.wtf
+    Kind: ncproxy.io/rule
+    Data:
       Rules:
-        - Domain: console.nanocl.internal
+        - Domain: console.nanocl.wtf
           Network: All
           Locations:
             - Path: /
@@ -26,7 +22,7 @@ Resources:
 Cargoes:
   - Name: console
     Container:
-      Image: node:18.16.0-slim
+      Image: node:22.0.0-slim
       Tty: true
       WorkingDir: /project
       Env:
@@ -39,5 +35,5 @@ Cargoes:
         - sh
         - -c
         - |
-          npm install
+          npm install --legacy-peer-deps
           npm run dev
