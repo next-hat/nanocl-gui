@@ -1,23 +1,19 @@
-# next-template
+# Nanocl GUI
 
-A Next.js 13 template for building apps with Radix UI and Tailwind CSS.
+A nanocl GUI for visualizing and managing your nanocl clusters.
 
-## Usage
+## Requirements
+
+A nanocl cluster running on your local machine in production or development mode.
+
+## Installation
 
 ```bash
-npx create-next-app -e https://github.com/shadcn/next-template
+git clone https://github.com/next-hat/nanocl-gui-toolkit
+cd nanocl-gui-toolkit
+npm install --legacy-peer-deps
+cd ..
+git clone https://github.com/next-hat/nanocl-gui
+cd nanocl-gui
+nanocl state apply -fy
 ```
-
-## Features
-
-- Radix UI Primitives
-- Tailwind CSS
-- Fonts with `next/font`
-- Icons from [Lucide](https://lucide.dev)
-- Dark mode with `next-themes`
-- Automatic import sorting with `@ianvs/prettier-plugin-sort-imports`
-- Tailwind CSS class sorting, merging and linting.
-
-## License
-
-Licensed under the [MIT license](https://github.com/shadcn/ui/blob/main/LICENSE.md).
